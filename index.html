@@ -1,357 +1,886 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rafael Martinez — Microsoft 365 Specialist</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-<style>
-  :root{
-    --bg:#FFFFFF;
-    --bg-soft:#F4F6FA;
-    --slate:#101828;
-    --slate-muted:#5B6472;
-    --line:#E3E7EE;
-    --blue:#2148D6;
-    --blue-dark:#17359E;
-    --blue-soft:#EAF0FE;
-    --amber:#C77D22;
-    --radius:3px;
-    --display:'Manrope', sans-serif;
-    --body:'IBM Plex Sans', sans-serif;
-    --mono:'IBM Plex Mono', monospace;
-  }
-  *{ box-sizing:border-box; margin:0; padding:0; }
-  html{ scroll-behavior:smooth; }
-  body{
-    font-family:var(--body); color:var(--slate); background:var(--bg);
-    -webkit-font-smoothing:antialiased;
-  }
-  a{ color:inherit; text-decoration:none; }
-  ul{ list-style:none; }
-  img{ max-width:100%; display:block; }
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RD TECH | Executive Deskside Rapid Dispatch</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  .wrap{ max-width:1180px; margin:0 auto; padding:0 32px; }
-  section{ position:relative; }
+  <style>
+    :root {
+      --navy: #141C2E;
+      --navy-light: #1c2940;
+      --navy-deep: #101725;
+      --cream: #F7F0E4;
+      --teal: #4E9B94;
+      --teal-light: #9ce0d4;
+      --muted: #a7b3c5;
+      --line: rgba(247, 240, 228, .12);
+      --amber: #e2bd78;
+      --red: #e38a8a;
+      --shadow: 0 18px 50px rgba(0,0,0,.4);
+    }
 
-  /* ---------------- NAV ---------------- */
-  header{
-    position:sticky; top:0; z-index:100;
-    background:rgba(255,255,255,.9); backdrop-filter:blur(10px);
-    border-bottom:1px solid var(--line);
-  }
-  .nav{ display:flex; align-items:center; justify-content:space-between; padding:18px 32px; max-width:1180px; margin:0 auto; }
-  .brand{ font-family:var(--display); font-weight:800; font-size:17px; letter-spacing:-.01em; display:flex; align-items:center; gap:9px; }
-  .brand-mark{ width:9px; height:9px; background:var(--blue); border-radius:1px; }
-  .nav-links{ display:flex; align-items:center; gap:36px; }
-  .nav-links a{ font-size:14.5px; font-weight:500; color:var(--slate-muted); transition:color .2s ease; position:relative; }
-  .nav-links a:hover{ color:var(--slate); }
-  .nav-links a::after{
-    content:''; position:absolute; left:0; bottom:-6px; width:0; height:2px; background:var(--blue);
-    transition:width .25s ease;
-  }
-  .nav-links a:hover::after{ width:100%; }
-  .btn{
-    display:inline-flex; align-items:center; gap:8px; font-size:14px; font-weight:600;
-    padding:11px 20px; border-radius:var(--radius); cursor:pointer; transition:all .2s ease;
-    font-family:var(--body); border:1px solid transparent;
-  }
-  .btn-primary{ background:var(--blue); color:#fff; }
-  .btn-primary:hover{ background:var(--blue-dark); }
-  .btn-ghost{ border-color:var(--line); color:var(--slate); }
-  .btn-ghost:hover{ border-color:var(--slate); }
-  .nav-cta{ display:flex; gap:12px; }
-  @media (max-width:900px){ .nav-links{ display:none; } }
+    * { box-sizing: border-box }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #0c1422;
+      color: var(--cream);
+      font: 13px/1.5 Inter, sans-serif;
+    }
+    button, input, select, textarea { font: inherit }
+    button { cursor: pointer }
 
-  /* ---------------- HOME / HERO ---------------- */
-  #home{ padding:96px 0 100px; background:
-    radial-gradient(700px 380px at 85% 10%, var(--blue-soft), transparent 65%), var(--bg); }
-  .hero{ display:grid; grid-template-columns:1.05fr .95fr; gap:64px; align-items:center; }
-  .eyebrow{ font-family:var(--mono); font-size:12.5px; color:var(--blue); font-weight:600; margin-bottom:20px; letter-spacing:.01em; }
-  .hero h1{
-    font-family:var(--display); font-weight:800; font-size:clamp(2.1rem,4vw,3.15rem);
-    line-height:1.08; letter-spacing:-.02em; color:var(--slate); margin-bottom:22px;
-  }
-  .hero-sub{ font-size:17px; color:var(--slate-muted); line-height:1.65; max-width:52ch; margin-bottom:34px; }
-  .hero-ctas{ display:flex; gap:14px; margin-bottom:44px; flex-wrap:wrap; }
-  .hero-bio{ font-size:15px; color:var(--slate-muted); line-height:1.75; max-width:56ch; padding-top:28px; border-top:1px solid var(--line); }
-  .hero-bio strong{ color:var(--slate); font-weight:600; }
+    .app {
+      width: min(460px, calc(100vw - 24px));
+      height: min(900px, calc(100vh - 24px));
+      min-height: 560px;
+      position: fixed;
+      right: 12px;
+      top: 12px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background: var(--navy);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+    }
 
-  /* skill badge cluster */
-  .badge-field{ display:flex; flex-wrap:wrap; gap:12px; align-content:flex-start; }
-  .badge{
-    font-family:var(--mono); font-weight:600; color:var(--slate);
-    background:#fff; border:1px solid var(--line); border-left:3px solid var(--blue);
-    border-radius:var(--radius); padding:14px 16px; font-size:13px;
-    opacity:0; transform:translateY(14px);
-    transition:border-color .25s ease, transform .25s ease, box-shadow .25s ease;
-  }
-  .badge:hover{ border-color:var(--blue); transform:translateY(-3px); box-shadow:0 10px 24px -14px rgba(33,72,214,.35); }
-  .badge.primary{ font-size:14.5px; padding:18px 20px; background:var(--slate); color:#fff; border-left-color:var(--amber); }
-  .badge.primary:hover{ box-shadow:0 10px 24px -14px rgba(16,24,40,.4); }
-  .badge .cat{ display:block; font-size:10px; color:var(--slate-muted); font-weight:500; margin-bottom:5px; text-transform:none; }
-  .badge.primary .cat{ color:#B9C2D8; }
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      background: var(--navy-light);
+      border-bottom: 1px solid var(--line);
+    }
+    .brand { display:flex; align-items:center; gap:10px }
+    .brand-mark {
+      display:grid; place-items:center;
+      width:34px; height:34px;
+      border-radius:10px;
+      background:var(--teal);
+      color:var(--navy);
+      font:700 13px "Space Grotesk", sans-serif;
+    }
+    .brand-name {
+      font:700 14px "Space Grotesk", sans-serif;
+      letter-spacing:.02em;
+    }
+    .brand-subtitle {
+      display:block;
+      margin-top:1px;
+      color:var(--muted);
+      font:500 8px "IBM Plex Mono", monospace;
+      letter-spacing:.1em;
+      text-transform:uppercase;
+    }
+    .header-actions { display:flex; gap:8px; align-items:center }
+    .header-button {
+      width:32px; height:32px;
+      display:grid; place-items:center;
+      border:1px solid var(--line);
+      border-radius:9px;
+      background:transparent;
+      color:var(--cream);
+    }
+    .account {
+      padding:6px 9px;
+      border:1px solid var(--line);
+      border-radius:8px;
+      color:var(--cream);
+      font:500 9px "IBM Plex Mono", monospace;
+    }
 
-  /* ---------------- SECTION HEADS ---------------- */
-  .sec-pad{ padding:100px 0; }
-  .sec-pad.alt{ background:var(--bg-soft); }
-  .sec-head{ max-width:640px; margin-bottom:56px; }
-  .sec-kicker{ font-family:var(--mono); font-size:12px; color:var(--blue); font-weight:600; margin-bottom:14px; }
-  .sec-head h2{ font-family:var(--display); font-weight:700; font-size:clamp(1.6rem,2.6vw,2.1rem); letter-spacing:-.015em; margin-bottom:14px; }
-  .sec-head p{ color:var(--slate-muted); font-size:15.5px; line-height:1.65; }
+    .nav {
+      display:flex;
+      gap:7px;
+      padding:10px 13px;
+      overflow-x:auto;
+      border-bottom:1px solid var(--line);
+      scrollbar-width:none;
+    }
+    .nav::-webkit-scrollbar { display:none }
+    .nav-button {
+      flex:0 0 auto;
+      padding:7px 10px;
+      border:1px solid transparent;
+      border-radius:999px;
+      background:transparent;
+      color:var(--muted);
+      font:500 9px "IBM Plex Mono", monospace;
+    }
+    .nav-button.active {
+      border-color:rgba(78,155,148,.32);
+      background:rgba(78,155,148,.12);
+      color:var(--teal-light);
+    }
+    .nav-count {
+      margin-left:5px;
+      padding:1px 5px;
+      border-radius:999px;
+      color:var(--navy);
+      background:var(--teal);
+      font-size:8px;
+    }
 
-  /* ---------------- EXPERTISE ---------------- */
-  .expertise-list{ display:flex; flex-direction:column; }
-  .expertise-item{
-    display:grid; grid-template-columns:260px 1fr; gap:40px;
-    padding:34px 0; border-top:1px solid var(--line);
-  }
-  .expertise-list .expertise-item:last-child{ border-bottom:1px solid var(--line); }
-  .expertise-marker{ display:flex; align-items:flex-start; gap:14px; }
-  .expertise-marker .dot{ width:8px; height:8px; border-radius:1px; background:var(--blue); margin-top:8px; flex-shrink:0; }
-  .expertise-marker h3{ font-family:var(--display); font-size:18px; font-weight:700; line-height:1.35; }
-  .expertise-tech{ font-family:var(--mono); font-size:11.5px; color:var(--blue); margin-top:8px; }
-  .expertise-item p{ color:var(--slate-muted); font-size:15px; line-height:1.75; max-width:64ch; }
-  @media (max-width:760px){ .expertise-item{ grid-template-columns:1fr; gap:12px; } }
+    .content {
+      flex:1;
+      overflow-y:auto;
+      padding:17px 15px 20px;
+      scrollbar-color:#344156 transparent;
+    }
+    .page { display:none }
+    .page.active { display:block }
+    .kicker {
+      color:var(--teal);
+      font:600 9px "IBM Plex Mono", monospace;
+      letter-spacing:.13em;
+      text-transform:uppercase;
+    }
+    h1 {
+      margin:7px 0 6px;
+      font:600 27px/1.08 "Space Grotesk", sans-serif;
+      letter-spacing:-.06em;
+    }
+    .intro {
+      margin:0 0 15px;
+      color:var(--muted);
+      font-size:11px;
+      line-height:1.55;
+    }
 
-  /* ---------------- SERVICES ---------------- */
-  .services-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); }
-  .service-card{ background:#fff; padding:32px 28px; }
-  .service-index{ font-family:var(--mono); font-size:11px; color:var(--slate-muted); margin-bottom:18px; }
-  .service-card h3{ font-family:var(--display); font-size:17px; font-weight:700; margin-bottom:12px; letter-spacing:-.01em; }
-  .service-card p{ font-size:14.5px; color:var(--slate-muted); line-height:1.7; }
-  @media (max-width:820px){ .services-grid{ grid-template-columns:1fr; } }
+    .dispatch-button {
+      width:100%;
+      padding:12px;
+      border:1px solid var(--teal);
+      border-radius:10px;
+      background:var(--teal);
+      color:var(--navy);
+      font:700 11px "IBM Plex Mono", monospace;
+      transition:background .15s, transform .15s;
+    }
+    .dispatch-button:hover { background:#68b1a9; transform:translateY(-1px) }
 
-  /* ---------------- CASE STUDIES ---------------- */
-  .case-list{ display:flex; flex-direction:column; gap:1px; background:var(--line); border:1px solid var(--line); margin-top:60px; }
-  .case{ background:#fff; display:grid; grid-template-columns:220px 1fr 1fr; }
-  .case-label{ padding:30px 24px; background:var(--slate); color:#fff; }
-  .case-label .num{ font-family:var(--mono); font-size:11px; color:#9FB0E6; margin-bottom:10px; display:block; }
-  .case-label h4{ font-family:var(--display); font-size:15.5px; font-weight:700; line-height:1.4; }
-  .case-col{ padding:30px 26px; border-left:1px solid var(--line); }
-  .case-col .col-lbl{ font-family:var(--mono); font-size:10.5px; color:var(--blue); font-weight:600; margin-bottom:10px; display:block; }
-  .case-col p{ font-size:14.5px; color:var(--slate-muted); line-height:1.7; }
-  @media (max-width:900px){
-    .case{ grid-template-columns:1fr; }
-    .case-col{ border-left:none; border-top:1px solid var(--line); }
-  }
+    .stats {
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:8px;
+      margin:12px 0;
+    }
+    .stat {
+      min-width:0;
+      padding:11px 10px;
+      border:1px solid var(--line);
+      border-radius:11px;
+      background:rgba(247,240,228,.025);
+    }
+    .stat-label {
+      color:var(--muted);
+      font:500 8px "IBM Plex Mono", monospace;
+      text-transform:uppercase;
+      letter-spacing:.04em;
+    }
+    .stat-value {
+      margin-top:4px;
+      color:var(--cream);
+      font:600 22px "Space Grotesk", sans-serif;
+    }
+    .stat-note { color:var(--muted); font-size:8px }
 
-  /* ---------------- CONTACT ---------------- */
-  #contact{ padding:110px 0 90px; }
-  .contact-box{
-    background:var(--slate); color:#fff; border-radius:6px;
-    padding:56px; display:grid; grid-template-columns:1.2fr .8fr; gap:48px; align-items:center;
-  }
-  .contact-box h2{ font-family:var(--display); font-size:clamp(1.6rem,3vw,2.1rem); font-weight:700; letter-spacing:-.015em; margin-bottom:16px; }
-  .contact-box p{ color:#AEB8CC; font-size:15px; line-height:1.7; max-width:48ch; }
-  .contact-info{ font-family:var(--mono); font-size:14px; line-height:2.3; }
-  .contact-info .k{ color:#7C88A6; margin-right:10px; }
-  .contact-info a{ border-bottom:1px solid rgba(255,255,255,.25); transition:border-color .2s, color .2s; }
-  .contact-info a:hover{ color:var(--blue-soft); border-color:var(--blue-soft); }
-  .contact-cta{ margin-top:26px; }
-  @media (max-width:820px){ .contact-box{ grid-template-columns:1fr; padding:36px; } }
+    .section {
+      margin-top:12px;
+      overflow:hidden;
+      border:1px solid var(--line);
+      border-radius:12px;
+      background:rgba(247,240,228,.02);
+    }
+    .section-head {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:8px;
+      padding:11px 12px;
+      border-bottom:1px solid var(--line);
+    }
+    .section-title {
+      margin:0;
+      font:600 12px "Space Grotesk", sans-serif;
+    }
+    .text-button {
+      padding:0;
+      border:0;
+      background:transparent;
+      color:var(--teal-light);
+      font:500 9px "IBM Plex Mono", monospace;
+    }
 
-  footer{ padding:36px 32px; border-top:1px solid var(--line); }
-  footer .wrap{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; }
-  footer p{ font-family:var(--mono); font-size:11.5px; color:var(--slate-muted); }
+    .dispatch-list { padding:0 12px }
+    .dispatch-row {
+      display:grid;
+      grid-template-columns:34px minmax(0,1fr) auto;
+      align-items:center;
+      gap:9px;
+      padding:11px 0;
+      border-bottom:1px solid rgba(247,240,228,.08);
+      cursor:pointer;
+    }
+    .dispatch-row:last-child { border-bottom:0 }
+    .dispatch-row:hover .dispatch-title { color:var(--teal-light) }
+    .dispatch-icon {
+      width:32px; height:32px;
+      display:grid; place-items:center;
+      border-radius:9px;
+      color:var(--teal-light);
+      background:rgba(78,155,148,.12);
+      font-size:14px;
+    }
+    .dispatch-title {
+      overflow:hidden;
+      color:var(--cream);
+      font-size:10px;
+      font-weight:700;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+    }
+    .dispatch-meta {
+      margin-top:3px;
+      overflow:hidden;
+      color:var(--muted);
+      font:400 8px "IBM Plex Mono", monospace;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+    }
+    .status {
+      padding:4px 6px;
+      border:1px solid transparent;
+      border-radius:999px;
+      font:500 8px "IBM Plex Mono", monospace;
+      white-space:nowrap;
+    }
+    .status.requested { color:var(--amber); background:rgba(226,189,120,.1); border-color:rgba(226,189,120,.18) }
+    .status.dispatched, .status.on-site { color:var(--teal-light); background:rgba(78,155,148,.12); border-color:rgba(78,155,148,.22) }
+    .status.resolved { color:#b8d7ce; background:rgba(101,184,168,.1); border-color:rgba(101,184,168,.18) }
+    .status.urgent { color:var(--red); background:rgba(227,138,138,.1); border-color:rgba(227,138,138,.18) }
 
-  .reveal{ opacity:0; transform:translateY(20px); }
+    .service-note {
+      display:flex;
+      gap:10px;
+      padding:12px;
+      color:var(--muted);
+      font-size:9px;
+    }
+    .service-note strong { display:block; margin-bottom:3px; color:var(--cream); font-size:10px }
+    .note-mark {
+      flex:0 0 auto;
+      width:27px; height:27px;
+      display:grid; place-items:center;
+      border-radius:8px;
+      color:var(--teal-light);
+      background:rgba(78,155,148,.12);
+    }
 
-  @media (prefers-reduced-motion: reduce){
-    *{ animation-duration:.001ms !important; transition-duration:.001ms !important; }
-  }
-</style>
+    .toolbar { display:flex; gap:8px; margin:12px 0 10px }
+    .control {
+      min-width:0;
+      flex:1;
+      padding:8px 9px;
+      border:1px solid var(--line);
+      border-radius:8px;
+      outline:0;
+      background:rgba(255,255,255,.025);
+      color:var(--cream);
+      font-size:10px;
+    }
+    .control::placeholder { color:#8d9bb0 }
+    .control:focus, .form-control:focus { border-color:var(--teal); box-shadow:0 0 0 2px rgba(78,155,148,.12) }
+    select.control option, select.form-control option { background:var(--navy); color:var(--cream) }
+
+    .empty {
+      padding:22px 10px;
+      color:var(--muted);
+      text-align:center;
+      font-size:10px;
+    }
+
+    .modal-backdrop {
+      position:fixed;
+      inset:0;
+      z-index:10;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:14px;
+      background:rgba(5,9,16,.76);
+      backdrop-filter:blur(5px);
+    }
+    .modal-backdrop.open { display:flex }
+    .modal {
+      position:relative;
+      width:min(430px,100%);
+      max-height:92vh;
+      overflow:auto;
+      padding:19px;
+      border:1px solid var(--line);
+      border-radius:16px;
+      background:var(--navy-light);
+      box-shadow:var(--shadow);
+    }
+    .modal-close {
+      position:absolute;
+      top:12px; right:12px;
+      width:29px; height:29px;
+      border:1px solid var(--line);
+      border-radius:8px;
+      background:transparent;
+      color:var(--cream);
+      font-size:18px;
+    }
+    .modal h2 {
+      margin:6px 36px 5px 0;
+      font:600 21px "Space Grotesk", sans-serif;
+      letter-spacing:-.04em;
+    }
+    .modal-copy { margin:0 0 14px; color:var(--muted); font-size:10px }
+    .form-group { margin-bottom:10px }
+    .form-group label {
+      display:block;
+      margin-bottom:4px;
+      color:#c2ccda;
+      font:500 8px "IBM Plex Mono", monospace;
+      letter-spacing:.05em;
+      text-transform:uppercase;
+    }
+    .form-control {
+      width:100%;
+      padding:9px 10px;
+      border:1px solid var(--line);
+      border-radius:8px;
+      outline:0;
+      background:rgba(255,255,255,.025);
+      color:var(--cream);
+      font-size:10px;
+    }
+    textarea.form-control { min-height:74px; resize:vertical }
+    .form-control:focus { border-color:var(--teal); box-shadow:0 0 0 2px rgba(78,155,148,.12) }
+    .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:9px }
+    .form-help { margin:0 0 12px; color:var(--muted); font-size:8px; line-height:1.5 }
+    .secondary-button {
+      padding:9px 12px;
+      border:1px solid var(--line);
+      border-radius:8px;
+      background:transparent;
+      color:var(--cream);
+      font:500 9px "IBM Plex Mono", monospace;
+    }
+    .modal-actions { display:flex; gap:8px }
+    .modal-actions button { flex:1 }
+
+    .detail-grid {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:9px;
+      margin:14px 0;
+    }
+    .detail-cell {
+      padding:9px;
+      border:1px solid var(--line);
+      border-radius:8px;
+      background:rgba(255,255,255,.02);
+    }
+    .detail-label {
+      color:var(--muted);
+      font:500 8px "IBM Plex Mono", monospace;
+      text-transform:uppercase;
+    }
+    .detail-value { margin-top:3px; color:var(--cream); font-size:10px; overflow-wrap:anywhere }
+    .detail-description {
+      padding:10px;
+      border:1px solid var(--line);
+      border-radius:8px;
+      color:#d5deea;
+      font-size:10px;
+      white-space:pre-wrap;
+      overflow-wrap:anywhere;
+    }
+    .demo-warning {
+      margin-top:12px;
+      padding:9px;
+      border:1px solid rgba(226,189,120,.2);
+      border-radius:8px;
+      color:#e7d4ad;
+      background:rgba(226,189,120,.06);
+      font:400 8px/1.5 "IBM Plex Mono", monospace;
+    }
+
+    .toast {
+      position:fixed;
+      z-index:30;
+      right:20px;
+      bottom:20px;
+      max-width:min(360px,calc(100vw - 40px));
+      padding:10px 12px;
+      border:1px solid var(--line);
+      border-radius:9px;
+      background:var(--navy-light);
+      color:var(--cream);
+      box-shadow:var(--shadow);
+      font:400 9px "IBM Plex Mono", monospace;
+      opacity:0;
+      transform:translateY(7px);
+      transition:.2s;
+      pointer-events:none;
+    }
+    .toast.show { opacity:1; transform:translateY(0) }
+
+    @media (max-width:480px) {
+      .app { right:0; top:0; width:100vw; height:100dvh; min-height:0; border-radius:0; border:0 }
+      .content { padding:15px 13px 20px }
+    }
+    @media (prefers-reduced-motion:reduce) {
+      *, *::before, *::after { scroll-behavior:auto !important; transition:none !important }
+    }
+  </style>
 </head>
 <body>
+  <div class="app">
+    <header class="header">
+      <div class="brand">
+        <div class="brand-mark">RD</div>
+        <div class="brand-name">
+          RD TECH
+          <span class="brand-subtitle">Executive Deskside Rapid Dispatch</span>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="header-button" id="notificationButton" type="button" aria-label="Notifications">♧</button>
+        <span class="account">ACME · CLIENT</span>
+      </div>
+    </header>
 
-<header>
-  <div class="nav">
-    <div class="brand"><span class="brand-mark"></span> Rafael Martinez</div>
-    <nav class="nav-links">
-      <a href="#home">Home / About</a>
-      <a href="#expertise">Expertise</a>
-      <a href="#services">Services</a>
-      <a href="#contact">Contact</a>
+    <nav class="nav" aria-label="Portal navigation">
+      <button class="nav-button active" type="button" data-page="overview">Overview</button>
+      <button class="nav-button" type="button" data-page="dispatches">Dispatches <span class="nav-count" id="navCount">0</span></button>
     </nav>
-    <div class="nav-cta">
-      <a href="#contact" class="btn btn-primary">Book a Consultation</a>
+
+    <main class="content">
+      <section class="page active" id="page-overview">
+        <div class="kicker">RD TECH · Executive support</div>
+        <h1>Rapid dispatch.<br>Personal attention.</h1>
+        <p class="intro">Request priority deskside assistance for a covered executive. The concierge coordinates the response.</p>
+        <button class="dispatch-button" type="button" data-new-dispatch>＋ &nbsp;REQUEST RAPID DISPATCH</button>
+
+        <div class="stats">
+          <div class="stat">
+            <div class="stat-label">Active requests</div>
+            <div class="stat-value" id="activeCount">0</div>
+            <div class="stat-note">Awaiting resolution</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">In progress</div>
+            <div class="stat-value" id="progressCount">0</div>
+            <div class="stat-note">Dispatch status</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Service</div>
+            <div class="stat-value" style="font-size:15px;color:var(--teal-light)">PRIORITY</div>
+            <div class="stat-note">Executive deskside</div>
+          </div>
+        </div>
+
+        <section class="section">
+          <div class="section-head">
+            <h2 class="section-title">Recent dispatches</h2>
+            <button class="text-button" type="button" data-goto="dispatches">VIEW ALL →</button>
+          </div>
+          <div class="dispatch-list" id="recentDispatches"></div>
+        </section>
+
+        <section class="section">
+          <div class="service-note">
+            <div class="note-mark">✦</div>
+            <div>
+              <strong>Executive Deskside Rapid Dispatch</strong>
+              Priority coordination for urgent workstation, mobile device, meeting-room, and executive access issues.
+            </div>
+          </div>
+        </section>
+
+        <p class="demo-warning">DEMO MODE — Requests are saved in this browser only. No technician is contacted or dispatched.</p>
+      </section>
+
+      <section class="page" id="page-dispatches">
+        <div class="kicker">Request tracking</div>
+        <h1>Dispatches</h1>
+        <p class="intro">Review rapid dispatch requests and their current demo status.</p>
+        <button class="dispatch-button" type="button" data-new-dispatch>＋ &nbsp;NEW DISPATCH REQUEST</button>
+
+        <div class="toolbar">
+          <input class="control" id="searchInput" type="search" placeholder="Search requests…" aria-label="Search dispatch requests">
+          <select class="control" id="statusFilter" aria-label="Filter by status">
+            <option value="all">All statuses</option>
+            <option value="Requested">Requested</option>
+            <option value="Dispatched">Dispatched</option>
+            <option value="On-site">On-site</option>
+            <option value="Resolved">Resolved</option>
+          </select>
+        </div>
+
+        <section class="section" style="margin-top:0">
+          <div class="section-head">
+            <h2 class="section-title">All requests</h2>
+            <span class="text-button" id="dispatchTotal">0 TOTAL</span>
+          </div>
+          <div class="dispatch-list" id="allDispatches"></div>
+        </section>
+
+        <p class="demo-warning">Status changes in this prototype are simulations and do not reflect a live technician dispatch.</p>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal">
+      <button class="modal-close" id="closeModal" type="button" aria-label="Close">×</button>
+
+      <div id="formView">
+        <div class="kicker">Rapid dispatch request</div>
+        <h2 id="modalTitle">Request executive support</h2>
+        <p class="modal-copy">Provide enough detail for the concierge to understand the issue and coordinate next steps.</p>
+
+        <form id="dispatchForm">
+          <div class="form-group">
+            <label for="executive">Full Name</label>
+            <input class="form-control" id="executive" type="text" placeholder="Enter the full name" required>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="urgency">Urgency</label>
+              <select class="form-control" id="urgency" required>
+                <option value="Urgent">Urgent — executive blocked</option>
+                <option value="High">High — work impacted</option>
+                <option value="Normal">Normal — assistance needed</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="issueType">Issue type</label>
+              <select class="form-control" id="issueType" required>
+                <option>Workstation / laptop</option>
+                <option>Mobile device</option>
+                <option>Meeting / presentation</option>
+                <option>Account / access</option>
+                <option>Printer / peripheral</option>
+                <option>Other deskside issue</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="callback">Callback number</label>
+              <input class="form-control" id="callback" type="tel" placeholder="Your contact number" required>
+            </div>
+            <div class="form-group">
+              <label for="location">Current location</label>
+              <input class="form-control" id="location" placeholder="Building, floor, office, room" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="summary">Issue summary</label>
+            <textarea class="form-control" id="summary" maxlength="700" placeholder="What is happening? Include time-sensitive impact or meeting context." required></textarea>
+          </div>
+
+          <p class="form-help">Do not include passwords, MFA codes, or other credentials. Submitting creates a demo request in this browser; it does not contact a technician.</p>
+          <div class="modal-actions">
+            <button class="secondary-button" id="cancelButton" type="button">Cancel</button>
+            <button class="dispatch-button" type="submit">SUBMIT REQUEST</button>
+          </div>
+        </form>
+      </div>
+
+      <div id="detailView" hidden>
+        <div class="kicker">Dispatch details</div>
+        <h2 id="detailTitle">Request</h2>
+        <p class="modal-copy" id="detailSubtitle"></p>
+        <div id="detailContent"></div>
+        <div class="modal-actions" id="detailActions"></div>
+        <p class="demo-warning">Demo status only. This does not indicate a real technician has been dispatched.</p>
+      </div>
+
+      <div id="successView" hidden>
+        <div style="text-align:center;padding:20px 4px 8px">
+          <div class="note-mark" style="width:48px;height:48px;margin:0 auto 12px;border-radius:50%;font-size:21px">✓</div>
+          <h2 style="margin:0 0 7px">Request recorded</h2>
+          <p class="modal-copy" id="successText"></p>
+          <button class="dispatch-button" id="doneButton" type="button">DONE</button>
+        </div>
+      </div>
     </div>
   </div>
-</header>
 
-<main>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <!-- HOME / ABOUT -->
-  <section id="home">
-    <div class="wrap hero">
-      <div>
-        <div class="eyebrow">MICROSOFT 365 SPECIALIST</div>
-        <h1>Securing &amp; Optimizing Your Cloud Workplace</h1>
-        <p class="hero-sub">Enterprise-grade Microsoft 365 engineering, identity management, and endpoint security tailored for modern business infrastructure.</p>
-        <div class="hero-ctas">
-          <a href="#contact" class="btn btn-primary">Book a Consultation</a>
-          <a href="#services" class="btn btn-ghost">View My Work</a>
-        </div>
-        <p class="hero-bio">As a dedicated <strong>Microsoft 365 Specialist</strong>, I design, deploy, and govern cloud environments that balance seamless collaboration with zero-trust security. I specialize in transforming fragmented IT setups into cohesive, secure digital workplaces using the native Microsoft ecosystem.</p>
-      </div>
-      <div class="badge-field" id="badge-field">
-        <div class="badge primary"><span class="cat">Umbrella Platform</span>Microsoft 365</div>
-        <div class="badge primary"><span class="cat">Identity &amp; Access</span>Entra ID</div>
-        <div class="badge"><span class="cat">Endpoint Mgmt</span>Intune</div>
-        <div class="badge"><span class="cat">Messaging</span>Exchange Online</div>
-        <div class="badge"><span class="cat">Collaboration</span>Microsoft Teams</div>
-        <div class="badge"><span class="cat">Content Mgmt</span>SharePoint</div>
-        <div class="badge"><span class="cat">Threat Protection</span>Microsoft Defender</div>
-      </div>
-    </div>
-  </section>
+  <script>
+    const STORAGE_KEY = 'rdtech-rapid-dispatch-demo-v1';
 
-  <!-- EXPERTISE -->
-  <section id="expertise" class="sec-pad alt">
-    <div class="wrap">
-      <div class="sec-head">
-        <div class="sec-kicker">CORE COMPETENCIES</div>
-        <h2>A focused stack, applied deeply</h2>
-        <p>Four disciplines that cover the full lifecycle of a secure Microsoft cloud environment — from who gets in, to what they can touch, to how it's protected.</p>
-      </div>
-      <div class="expertise-list">
-        <div class="expertise-item reveal">
-          <div class="expertise-marker">
-            <span class="dot"></span>
-            <div>
-              <h3>Identity &amp; Security</h3>
-              <div class="expertise-tech">MICROSOFT ENTRA ID</div>
-            </div>
+    const sampleDispatches = [
+      {
+        id: 'RD-4102',
+        executive: 'Jordan Davis',
+        urgency: 'High',
+        issueType: 'Meeting / presentation',
+        callback: '(555) 010-2040',
+        location: 'HQ · Executive conference room',
+        summary: 'Presentation display is not detecting the executive laptop.',
+        status: 'Dispatched',
+        createdAt: new Date(Date.now() - 18 * 60 * 1000).toISOString()
+      },
+      {
+        id: 'RD-4097',
+        executive: 'Sam Lee',
+        urgency: 'Normal',
+        issueType: 'Workstation / laptop',
+        callback: '(555) 010-2041',
+        location: 'HQ · Finance office',
+        summary: 'Request for assistance with a docking station and external displays.',
+        status: 'Resolved',
+        createdAt: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString()
+      }
+    ];
+
+    let dispatches = loadDispatches();
+    const $ = id => document.getElementById(id);
+
+    function loadDispatches() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        return saved ? JSON.parse(saved) : sampleDispatches;
+      } catch {
+        return sampleDispatches;
+      }
+    }
+
+    function saveDispatches() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(dispatches));
+      } catch {
+        showToast('Could not save to browser storage.');
+      }
+    }
+
+    function escapeHTML(value) {
+      return String(value).replace(/[&<>"']/g, char => ({
+        '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
+      }[char]));
+    }
+
+    function formatTime(iso) {
+      const date = new Date(iso);
+      return date.toLocaleString([], { month:'short', day:'numeric', hour:'numeric', minute:'2-digit' });
+    }
+
+    function statusClass(status) {
+      return status.toLowerCase().replace(/[^a-z]+/g, '-');
+    }
+
+    function renderDispatchRow(item) {
+      const urgencyClass = item.urgency === 'Urgent' ? 'urgent' : '';
+      return `
+        <div class="dispatch-row" role="button" tabindex="0" data-open-id="${escapeHTML(item.id)}" aria-label="Open dispatch ${escapeHTML(item.id)}">
+          <div class="dispatch-icon">${item.urgency === 'Urgent' ? '!' : '↗'}</div>
+          <div>
+            <div class="dispatch-title">${escapeHTML(item.issueType)} · ${escapeHTML(item.executive)}</div>
+            <div class="dispatch-meta">${escapeHTML(item.id)} · ${formatTime(item.createdAt)}</div>
           </div>
-          <p>Implementation of Conditional Access policies, Multi-Factor Authentication (MFA), Single Sign-On (SSO), and lifecycle management to protect corporate identities at every access point.</p>
+          <span class="status ${statusClass(item.status)} ${urgencyClass}">${escapeHTML(item.status)}</span>
         </div>
-        <div class="expertise-item reveal">
-          <div class="expertise-marker">
-            <span class="dot"></span>
-            <div>
-              <h3>Unified Endpoint Management</h3>
-              <div class="expertise-tech">MICROSOFT INTUNE</div>
-            </div>
-          </div>
-          <p>Device enrollment across Windows, iOS, and Android, application deployment, compliance policies, and automated provisioning via Windows Autopilot.</p>
-        </div>
-        <div class="expertise-item reveal">
-          <div class="expertise-marker">
-            <span class="dot"></span>
-            <div>
-              <h3>Collaboration &amp; Messaging</h3>
-              <div class="expertise-tech">EXCHANGE · TEAMS · SHAREPOINT</div>
-            </div>
-          </div>
-          <p>Tenant-to-tenant migrations, hybrid mail configurations, governance structures, secure external sharing, and automated SharePoint document management.</p>
-        </div>
-        <div class="expertise-item reveal">
-          <div class="expertise-marker">
-            <span class="dot"></span>
-            <div>
-              <h3>Threat Protection</h3>
-              <div class="expertise-tech">MICROSOFT DEFENDER</div>
-            </div>
-          </div>
-          <p>Configuring Defender for Endpoint, Office 365, and Identity to proactively mitigate vulnerabilities and respond to modern security threats.</p>
-        </div>
-      </div>
-    </div>
-  </section>
+      `;
+    }
 
-  <!-- SERVICES -->
-  <section id="services" class="sec-pad">
-    <div class="wrap">
-      <div class="sec-head">
-        <div class="sec-kicker">SERVICE OFFERINGS</div>
-        <h2>Where I plug into your environment</h2>
-        <p>Engagements are scoped around outcomes — a more secure tenant, a cleaner migration, or a workplace that's genuinely zero-trust.</p>
-      </div>
-      <div class="services-grid">
-        <div class="service-card reveal">
-          <div class="service-index">01</div>
-          <h3>M365 Tenant Optimisation &amp; Audits</h3>
-          <p>Reviewing Secure Score, cleaning up legacy configurations, and aligning tenant settings with industry best practices.</p>
+    function render() {
+      const active = dispatches.filter(item => item.status !== 'Resolved');
+      const inProgress = dispatches.filter(item => item.status === 'Dispatched' || item.status === 'On-site');
+      $('activeCount').textContent = active.length;
+      $('progressCount').textContent = inProgress.length;
+      $('navCount').textContent = active.length;
+      $('dispatchTotal').textContent = `${dispatches.length} TOTAL`;
+
+      $('recentDispatches').innerHTML = dispatches.length
+        ? [...dispatches].sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0,4).map(renderDispatchRow).join('')
+        : '<div class="empty">No dispatch requests yet. Use the button above to submit one.</div>';
+
+      const query = $('searchInput').value.trim().toLowerCase();
+      const status = $('statusFilter').value;
+      const filtered = [...dispatches]
+        .sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt))
+        .filter(item => {
+          const searchable = `${item.id} ${item.executive} ${item.issueType} ${item.location} ${item.summary}`.toLowerCase();
+          return (!query || searchable.includes(query)) && (status === 'all' || item.status === status);
+        });
+
+      $('allDispatches').innerHTML = filtered.length
+        ? filtered.map(renderDispatchRow).join('')
+        : '<div class="empty">No dispatch requests match your search.</div>';
+    }
+
+    function showPage(page) {
+      document.querySelectorAll('.page').forEach(section => {
+        section.classList.toggle('active', section.id === `page-${page}`);
+      });
+      document.querySelectorAll('.nav-button').forEach(button => {
+        button.classList.toggle('active', button.dataset.page === page);
+      });
+      if (page === 'dispatches') render();
+    }
+
+    function showToast(message) {
+      $('toast').textContent = message;
+      $('toast').classList.add('show');
+      clearTimeout(showToast.timer);
+      showToast.timer = setTimeout(() => $('toast').classList.remove('show'), 2600);
+    }
+
+    function openForm() {
+      $('formView').hidden = false;
+      $('detailView').hidden = true;
+      $('successView').hidden = true;
+      $('dispatchForm').reset();
+      $('modalBackdrop').classList.add('open');
+      document.body.style.overflow = 'hidden';
+      $('executive').focus();
+    }
+
+    function closeModal() {
+      $('modalBackdrop').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function showDetails(id) {
+      const item = dispatches.find(dispatch => dispatch.id === id);
+      if (!item) return;
+
+      $('formView').hidden = true;
+      $('successView').hidden = true;
+      $('detailView').hidden = false;
+      $('detailTitle').textContent = item.id;
+      $('detailSubtitle').textContent = `${item.issueType} · Submitted ${formatTime(item.createdAt)}`;
+
+      $('detailContent').innerHTML = `
+        <div class="detail-grid">
+          <div class="detail-cell"><div class="detail-label">Full Name</div><div class="detail-value">${escapeHTML(item.executive)}</div></div>
+          <div class="detail-cell"><div class="detail-label">Status</div><div class="detail-value"><span class="status ${statusClass(item.status)}">${escapeHTML(item.status)}</span></div></div>
+          <div class="detail-cell"><div class="detail-label">Urgency</div><div class="detail-value">${escapeHTML(item.urgency)}</div></div>
+          <div class="detail-cell"><div class="detail-label">Callback</div><div class="detail-value">${escapeHTML(item.callback)}</div></div>
+          <div class="detail-cell" style="grid-column:1/-1"><div class="detail-label">Location</div><div class="detail-value">${escapeHTML(item.location)}</div></div>
         </div>
-        <div class="service-card reveal">
-          <div class="service-index">02</div>
-          <h3>Zero Trust Security Implementation</h3>
-          <p>Enforcing strict identity verification and device compliance using Entra ID and Intune, end to end.</p>
-        </div>
-        <div class="service-card reveal">
-          <div class="service-index">03</div>
-          <h3>Cloud Migration &amp; Deployment</h3>
-          <p>Seamlessly moving infrastructure, mailboxes, and file systems from on-premises or third-party suites to Exchange and SharePoint.</p>
-        </div>
-      </div>
+        <div class="detail-label" style="margin:0 0 5px">Issue summary</div>
+        <div class="detail-description">${escapeHTML(item.summary)}</div>
+      `;
 
-      <!-- CASE STUDIES -->
-      <div class="sec-head" style="margin-top:90px; margin-bottom:0;">
-        <div class="sec-kicker">PROJECT FRAMEWORKS</div>
-        <h2>How that looks in practice</h2>
-      </div>
-      <div class="case-list">
-        <div class="case reveal">
-          <div class="case-label"><span class="num">FRAMEWORK 01</span><h4>Secure Remote Work Transition</h4></div>
-          <div class="case-col"><span class="col-lbl">CHALLENGE</span><p>A distributed workforce accessing corporate resources from unmanaged devices, with no consistent compliance baseline.</p></div>
-          <div class="case-col"><span class="col-lbl">SOLUTION</span><p>Enrolled devices into Microsoft Intune, enforced compliance baselines, and locked down access using Entra ID Conditional Access.</p></div>
-        </div>
-        <div class="case reveal">
-          <div class="case-label"><span class="num">FRAMEWORK 02</span><h4>Legacy Migration &amp; Collaboration Overhaul</h4></div>
-          <div class="case-col"><span class="col-lbl">CHALLENGE</span><p>Inefficient data silos spread across on-premises file servers and older, disconnected chat applications.</p></div>
-          <div class="case-col"><span class="col-lbl">SOLUTION</span><p>Migrated data to SharePoint Online, built structured Teams environments with lifecycle management, and routed enterprise mail cleanly through Exchange Online.</p></div>
-        </div>
-      </div>
-    </div>
-  </section>
+      const actions = [];
+      if (item.status === 'Requested') {
+        actions.push(`<button class="secondary-button" data-status-id="${escapeHTML(item.id)}" data-next-status="Dispatched" type="button">Simulate dispatch</button>`);
+      } else if (item.status === 'Dispatched') {
+        actions.push(`<button class="secondary-button" data-status-id="${escapeHTML(item.id)}" data-next-status="On-site" type="button">Simulate arrival</button>`);
+      }
+      if (item.status !== 'Resolved') {
+        actions.push(`<button class="dispatch-button" data-status-id="${escapeHTML(item.id)}" data-next-status="Resolved" type="button">MARK RESOLVED</button>`);
+      } else {
+        actions.push('<button class="dispatch-button" data-close-modal type="button">CLOSE</button>');
+      }
+      $('detailActions').innerHTML = actions.join('');
+      $('modalBackdrop').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
 
-  <!-- CONTACT -->
-  <section id="contact" class="sec-pad">
-    <div class="wrap">
-      <div class="contact-box">
-        <div>
-          <h2>Let's secure your cloud workplace</h2>
-          <p>Available for tenant audits, zero-trust rollouts, and migration projects. Based in Richmond, BC — working with teams across North America.</p>
-          <div class="contact-cta"><a href="mailto:mrafaelfernando12@gmail.com" class="btn btn-primary">Book a Consultation</a></div>
-        </div>
-        <div class="contact-info">
-          <div><span class="k">EMAIL</span><a href="mailto:mrafaelfernando12@gmail.com">mrafaelfernando12@gmail.com</a></div>
-          <div><span class="k">PHONE</span><a href="tel:6043961315">604.396.1315</a></div>
-          <div><span class="k">BASE</span>Richmond, BC, Canada</div>
-          <div><span class="k">NETWORK</span>LinkedIn</div>
-        </div>
-      </div>
-    </div>
-  </section>
+    function updateStatus(id, nextStatus) {
+      const item = dispatches.find(dispatch => dispatch.id === id);
+      if (!item) return;
+      item.status = nextStatus;
+      saveDispatches();
+      render();
+      showDetails(id);
+      showToast(`Demo status updated: ${nextStatus}`);
+    }
 
-</main>
+    document.querySelectorAll('.nav-button').forEach(button => {
+      button.addEventListener('click', () => showPage(button.dataset.page));
+    });
 
-<footer>
-  <div class="wrap">
-    <p>© 2026 RAFAEL MARTINEZ · MICROSOFT 365 SPECIALIST</p>
-    <p>ENTRA ID · INTUNE · EXCHANGE · TEAMS · SHAREPOINT · DEFENDER</p>
-  </div>
-</footer>
+    document.querySelectorAll('[data-goto]').forEach(button => {
+      button.addEventListener('click', () => showPage(button.dataset.goto));
+    });
 
-<script>
-gsap.registerPlugin(ScrollTrigger);
+    document.querySelectorAll('[data-new-dispatch]').forEach(button => {
+      button.addEventListener('click', openForm);
+    });
 
-/* Hero badge entrance */
-gsap.to('#badge-field .badge', {
-  opacity:1, y:0, duration:.7, stagger:.08, ease:'back.out(1.6)', delay:.15
-});
+    $('searchInput').addEventListener('input', render);
+    $('statusFilter').addEventListener('change', render);
+    $('closeModal').addEventListener('click', closeModal);
+    $('cancelButton').addEventListener('click', closeModal);
+    $('doneButton').addEventListener('click', closeModal);
 
-/* Scroll reveals */
-gsap.utils.toArray('.reveal').forEach(el=>{
-  gsap.to(el, {
-    opacity:1, y:0, duration:.9, ease:'power3.out',
-    scrollTrigger:{ trigger:el, start:'top 88%' }
-  });
-});
-</script>
+    $('notificationButton').addEventListener('click', () => {
+      showToast('Dispatch updates will appear here in the connected portal.');
+    });
 
+    $('modalBackdrop').addEventListener('click', event => {
+      if (event.target === $('modalBackdrop')) closeModal();
+    });
+
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') closeModal();
+      if ((event.key === 'Enter' || event.key === ' ') && event.target.matches('[data-open-id]')) {
+        event.preventDefault();
+        showDetails(event.target.dataset.openId);
+      }
+    });
+
+    document.addEventListener('click', event => {
+      const row = event.target.closest('[data-open-id]');
+      if (row) showDetails(row.dataset.openId);
+
+      const statusButton = event.target.closest('[data-status-id]');
+      if (statusButton) updateStatus(statusButton.dataset.statusId, statusButton.dataset.nextStatus);
+
+      if (event.target.closest('[data-close-modal]')) closeModal();
+    });
+
+    $('dispatchForm').addEventListener('submit', event => {
+      event.preventDefault();
+
+      const item = {
+        id: `RD-${Math.floor(1000 + Math.random() * 9000)}`,
+        executive: $('executive').value.trim(),
+        urgency: $('urgency').value,
+        issueType: $('issueType').value,
+        callback: $('callback').value.trim(),
+        location: $('location').value.trim(),
+        summary: $('summary').value.trim(),
+        status: 'Requested',
+        createdAt: new Date().toISOString()
+      };
+
+      dispatches.unshift(item);
+      saveDispatches();
+      render();
+
+      $('formView').hidden = true;
+      $('detailView').hidden = true;
+      $('successView').hidden = false;
+      $('successText').textContent = `${item.id} was recorded in this browser as a demo request. This prototype has not contacted RD TECH or dispatched a technician.`;
+      showToast('Demo request recorded');
+    });
+
+    render();
+  </script>
 </body>
 </html>
