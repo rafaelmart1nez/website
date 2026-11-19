@@ -5,1080 +5,1349 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="color-scheme" content="light dark" />
 <link rel="icon" href="data:," />
-<title>EntraFlow Simulator</title>
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<title>EntraFlow Onboarding Console</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg:#F8FAFC; --surface:#FFFFFF; --surface-2:#F1F5F9; --surface-3:#F8FAFC;
-  --border:#E2E8F0; --border-strong:#CBD5E1;
-  --text:#0F172A; --text-2:#475569; --text-3:#64748B; --text-4:#94A3B8;
-  --accent:#0F62FE; --accent-hover:#0353E9; --accent-soft:rgba(15,98,254,.08);
-  --ok:#047857; --ok-bg:#ECFDF5; --ok-border:#A7F3D0;
-  --bad:#B91C1C; --bad-bg:#FEF2F2; --bad-border:#FECACA;
-  --warn:#B45309; --warn-bg:#FFFBEB; --warn-border:#FDE68A;
-  --overlay:rgba(15,23,42,.35);
-  --shadow:0 10px 30px rgba(15,23,42,.12);
-}
-@media (prefers-color-scheme: dark){
   :root{
-    --bg:#0B1220; --surface:#111A2E; --surface-2:#1B2740; --surface-3:#0E1626;
-    --border:#24334F; --border-strong:#33456B;
-    --text:#F1F5F9; --text-2:#CBD5E1; --text-3:#94A3B8; --text-4:#64748B;
-    --accent:#4D8DFF; --accent-hover:#6FA5FF; --accent-soft:rgba(77,141,255,.14);
-    --ok:#34D399; --ok-bg:rgba(52,211,153,.1); --ok-border:rgba(52,211,153,.35);
-    --bad:#F87171; --bad-bg:rgba(248,113,113,.1); --bad-border:rgba(248,113,113,.35);
-    --warn:#FBBF24; --warn-bg:rgba(251,191,36,.1); --warn-border:rgba(251,191,36,.35);
-    --overlay:rgba(2,6,16,.6);
-    --shadow:0 10px 30px rgba(0,0,0,.5);
+    --navy:#141C2E;
+    --navy-2:#1D2942;
+    --navy-3:#243354;
+    --warm:#F7F0E4;
+    --warm-2:#EFE6D6;
+    --teal:#4E9B94;
+    --teal-dark:#35736D;
+    --teal-soft:#E2EFEC;
+    --ink:#1B2436;
+    --ink-2:#4B5871;
+    --ink-3:#71809A;
+    --line:#DDD3C0;
+    --card:#FFFDF8;
+    --card-2:#FBF7EE;
+    --good:#2F7D5B;
+    --good-bg:#E4F2E9;
+    --warn:#9A6B14;
+    --warn-bg:#FBF0D3;
+    --bad:#B03A2E;
+    --bad-bg:#FBE9E6;
+    --skip:#71809A;
+    --skip-bg:#ECEFF3;
+    --radius:14px;
+    --shadow:0 10px 30px rgba(20,28,46,.10);
   }
-}
-*{box-sizing:border-box}
-html,body{margin:0;padding:0}
-body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
-button,[role="button"],select,summary,input:not([type="checkbox"]){min-height:2.25rem}
-button{font-family:inherit;cursor:pointer}
-input,select,textarea{font-family:inherit}
-.mono{font-family:'IBM Plex Mono',ui-monospace,monospace}
-.display{font-family:'Space Grotesk','Inter',sans-serif}
-a{color:var(--accent)}
+  @media (prefers-color-scheme: dark){
+    :root{
+      --warm:#101828;
+      --warm-2:#16203A;
+      --ink:#F1EBDD;
+      --ink-2:#C4CCDC;
+      --ink-3:#93A1BC;
+      --line:#2C3A5C;
+      --card:#182238;
+      --card-2:#1C2947;
+      --teal-soft:#1E3A3E;
+      --good-bg:#1C3529;
+      --warn-bg:#3A311A;
+      --bad-bg:#3D2320;
+      --skip-bg:#232F4D;
+      --shadow:0 10px 30px rgba(0,0,0,.35);
+    }
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:"Inter",system-ui,sans-serif;
+    background:var(--warm);
+    color:var(--ink);
+    font-size:16px;
+    line-height:1.55;
+  }
+  button,[role="button"],select,summary,input:not([type="checkbox"]){min-height:44px}
+  button{font-family:inherit;cursor:pointer}
+  input,select,textarea{font-family:inherit;font-size:1rem;color:var(--ink)}
+  :focus-visible{outline:3px solid var(--teal);outline-offset:2px;border-radius:6px}
+  .mono{font-family:"IBM Plex Mono",monospace}
+  h1,h2,h3{font-family:"Space Grotesk",sans-serif;line-height:1.15;margin:0}
+  p{margin:0}
 
-/* ---------- Layout ---------- */
-.sidebar{position:fixed;inset:0 auto 0 0;width:16rem;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:30}
-.sidebar .brand{height:4rem;display:flex;align-items:center;gap:.6rem;padding:0 1.25rem;border-bottom:1px solid var(--border)}
-.brand-mark{width:1.9rem;height:1.9rem;border-radius:.45rem;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.brand-name{font-family:'Space Grotesk',sans-serif;font-size:1.15rem;font-weight:700;letter-spacing:-.02em}
-.brand-tag{font-size:.62rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-3)}
-.sidebar nav{flex:1;padding:1rem .75rem;display:flex;flex-direction:column;gap:.25rem}
-.nav-btn{display:flex;align-items:center;gap:.75rem;width:100%;padding:.6rem .75rem;border:0;border-radius:.45rem;background:transparent;color:var(--text-2);font-size:.875rem;font-weight:500;text-align:left;transition:background .15s,color .15s}
-.nav-btn:hover{background:var(--surface-2);color:var(--text)}
-.nav-btn.active{background:var(--accent-soft);color:var(--accent)}
-.nav-btn svg{flex-shrink:0}
-.sidebar .foot{border-top:1px solid var(--border);padding:1rem 1.25rem}
-.mode-pill{display:inline-flex;align-items:center;gap:.4rem;font-size:.7rem;font-weight:600;padding:.25rem .6rem;border-radius:999px;border:1px solid var(--border)}
-.mode-pill .dot{width:.45rem;height:.45rem;border-radius:50%;background:var(--warn)}
-.mode-pill.live .dot{background:var(--ok)}
-.shell{margin-left:16rem;min-height:100vh;display:flex;flex-direction:column}
-.topbar{position:sticky;top:0;z-index:20;height:4rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:0 1.5rem;background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(6px);border-bottom:1px solid var(--border)}
-.crumb{display:flex;align-items:center;gap:.5rem;font-size:.875rem;min-width:0}
-.crumb .sep{color:var(--text-4)}
-.crumb .cur{font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-main{flex:1;width:100%;max-width:80rem;margin:0 auto;padding:2rem 1.5rem 3rem}
-.burger{display:none;width:2.25rem;height:2.25rem;align-items:center;justify-content:center;border:0;border-radius:.45rem;background:transparent;color:var(--text-2)}
-.mobile-scrim{display:none}
+  /* ---------- Top bar ---------- */
+  .topbar{
+    background:var(--navy);
+    color:#F7F0E4;
+    position:sticky;top:0;z-index:40;
+    box-shadow:0 2px 14px rgba(20,28,46,.25);
+  }
+  .topbar-in{
+    max-width:1240px;margin:0 auto;padding:14px 20px;
+    display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+  }
+  .brand{display:flex;align-items:center;gap:12px;min-width:0}
+  .brand-mark{
+    width:42px;height:42px;border-radius:10px;flex:none;
+    background:var(--teal);color:#fff;
+    display:grid;place-items:center;
+    font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:1.15rem;
+  }
+  .brand-name{font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:1.3rem;letter-spacing:.04em}
+  .brand-sub{font-size:.78rem;color:#B9C4D8;letter-spacing:.08em;text-transform:uppercase}
+  .top-meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-left:auto}
+  .pill{
+    display:inline-flex;align-items:center;gap:7px;
+    background:var(--navy-2);border:1px solid var(--navy-3);
+    border-radius:999px;padding:6px 13px;font-size:.83rem;color:#DCE3F0;min-height:36px;
+  }
+  .pill .dot{width:8px;height:8px;border-radius:50%;background:#5B6B8C;flex:none}
+  .pill.on .dot{background:#57C785;box-shadow:0 0 0 3px rgba(87,199,133,.2)}
+  .mode-toggle{
+    display:inline-flex;background:var(--navy-2);border:1px solid var(--navy-3);
+    border-radius:999px;padding:4px;gap:4px;
+  }
+  .mode-toggle button{
+    border:0;background:transparent;color:#B9C4D8;border-radius:999px;
+    padding:6px 16px;font-weight:600;font-size:.85rem;min-height:36px;
+  }
+  .mode-toggle button[aria-pressed="true"]{background:var(--teal);color:#fff}
+  .mode-toggle button.live-on[aria-pressed="true"]{background:#C4553B}
 
-/* ---------- Buttons / inputs ---------- */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;border-radius:.45rem;font-size:.8rem;font-weight:500;padding:.55rem 1rem;border:1px solid transparent;white-space:nowrap;transition:background .15s,border-color .15s}
-.btn-primary{background:var(--accent);color:#fff}
-.btn-primary:hover{background:var(--accent-hover)}
-.btn-ghost{background:var(--surface);border-color:var(--border);color:var(--text)}
-.btn-ghost:hover{background:var(--surface-2)}
-.btn-subtle{background:var(--surface-3);border-color:var(--border);color:var(--text-2)}
-.btn-subtle:hover{background:var(--surface-2)}
-.btn-danger-ghost{background:var(--surface);border-color:var(--bad-border);color:var(--bad)}
-.btn:disabled{opacity:.55;cursor:not-allowed}
-.field label{display:block;font-size:.75rem;font-weight:500;color:var(--text-2);margin-bottom:.4rem}
-.field input,.field select,.field textarea{width:100%;height:2.5rem;border:1px solid var(--border);border-radius:.45rem;background:var(--surface);color:var(--text);font-size:.875rem;padding:0 .75rem}
-.field textarea{height:auto;padding:.6rem .75rem;resize:vertical}
-.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
-.field .hint{font-size:.72rem;color:var(--text-3);margin-top:.35rem}
-.checkline{display:flex;align-items:flex-start;gap:.6rem;font-size:.8rem;color:var(--text-2);cursor:pointer;padding:.35rem 0}
-.checkline input{width:1.05rem;height:1.05rem;margin-top:.15rem;accent-color:var(--accent);flex-shrink:0}
+  /* ---------- Layout ---------- */
+  .wrap{max-width:1240px;margin:0 auto;padding:26px 20px 60px}
+  .intro{display:flex;gap:20px;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;margin-bottom:22px}
+  .intro h1{font-size:clamp(1.7rem,3.4vw,2.4rem);font-weight:700;max-width:22ch}
+  .intro p{color:var(--ink-2);max-width:58ch;margin-top:8px}
+  .sim-note{
+    background:var(--teal-soft);border:1px solid var(--teal);
+    color:var(--ink);border-radius:var(--radius);padding:12px 16px;
+    font-size:.88rem;max-width:340px;
+  }
+  .sim-note strong{color:var(--teal-dark)}
+  @media (prefers-color-scheme: dark){.sim-note strong{color:#8FD0C9}}
 
-/* ---------- Page heads ---------- */
-.page-head{border-bottom:1px solid var(--border);padding-bottom:1.4rem;margin-bottom:1.6rem;display:flex;flex-wrap:wrap;gap:1rem;align-items:flex-end;justify-content:space-between}
-.page-head h1{font-size:1.5rem;font-weight:600;letter-spacing:-.02em;margin:0}
-.page-head p{margin:.4rem 0 0;color:var(--text-2);font-size:.875rem;max-width:44rem}
+  .layout{display:grid;grid-template-columns:320px 1fr;gap:22px;align-items:start}
+  @media (max-width:920px){.layout{grid-template-columns:1fr}}
 
-/* ---------- Stats strip ---------- */
-.stats{display:grid;grid-template-columns:repeat(4,1fr);background:var(--surface);border:1px solid var(--border);border-radius:.6rem;overflow:hidden;margin-bottom:1.6rem}
-.stat{padding:1rem 1.25rem;border-left:1px solid var(--border)}
-.stat:first-child{border-left:0}
-.stat .k{font-size:.72rem;font-weight:500;color:var(--text-3)}
-.stat .v{font-family:'IBM Plex Mono',monospace;font-size:1.6rem;font-weight:600;margin-top:.35rem;font-variant-numeric:tabular-nums}
-.stat .s{font-size:.72rem;color:var(--text-3);margin-top:.2rem}
+  .card{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);
+  }
+  .rail{display:grid;gap:18px}
+  @media (max-width:920px){.rail{grid-template-columns:1fr 1fr}}
+  @media (max-width:600px){.rail{grid-template-columns:1fr}}
+  .rail .card{padding:18px}
+  .rail h2,.section-title{font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);font-family:"IBM Plex Mono",monospace;font-weight:600;margin-bottom:14px}
 
-/* ---------- Toolbar / table ---------- */
-.toolbar{display:flex;flex-wrap:wrap;gap:.75rem;align-items:center;justify-content:space-between;margin-bottom:1rem}
-.searchbox{position:relative;flex:1;max-width:24rem;min-width:14rem}
-.searchbox svg{position:absolute;left:.7rem;top:50%;transform:translateY(-50%);color:var(--text-4);pointer-events:none}
-.searchbox input{width:100%;height:2.5rem;border:1px solid var(--border);border-radius:.45rem;background:var(--surface);color:var(--text);font-size:.875rem;padding:0 .75rem 0 2.3rem}
-.searchbox input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
-.seg{display:inline-flex;gap:.25rem;background:var(--surface-2);border:1px solid var(--border);border-radius:.5rem;padding:.25rem}
-.seg button{border:0;background:transparent;border-radius:.35rem;padding:.4rem .8rem;font-size:.75rem;font-weight:500;color:var(--text-2);min-height:2rem}
-.seg button.on{background:var(--surface);color:var(--text);box-shadow:0 1px 3px rgba(15,23,42,.12)}
-.tablewrap{background:var(--surface);border:1px solid var(--border);border-radius:.6rem;overflow:hidden}
-table{width:100%;border-collapse:collapse;text-align:left;font-size:.875rem}
-thead tr{background:var(--surface-3);border-bottom:1px solid var(--border)}
-th{padding:.7rem 1rem;font-size:.72rem;font-weight:500;color:var(--text-3);white-space:nowrap}
-th.num,td.num{text-align:right;font-variant-numeric:tabular-nums}
-tbody tr{border-top:1px solid var(--border);cursor:pointer;transition:background .12s}
-tbody tr:first-child{border-top:0}
-tbody tr:hover{background:var(--surface-3)}
-td{padding:.8rem 1rem;vertical-align:middle}
-.emp-name{font-weight:500}
-.emp-upn{font-family:'IBM Plex Mono',monospace;font-size:.72rem;color:var(--text-3)}
-.badge{display:inline-flex;align-items:center;gap:.35rem;font-size:.72rem;font-weight:500;padding:.2rem .55rem;border-radius:999px;border:1px solid;white-space:nowrap}
-.badge.ok{color:var(--ok);background:var(--ok-bg);border-color:var(--ok-border)}
-.badge.warn{color:var(--warn);background:var(--warn-bg);border-color:var(--warn-border)}
-.badge.bad{color:var(--bad);background:var(--bad-bg);border-color:var(--bad-border)}
-.badge.mode{color:var(--text-2);background:var(--surface-2);border-color:var(--border)}
-.empty{padding:3rem 1.5rem;text-align:center}
-.empty .t{font-weight:500}
-.empty .s{font-size:.8rem;color:var(--text-3);margin-top:.3rem}
+  /* Pipeline rail */
+  .stage-row{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+  .stage-row:last-child{border-bottom:0}
+  .stage-ico{
+    width:34px;height:34px;border-radius:50%;flex:none;display:grid;place-items:center;
+    background:var(--skip-bg);color:var(--skip);font-family:"IBM Plex Mono",monospace;font-size:.82rem;font-weight:600;
+  }
+  .stage-row.running .stage-ico{background:var(--teal);color:#fff;animation:pulse 1s infinite}
+  .stage-row.done .stage-ico{background:var(--good);color:#fff}
+  .stage-row.skipped .stage-ico{background:var(--skip-bg);color:var(--skip)}
+  @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
+  @media (prefers-reduced-motion: reduce){.stage-row.running .stage-ico{animation:none}html{scroll-behavior:auto}}
+  .stage-row .s-name{font-weight:600;font-size:.93rem}
+  .stage-row .s-desc{font-size:.8rem;color:var(--ink-3)}
+  .stage-row .s-status{margin-left:auto;font-size:.75rem;font-family:"IBM Plex Mono",monospace;color:var(--ink-3);white-space:nowrap;padding-top:4px}
+  .stage-row.done .s-status{color:var(--good)}
+  .stage-row.skipped .s-status{color:var(--skip)}
 
-/* ---------- Cards / panels ---------- */
-.panel{background:var(--surface);border:1px solid var(--border);border-radius:.6rem}
-.panel-h{padding:1rem 1.25rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem}
-.panel-h .t{font-weight:600;font-size:.9rem}
-.panel-h .s{font-size:.75rem;color:var(--text-3);margin-top:.15rem}
-.panel-b{padding:1.25rem}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
-.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
-.alert{display:flex;gap:.7rem;border-radius:.55rem;padding:.8rem 1rem;font-size:.85rem;border:1px solid;margin-bottom:1rem}
-.alert.bad{color:var(--bad);background:var(--bad-bg);border-color:var(--bad-border)}
-.alert.ok{color:var(--ok);background:var(--ok-bg);border-color:var(--ok-border)}
-.alert.info{color:var(--text-2);background:var(--accent-soft);border-color:var(--border)}
-.alert svg{flex-shrink:0;margin-top:.1rem}
+  .kv{display:grid;gap:8px;font-size:.88rem}
+  .kv div{display:flex;justify-content:space-between;gap:12px}
+  .kv dt{color:var(--ink-3)}
+  .kv dd{margin:0;font-weight:600;text-align:right;overflow-wrap:anywhere}
 
-/* ---------- Wizard ---------- */
-.wiz{display:grid;grid-template-columns:7fr 5fr;gap:2rem;align-items:start}
-.sec-title{font-size:.8rem;font-weight:600;letter-spacing:.02em;margin:0 0 1rem;display:flex;align-items:center;gap:.6rem}
-.sec-title .n{font-family:'IBM Plex Mono',monospace;font-size:.7rem;color:var(--accent);background:var(--accent-soft);border-radius:.35rem;padding:.15rem .45rem}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
-.pick-group{margin-bottom:1.4rem}
-.pick-group .pg-label{font-size:.75rem;font-weight:600;color:var(--text-2);margin-bottom:.3rem}
-.pick-group .pg-sub{font-size:.72rem;color:var(--text-3);margin-bottom:.55rem}
-.pick-list{border:1px solid var(--border);border-radius:.55rem;overflow:hidden}
-.pick-item{display:flex;gap:.65rem;align-items:flex-start;padding:.6rem .8rem;border-top:1px solid var(--border);cursor:pointer;background:var(--surface)}
-.pick-item:first-child{border-top:0}
-.pick-item:hover{background:var(--surface-3)}
-.pick-item input{width:1rem;height:1rem;margin-top:.2rem;accent-color:var(--accent);flex-shrink:0}
-.pick-item .pt{font-size:.82rem;font-weight:500}
-.pick-item .ps{font-size:.72rem;color:var(--text-3);font-family:'IBM Plex Mono',monospace;word-break:break-all}
-.pick-item .tag{margin-left:auto;font-size:.68rem;font-weight:600;padding:.12rem .5rem;border-radius:999px;background:var(--surface-2);border:1px solid var(--border);color:var(--text-2);white-space:nowrap}
-.pipe{position:sticky;top:5.5rem}
-.pipe-list{list-style:none;margin:0;padding:0}
-.pipe-step{display:flex;gap:.85rem;padding:.9rem 0;border-top:1px solid var(--border)}
-.pipe-step:first-child{border-top:0;padding-top:.2rem}
-.pipe-ic{width:2rem;height:2rem;border-radius:50%;border:1px solid var(--border-strong);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--text-3);background:var(--surface);font-family:'IBM Plex Mono',monospace;font-size:.72rem;font-weight:600}
-.pipe-step.running .pipe-ic{border-color:var(--accent);color:var(--accent)}
-.pipe-step.done .pipe-ic{background:var(--ok);border-color:var(--ok);color:#fff}
-.pipe-step.failed .pipe-ic{background:var(--bad);border-color:var(--bad);color:#fff}
-.pipe-step.skipped{opacity:.45}
-.pipe-step .pt{font-size:.875rem;font-weight:500}
-.pipe-step .pd{font-size:.75rem;color:var(--text-3)}
-.pipe-step .pe{font-family:'IBM Plex Mono',monospace;font-size:.68rem;color:var(--text-4);margin-top:.15rem;word-break:break-all}
-.pipe-step .pst{margin-left:auto;font-size:.72rem;font-weight:600;white-space:nowrap;padding-top:.3rem}
-.spin{width:1rem;height:1rem;border:2px solid var(--accent-soft);border-top-color:var(--accent);border-radius:50%;animation:sp 0.7s linear infinite}
-@keyframes sp{to{transform:rotate(360deg)}}
-@media (prefers-reduced-motion: reduce){.spin{animation:none}}
+  .queue-item{padding:11px 0;border-bottom:1px solid var(--line)}
+  .queue-item:last-child{border-bottom:0}
+  .queue-item .q-top{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+  .queue-item .q-name{font-weight:600;font-size:.93rem}
+  .queue-item .q-meta{font-size:.78rem;color:var(--ink-3);font-family:"IBM Plex Mono",monospace;margin-top:2px;overflow-wrap:anywhere}
+  .badge{
+    display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:.06em;
+    padding:3px 9px;border-radius:999px;text-transform:uppercase;white-space:nowrap;
+  }
+  .badge.good{background:var(--good-bg);color:var(--good)}
+  .badge.warn{background:var(--warn-bg);color:var(--warn)}
+  .badge.bad{background:var(--bad-bg);color:var(--bad)}
+  .badge.skip{background:var(--skip-bg);color:var(--skip)}
+  .badge.teal{background:var(--teal-soft);color:var(--teal-dark)}
+  @media (prefers-color-scheme: dark){.badge.teal{color:#8FD0C9}}
 
-/* ---------- Blueprints ---------- */
-.bp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(19rem,1fr));gap:1rem}
-.bp-card{background:var(--surface);border:1px solid var(--border);border-radius:.6rem;padding:1.1rem 1.2rem;display:flex;flex-direction:column;gap:.7rem}
-.bp-card .bp-top{display:flex;align-items:flex-start;justify-content:space-between;gap:.75rem}
-.bp-card h3{margin:0;font-size:1rem;font-weight:600}
-.bp-card .dept{font-size:.72rem;font-weight:600;color:var(--accent);letter-spacing:.04em;text-transform:uppercase}
-.bp-card .desc{font-size:.8rem;color:var(--text-2)}
-.bp-counts{display:flex;flex-wrap:wrap;gap:.4rem}
-.bp-counts span{font-size:.7rem;font-weight:500;background:var(--surface-2);border:1px solid var(--border);border-radius:999px;padding:.15rem .55rem;color:var(--text-2)}
-.bp-actions{display:flex;gap:.5rem;margin-top:auto;padding-top:.4rem;border-top:1px solid var(--border)}
-.bp-actions .btn{flex:1;padding:.45rem .5rem;font-size:.75rem}
-.lock-note{font-size:.7rem;color:var(--text-3);display:flex;align-items:center;gap:.35rem}
+  /* ---------- Wizard ---------- */
+  .wizard{padding:0;overflow:hidden}
+  .stepper{
+    display:flex;background:var(--card-2);border-bottom:1px solid var(--line);
+    overflow-x:auto;scrollbar-width:none;
+  }
+  .stepper::-webkit-scrollbar{display:none}
+  .stepper button{
+    flex:1;min-width:118px;border:0;background:transparent;padding:14px 10px 12px;
+    display:flex;flex-direction:column;align-items:center;gap:5px;color:var(--ink-3);
+    font-size:.8rem;font-weight:600;border-bottom:3px solid transparent;min-height:64px;
+  }
+  .stepper button .n{
+    width:26px;height:26px;border-radius:50%;display:grid;place-items:center;
+    background:var(--skip-bg);color:var(--skip);font-family:"IBM Plex Mono",monospace;font-size:.78rem;
+  }
+  .stepper button.active{color:var(--ink);border-bottom-color:var(--teal)}
+  .stepper button.active .n{background:var(--teal);color:#fff}
+  .stepper button.done{color:var(--ink-2)}
+  .stepper button.done .n{background:var(--good);color:#fff}
+  .stepper button:disabled{cursor:not-allowed;opacity:.55}
+  @media (max-width:560px){
+    .stepper{overflow-x:visible}
+    .stepper button{min-width:0;padding:12px 2px 10px;font-size:.68rem;gap:4px}
+    .stepper button .n{width:23px;height:23px;font-size:.7rem}
+  }
+  .panel{padding:26px;display:none}
+  .panel.show{display:block}
+  .panel h2{font-size:1.45rem;margin-bottom:6px}
+  .panel .lede{color:var(--ink-2);margin-bottom:20px;max-width:62ch}
+  .panel-foot{
+    display:flex;gap:12px;justify-content:space-between;flex-wrap:wrap;
+    margin-top:26px;padding-top:20px;border-top:1px solid var(--line);
+  }
+  .btn{
+    border-radius:10px;border:1px solid transparent;padding:10px 22px;
+    font-weight:600;font-size:.95rem;display:inline-flex;align-items:center;gap:8px;
+    min-height:46px;text-decoration:none;
+  }
+  .btn-primary{background:var(--teal);color:#fff}
+  .btn-primary:hover{background:var(--teal-dark)}
+  .btn-navy{background:var(--navy);color:#F7F0E4}
+  .btn-ghost{background:transparent;border-color:var(--line);color:var(--ink)}
+  .btn-ghost:hover{border-color:var(--teal);color:var(--teal-dark)}
+  .btn:disabled{opacity:.5;cursor:not-allowed}
+  .btn.small{padding:6px 14px;min-height:38px;font-size:.85rem}
 
-/* ---------- Drawer ---------- */
-.drawer-scrim{position:fixed;inset:0;background:var(--overlay);z-index:50;display:none}
-.drawer-scrim.open{display:block}
-.drawer{position:fixed;top:0;right:0;height:100dvh;width:min(42rem,100vw);background:var(--surface);border-left:1px solid var(--border);z-index:51;display:none;flex-direction:column;box-shadow:var(--shadow)}
-.drawer.open{display:flex;animation:drawerIn .25s ease}
-@keyframes drawerIn{from{transform:translateX(2.5rem);opacity:.4}to{transform:translateX(0);opacity:1}}
-@keyframes sideIn{from{transform:translateX(-2.5rem);opacity:.4}to{transform:translateX(0);opacity:1}}
-@media (prefers-reduced-motion: reduce){.drawer.open{animation:none}.sidebar.open{animation:none}}
-.drawer-h{padding:1.2rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:1rem}
-.drawer-h h2{margin:0;font-size:1.1rem;font-weight:600}
-.drawer-b{flex:1;overflow-y:auto;padding:1.4rem 1.5rem}
-.drawer-f{border-top:1px solid var(--border);background:var(--surface-3);padding:.9rem 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;font-size:.75rem;color:var(--text-3)}
-.icon-btn{width:2.25rem;height:2.25rem;display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:.45rem;background:transparent;color:var(--text-3);flex-shrink:0}
-.icon-btn:hover{background:var(--surface-2);color:var(--text)}
-.kv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem 1.5rem;padding-bottom:1.4rem;border-bottom:1px solid var(--border)}
-.kv .k{font-size:.72rem;color:var(--text-3)}
-.kv .v{margin-top:.25rem;font-weight:500;font-size:.875rem;word-break:break-all}
-.pwd-box{margin-top:1.4rem;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem;border:1px solid var(--border);background:var(--surface-3);border-radius:.55rem;padding:.85rem 1rem}
-.audit-step{padding:1rem 0;border-top:1px solid var(--border)}
-.audit-step:first-of-type{border-top:0}
-.audit-step .row{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem}
-.audit-step .st{font-size:.72rem;font-weight:600;white-space:nowrap}
-.audit-step .meta{font-family:'IBM Plex Mono',monospace;font-size:.68rem;color:var(--text-3);margin-top:.3rem;word-break:break-all}
-.audit-step ul{margin:.6rem 0 0 1.6rem;padding:0;list-style:none}
-.audit-step ul li{font-size:.75rem;color:var(--text-2);padding:.12rem 0}
-.audit-step ul li::before{content:"–";margin-right:.5rem;color:var(--text-4)}
-.err-box{margin:.6rem 0 0 1.6rem;border:1px solid var(--bad-border);background:var(--bad-bg);color:var(--bad);border-radius:.45rem;padding:.55rem .75rem;font-size:.75rem}
+  /* Connect panel */
+  .connect-box{
+    border:1.5px dashed var(--teal);border-radius:var(--radius);
+    background:var(--teal-soft);padding:24px;text-align:center;
+  }
+  .connect-box h3{font-size:1.15rem;margin-bottom:6px}
+  .connect-box p{color:var(--ink-2);font-size:.92rem;max-width:52ch;margin:0 auto 16px}
+  .ms-btn{
+    background:#fff;color:#1B2436;border:1px solid #C9CFDB;border-radius:8px;
+    padding:10px 20px;font-weight:600;display:inline-flex;gap:10px;align-items:center;min-height:48px;
+    box-shadow:0 2px 8px rgba(20,28,46,.12);
+  }
+  .ms-squares{display:grid;grid-template-columns:9px 9px;gap:2px}
+  .ms-squares i{width:9px;height:9px;display:block}
+  .connected-box{
+    border:1px solid var(--good);background:var(--good-bg);border-radius:var(--radius);padding:20px;
+    display:none;gap:16px;flex-wrap:wrap;align-items:center;
+  }
+  .connected-box.show{display:flex}
+  .connected-box .who{flex:1;min-width:220px}
+  .connected-box .who .nm{font-weight:700;font-size:1.05rem}
+  .connected-box .who .em{color:var(--ink-2);font-size:.9rem;font-family:"IBM Plex Mono",monospace}
+  .check-list{list-style:none;margin:18px 0 0;padding:0;display:grid;gap:9px}
+  .check-list li{display:flex;gap:10px;align-items:flex-start;font-size:.92rem;color:var(--ink-2)}
+  .check-list .tick{
+    width:22px;height:22px;border-radius:50%;background:var(--good);color:#fff;flex:none;
+    display:grid;place-items:center;font-size:.75rem;margin-top:1px;
+  }
 
-/* ---------- Modal ---------- */
-.modal-scrim{position:fixed;inset:0;background:var(--overlay);z-index:60;display:none;align-items:flex-start;justify-content:center;padding:2rem 1rem;overflow-y:auto}
-.modal-scrim.open{display:flex}
-.modal{background:var(--surface);border:1px solid var(--border);border-radius:.7rem;width:min(44rem,100%);box-shadow:var(--shadow)}
-.modal-h{padding:1.1rem 1.4rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
-.modal-h h2{margin:0;font-size:1.05rem;font-weight:600}
-.modal-b{padding:1.4rem}
-.modal-f{padding:1rem 1.4rem;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:.6rem}
+  /* Forms */
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media (max-width:640px){.grid2{grid-template-columns:1fr}}
+  .field label.flabel{display:block;font-weight:600;font-size:.88rem;margin-bottom:6px}
+  .field .hint{font-size:.8rem;color:var(--ink-3);margin-top:5px}
+  .field input[type="text"],.field input[type="search"],.field select{
+    width:100%;border:1px solid var(--line);border-radius:10px;padding:10px 13px;
+    background:var(--card);min-height:46px;
+  }
+  .field input:focus,.field select:focus{border-color:var(--teal);outline:3px solid rgba(78,155,148,.25)}
+  .field .error{color:var(--bad);font-size:.83rem;margin-top:5px;display:none}
+  .field.invalid input{border-color:var(--bad)}
+  .field.invalid .error{display:block}
 
-/* ---------- API view ---------- */
-.codebox{font-family:'IBM Plex Mono',monospace;font-size:.75rem;background:var(--surface-3);border:1px solid var(--border);border-radius:.5rem;padding:.7rem .9rem;word-break:break-all;display:flex;align-items:center;justify-content:space-between;gap:.75rem}
-.scope-list{display:grid;grid-template-columns:1fr 1fr;gap:.45rem .9rem}
-.scope-list span{font-family:'IBM Plex Mono',monospace;font-size:.75rem;background:var(--surface-2);border:1px solid var(--border);border-radius:.4rem;padding:.35rem .6rem}
-.cat-table td,.cat-table th{padding:.55rem .9rem}
-.cat-table tbody tr{cursor:default}
-.cat-table tbody tr:hover{background:transparent}
-.tabs{display:flex;gap:.25rem;border-bottom:1px solid var(--border);margin-bottom:1rem;overflow-x:auto}
-.tabs button{border:0;background:transparent;padding:.6rem .9rem;font-size:.82rem;font-weight:500;color:var(--text-3);border-bottom:2px solid transparent;white-space:nowrap;min-height:2.5rem}
-.tabs button.on{color:var(--accent);border-bottom-color:var(--accent)}
-.toast{position:fixed;bottom:1.25rem;left:50%;transform:translateX(-50%) translateY(1rem);background:var(--text);color:var(--bg);font-size:.8rem;font-weight:500;padding:.6rem 1.1rem;border-radius:.5rem;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:80;max-width:92vw;text-align:center}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-.hidden{display:none !important}
+  .bp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:6px}
+  @media (max-width:760px){.bp-grid{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:460px){.bp-grid{grid-template-columns:1fr}}
+  .bp-card{position:relative}
+  .bp-card input{position:absolute;opacity:0;pointer-events:none}
+  .bp-card label{
+    display:block;border:1.5px solid var(--line);border-radius:var(--radius);
+    padding:15px;cursor:pointer;background:var(--card);min-height:100%;
+  }
+  .bp-card label:hover{border-color:var(--teal)}
+  .bp-card input:checked + label{border-color:var(--teal);background:var(--teal-soft);box-shadow:0 0 0 3px rgba(78,155,148,.18)}
+  .bp-card input:focus-visible + label{outline:3px solid var(--teal);outline-offset:2px}
+  .bp-card .bp-name{font-family:"Space Grotesk",sans-serif;font-weight:600;font-size:1rem}
+  .bp-card .bp-title{font-size:.83rem;color:var(--ink-2);margin-top:2px}
+  .bp-card .bp-terms{font-size:.75rem;color:var(--ink-3);font-family:"IBM Plex Mono",monospace;margin-top:8px;line-height:1.5}
 
-@media (max-width:1023px){
-  .sidebar{display:none}
-  .sidebar.open{display:flex;animation:sideIn .25s ease;box-shadow:var(--shadow)}
-  .mobile-scrim{display:none;position:fixed;inset:0;background:var(--overlay);z-index:29}
-  .mobile-scrim.open{display:block}
-  .shell{margin-left:0}
-  .burger{display:inline-flex}
-  .crumb .pre{display:none}
-}
-@media (max-width:760px){
-  .topbar{padding:0 .9rem}
-  .topbar .btn-primary{padding:.55rem .7rem;font-size:.75rem}
-  .crumb{font-size:.8rem}
-  main{padding:1.25rem 1rem 2.5rem}
-  .stats{grid-template-columns:1fr 1fr}
-  .stat{border-left:0;border-top:1px solid var(--border)}
-  .stat:nth-child(-n+2){border-top:0}
-  .stat:nth-child(even){border-left:1px solid var(--border)}
-  .wiz{grid-template-columns:1fr}
-  .pipe{position:static}
-  .form-grid,.grid2,.grid3,.scope-list{grid-template-columns:1fr}
-  .kv-grid{grid-template-columns:1fr 1fr}
-  .tablewrap{overflow:visible;border:0;background:transparent}
-  table,thead,tbody,tr,td{display:block;width:100%}
-  thead{display:none}
-  tbody tr{background:var(--surface);border:1px solid var(--border);border-radius:.6rem;margin-bottom:.7rem;padding:.6rem .4rem}
-  td{border:0;padding:.3rem .8rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;text-align:right}
-  td:first-child{display:block;text-align:left}
-  td::before{content:attr(data-l);font-size:.7rem;font-weight:500;color:var(--text-3);text-align:left}
-  td:first-child::before,td:last-child::before{content:""}
-  .cat-table td{display:table-cell;text-align:left}
-  .cat-table td::before{content:""}
-  .cat-table tr{display:table-row}
-  .cat-table tbody tr{border:0;border-radius:0;margin:0;padding:0;background:var(--surface)}
-  .cat-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:.6rem;background:var(--surface)}
-  .cat-wrap table{display:table;min-width:34rem}
-  .cat-wrap thead{display:table-header-group}
-  .cat-wrap tbody{display:table-row-group}
-}
+  .chip-row{display:flex;gap:8px;flex-wrap:wrap}
+  .chip-row .chip{position:relative}
+  .chip input{position:absolute;opacity:0;pointer-events:none}
+  .chip label{
+    display:inline-flex;align-items:center;border:1.5px solid var(--line);border-radius:999px;
+    padding:8px 16px;cursor:pointer;font-weight:600;font-size:.88rem;min-height:40px;background:var(--card);
+  }
+  .chip input:checked + label{background:var(--navy);color:#F7F0E4;border-color:var(--navy)}
+  .chip input:focus-visible + label{outline:3px solid var(--teal);outline-offset:2px}
+
+  .upn-preview{
+    margin-top:20px;background:var(--navy);color:#F7F0E4;border-radius:var(--radius);padding:18px 20px;
+    display:flex;gap:18px;flex-wrap:wrap;align-items:center;
+  }
+  .upn-preview .u-label{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:#93A5C4;font-family:"IBM Plex Mono",monospace}
+  .upn-preview .u-val{font-family:"IBM Plex Mono",monospace;font-size:1.02rem;overflow-wrap:anywhere}
+  .upn-preview .u-sub{font-size:.83rem;color:#B9C4D8}
+
+  .manager-results{border:1px solid var(--line);border-radius:10px;margin-top:8px;overflow:hidden;display:none}
+  .manager-results.show{display:block}
+  .manager-results button{
+    display:flex;width:100%;text-align:left;background:var(--card);border:0;border-bottom:1px solid var(--line);
+    padding:11px 14px;gap:10px;align-items:center;min-height:48px;
+  }
+  .manager-results button:last-child{border-bottom:0}
+  .manager-results button:hover{background:var(--teal-soft)}
+  .manager-results .m-em{color:var(--ink-3);font-size:.82rem;font-family:"IBM Plex Mono",monospace}
+
+  /* Pickers */
+  .picker{border:1px solid var(--line);border-radius:var(--radius);margin-bottom:18px;overflow:hidden}
+  .picker-head{padding:16px 18px;background:var(--card-2);border-bottom:1px solid var(--line)}
+  .picker-head h3{font-size:1.02rem;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .picker-head .note{font-size:.85rem;color:var(--ink-2);margin-top:6px}
+  .picker-head .note.warn-note{color:var(--warn)}
+  .picker-search{padding:12px 18px;border-bottom:1px solid var(--line)}
+  .picker-search input{width:100%;border:1px solid var(--line);border-radius:9px;padding:9px 13px;background:var(--card);min-height:44px}
+  .pick-list{max-height:290px;overflow-y:auto}
+  .pick-item{display:block}
+  .pick-item input{position:absolute;opacity:0;pointer-events:none}
+  .pick-item label{
+    display:flex;gap:12px;align-items:flex-start;padding:12px 18px;cursor:pointer;
+    border-bottom:1px solid var(--line);min-height:52px;
+  }
+  .pick-item:last-child label{border-bottom:0}
+  .pick-item label:hover{background:var(--card-2)}
+  .pick-item input:checked + label{background:var(--teal-soft)}
+  .pick-item input:focus-visible + label{outline:3px solid var(--teal);outline-offset:-3px}
+  .pick-item.disabled label{cursor:not-allowed;opacity:.62}
+  .box{
+    width:21px;height:21px;border:2px solid var(--ink-3);border-radius:6px;flex:none;margin-top:2px;
+    display:grid;place-items:center;color:#fff;font-size:.8rem;background:transparent;
+  }
+  .pick-item input:checked + label .box{background:var(--teal);border-color:var(--teal)}
+  .pick-item .p-main{flex:1;min-width:0}
+  .pick-item .p-name{font-weight:600;font-size:.93rem;overflow-wrap:anywhere}
+  .pick-item .p-sub{font-size:.79rem;color:var(--ink-3);font-family:"IBM Plex Mono",monospace;overflow-wrap:anywhere}
+  .pick-item .p-right{text-align:right;flex:none}
+  .seats{font-family:"IBM Plex Mono",monospace;font-size:.82rem;font-weight:600}
+  .seats.none{color:var(--bad)}
+  .pick-empty{padding:18px;color:var(--ink-3);font-size:.9rem;text-align:center}
+  .sel-count{font-size:.8rem;color:var(--ink-3);font-family:"IBM Plex Mono",monospace}
+
+  /* Review */
+  .review-box{background:var(--navy);color:#E8EDF6;border-radius:var(--radius);padding:22px;font-family:"IBM Plex Mono",monospace;font-size:.9rem;line-height:1.9;overflow-wrap:anywhere}
+  .review-box .r-k{color:#93A5C4;display:inline-block;min-width:104px}
+  .review-box .r-hl{color:#8FD0C9}
+
+  /* Run */
+  .terminal{
+    background:var(--navy);border-radius:var(--radius);padding:20px;color:#DCE3F0;
+    font-family:"IBM Plex Mono",monospace;font-size:.84rem;line-height:1.75;
+    min-height:190px;max-height:340px;overflow-y:auto;white-space:pre-wrap;overflow-wrap:anywhere;
+  }
+  .terminal .t-ok{color:#7BD8A4}
+  .terminal .t-skip{color:#93A5C4}
+  .terminal .t-head{color:#8FD0C9;font-weight:600}
+  .result-card{
+    display:none;margin-top:20px;border:1px solid var(--good);background:var(--good-bg);
+    border-radius:var(--radius);padding:22px;
+  }
+  .result-card.show{display:block}
+  .result-card h3{font-size:1.3rem;color:var(--good);margin-bottom:4px}
+  .pass-box{
+    display:flex;gap:12px;flex-wrap:wrap;align-items:center;background:var(--card);
+    border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-top:14px;
+  }
+  .pass-box .pw{font-family:"IBM Plex Mono",monospace;font-size:1.12rem;font-weight:600;letter-spacing:.03em}
+  .result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
+  @media (max-width:640px){.result-grid{grid-template-columns:1fr}}
+  .result-grid .rg{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+  .result-grid .rg .k{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-family:"IBM Plex Mono",monospace}
+  .result-grid .rg .v{font-weight:600;margin-top:3px;overflow-wrap:anywhere;font-size:.92rem}
+
+  /* Audit */
+  .audit-card{margin-top:22px;padding:22px}
+  .audit-card h2{font-size:1.2rem;margin-bottom:4px}
+  .audit-card .sub{color:var(--ink-2);font-size:.9rem;margin-bottom:16px}
+  table.audit{width:100%;border-collapse:collapse;font-size:.87rem}
+  table.audit th{
+    text-align:left;font-family:"IBM Plex Mono",monospace;font-size:.72rem;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--ink-3);padding:9px 10px;border-bottom:2px solid var(--line);
+  }
+  table.audit td{padding:10px;border-bottom:1px solid var(--line);vertical-align:top}
+  table.audit td.num{font-family:"IBM Plex Mono",monospace;white-space:nowrap}
+  @media (max-width:760px){
+    table.audit thead{display:none}
+    table.audit,table.audit tbody,table.audit tr,table.audit td{display:block;width:100%}
+    table.audit tr{border:1px solid var(--line);border-radius:10px;margin-bottom:10px;padding:8px 4px;background:var(--card-2)}
+    table.audit td{border-bottom:0;padding:5px 12px}
+    table.audit td::before{content:attr(data-l);display:block;font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+  }
+  .audit-empty{color:var(--ink-3);font-size:.92rem;padding:8px 0}
+
+  /* Modal */
+  .modal-back{
+    position:fixed;inset:0;background:rgba(16,22,38,.62);z-index:80;
+    display:none;align-items:center;justify-content:center;padding:18px;
+  }
+  .modal-back.show{display:flex}
+  .modal{
+    background:var(--card);border-radius:16px;max-width:430px;width:100%;
+    padding:28px;box-shadow:0 24px 60px rgba(0,0,0,.35);max-height:92vh;overflow-y:auto;
+  }
+  .modal h3{font-size:1.25rem;margin-bottom:4px}
+  .modal .m-sub{color:var(--ink-2);font-size:.9rem;margin-bottom:18px}
+  .modal .field{margin-bottom:14px}
+  .signin-steps{list-style:none;margin:16px 0 0;padding:0;display:none;gap:9px}
+  .signin-steps.show{display:grid}
+  .signin-steps li{display:flex;gap:10px;font-size:.9rem;color:var(--ink-3);align-items:center}
+  .signin-steps li .st-ico{width:22px;height:22px;border-radius:50%;background:var(--skip-bg);display:grid;place-items:center;font-size:.72rem;flex:none;font-family:"IBM Plex Mono",monospace}
+  .signin-steps li.active{color:var(--ink);font-weight:600}
+  .signin-steps li.active .st-ico{background:var(--teal);color:#fff}
+  .signin-steps li.done{color:var(--ink-2)}
+  .signin-steps li.done .st-ico{background:var(--good);color:#fff}
+
+  .toast{
+    position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(80px);
+    background:var(--navy);color:#F7F0E4;padding:13px 22px;border-radius:999px;
+    font-weight:600;font-size:.9rem;z-index:90;transition:transform .3s ease;box-shadow:var(--shadow);
+    max-width:calc(100vw - 32px);text-align:center;
+  }
+  .toast.show{transform:translateX(-50%) translateY(0)}
+  @media (prefers-reduced-motion: reduce){.toast{transition:none}}
+  footer{max-width:1240px;margin:0 auto;padding:0 20px 34px;color:var(--ink-3);font-size:.83rem}
 </style>
 </head>
 <body>
 
-<!-- Sidebar -->
-<div class="mobile-scrim" id="mobileScrim"></div>
-<aside class="sidebar" id="sidebar" aria-label="Primary">
-  <div class="brand">
-    <div class="brand-mark" aria-hidden="true">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
+<header class="topbar">
+  <div class="topbar-in">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true">E</div>
+      <div>
+        <div class="brand-name">ENTRAFLOW</div>
+        <div class="brand-sub">Onboarding Console</div>
+      </div>
     </div>
+    <div class="top-meta">
+      <div class="mode-toggle" role="group" aria-label="Run mode">
+        <button type="button" id="modeSandbox" aria-pressed="true">Sandbox</button>
+        <button type="button" id="modeLive" class="live-on" aria-pressed="false">Live</button>
+      </div>
+      <span class="pill" id="tenantPill"><span class="dot"></span><span id="tenantPillText">No tenant yet</span></span>
+      <span class="pill" id="adminPill"><span class="dot"></span><span id="adminPillText">Not signed in</span></span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="intro">
     <div>
-      <div class="brand-name">EntraFlow</div>
-      <div class="brand-tag">Simulator</div>
+      <h1>A new employee, ready on day one.</h1>
+      <p>EntraFlow runs one clean pipeline. Sign in first, pick a role blueprint, choose the tenant items by search, then watch five stages provision the account with a full audit trail.</p>
     </div>
+    <div class="sim-note"><strong>Website simulation.</strong> This page mirrors the PowerShell GUI window. It uses sample tenant data and never changes a real tenant.</div>
   </div>
-  <nav id="mainNav">
-    <button class="nav-btn active" data-view="overview" type="button">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
-      Overview
-    </button>
-    <button class="nav-btn" data-view="onboarding" type="button">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg>
-      New Onboarding
-    </button>
-    <button class="nav-btn" data-view="blueprints" type="button">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg>
-      Role Blueprints
-    </button>
-    <button class="nav-btn" data-view="api" type="button">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
-      Microsoft 365 API
-    </button>
-  </nav>
-  <div class="foot">
-    <div style="font-size:.8rem;font-weight:500" id="footOrg">Contoso Preview Tenant</div>
-    <div class="mono" style="font-size:.68rem;color:var(--text-3);margin:.2rem 0 .6rem" id="footDomain">contoso.com</div>
-    <span class="mode-pill" id="modePill"><span class="dot"></span><span id="modePillText">Sandbox Preview</span></span>
-    <p style="font-size:.68rem;color:var(--text-4);margin:.7rem 0 0">Standalone simulation. No real tenant is contacted and nothing leaves this page.</p>
-  </div>
-</aside>
 
-<div class="shell">
-  <header class="topbar">
-    <div style="display:flex;align-items:center;gap:.6rem;min-width:0">
-      <button class="burger" id="burgerBtn" type="button" aria-label="Open navigation">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
-      </button>
-      <div class="crumb">
-        <span class="pre" style="color:var(--text-4)">Microsoft 365</span>
-        <span class="sep pre" aria-hidden="true">/</span>
-        <span class="cur" id="crumbCur">Onboarding Queue</span>
-      </div>
+  <div class="layout">
+    <!-- Rail -->
+    <aside class="rail">
+      <section class="card" aria-label="Pipeline stages">
+        <h2>Five stage pipeline</h2>
+        <div id="stageRail"></div>
+      </section>
+
+      <section class="card" aria-label="Session">
+        <h2>Session</h2>
+        <dl class="kv">
+          <div><dt>Mode</dt><dd id="kvMode">Sandbox</dd></div>
+          <div><dt>Signed in</dt><dd id="kvAdmin">Not signed in</dd></div>
+          <div><dt>Tenant</dt><dd id="kvTenant">None discovered</dd></div>
+          <div><dt>Login</dt><dd>Popup, code and PKCE</dd></div>
+          <div><dt>Run ID</dt><dd class="mono" id="kvRun" style="font-size:.78rem">Created at run time</dd></div>
+        </dl>
+      </section>
+
+      <section class="card" aria-label="Onboarding queue">
+        <h2>Queue and recent runs</h2>
+        <div id="queueList"></div>
+      </section>
+    </aside>
+
+    <!-- Wizard -->
+    <main class="card wizard">
+      <nav class="stepper" aria-label="Onboarding steps">
+        <button type="button" data-step="1" class="active"><span class="n">1</span>Connect</button>
+        <button type="button" data-step="2" disabled><span class="n">2</span>Employee</button>
+        <button type="button" data-step="3" disabled><span class="n">3</span>Access</button>
+        <button type="button" data-step="4" disabled><span class="n">4</span>Review</button>
+        <button type="button" data-step="5" disabled><span class="n">5</span>Run</button>
+      </nav>
+
+      <!-- Panel 1 Connect -->
+      <section class="panel show" id="panel1">
+        <h2>Step 1. Sign in first</h2>
+        <p class="lede">Nothing else runs until login succeeds. A separate Microsoft sign in window opens, you enter the admin account, password, and MFA there, and EntraFlow discovers the tenant from that sign in. No tenant ID is ever typed.</p>
+
+        <div class="connect-box" id="connectBox">
+          <h3>Connect to Microsoft 365</h3>
+          <p>The account you sign in with decides the tenant. Use an admin account with permission to create users, assign licenses, and manage groups.</p>
+          <button type="button" class="ms-btn" id="openSignin">
+            <span class="ms-squares" aria-hidden="true"><i style="background:#F25022"></i><i style="background:#7FBA00"></i><i style="background:#00A4EF"></i><i style="background:#FFB900"></i></span>
+            Sign in with Microsoft
+          </button>
+        </div>
+
+        <div class="connected-box" id="connectedBox">
+          <div class="who">
+            <div class="nm" id="connName">Administrator</div>
+            <div class="em" id="connEmail">admin@harborline.example.com</div>
+          </div>
+          <span class="badge good">Signed in</span>
+          <span class="badge teal">Tenant: Harborline IT</span>
+        </div>
+
+        <ul class="check-list" id="loginChecks" style="display:none">
+          <li><span class="tick">✓</span><span>Sign in return received on the local popup flow, port 8400.</span></li>
+          <li><span class="tick">✓</span><span>Tenant discovered from sign in: <strong>Harborline IT</strong>. Domains, licenses, groups, mailboxes, and sites are now loaded from that tenant.</span></li>
+          <li><span class="tick">✓</span><span>Login complete. Step 1 done.</span></li>
+        </ul>
+
+        <div class="panel-foot">
+          <span></span>
+          <button type="button" class="btn btn-primary" id="toStep2" disabled>Continue to employee details</button>
+        </div>
+      </section>
+
+      <!-- Panel 2 Employee -->
+      <section class="panel" id="panel2">
+        <h2>Step 2. The new employee</h2>
+        <p class="lede">Name, role blueprint, usage location, and domain. The blueprint fills in the job title and department, and its search terms drive the picks in the next step.</p>
+
+        <div class="grid2">
+          <div class="field" id="fFirst">
+            <label class="flabel" for="firstName">First name</label>
+            <input type="text" id="firstName" autocomplete="off" placeholder="e.g. Alex">
+            <div class="error">Enter a first name to continue.</div>
+          </div>
+          <div class="field" id="fLast">
+            <label class="flabel" for="lastName">Last name</label>
+            <input type="text" id="lastName" autocomplete="off" placeholder="e.g. Rivera">
+            <div class="error">Enter a last name to continue.</div>
+          </div>
+        </div>
+
+        <div class="field" style="margin-top:22px">
+          <span class="flabel" id="bpLabel">Role blueprint</span>
+          <div class="bp-grid" role="radiogroup" aria-labelledby="bpLabel" id="bpGrid"></div>
+        </div>
+
+        <div class="grid2" style="margin-top:22px">
+          <div class="field">
+            <span class="flabel" id="locLabel">Usage location</span>
+            <div class="chip-row" role="radiogroup" aria-labelledby="locLabel" id="locRow"></div>
+            <p class="hint">Required before a license can be assigned.</p>
+          </div>
+          <div class="field">
+            <label class="flabel" for="domainSel">Account domain</label>
+            <select id="domainSel"></select>
+            <p class="hint">Verified domains only. The Exchange fallback domain ending in .mail.onmicrosoft.com is left out, because it is not a valid UPN suffix.</p>
+          </div>
+        </div>
+
+        <div class="field" style="margin-top:22px;position:relative">
+          <label class="flabel" for="managerInput">Manager, optional</label>
+          <input type="search" id="managerInput" autocomplete="off" placeholder="Type part of a name or address to search">
+          <div class="manager-results" id="managerResults"></div>
+          <p class="hint">Anything you type is the search term. Leave it blank to skip. A single match is selected on its own.</p>
+        </div>
+
+        <div class="upn-preview">
+          <div>
+            <div class="u-label">New account preview</div>
+            <div class="u-val" id="upnPreview">first.last@harborline.example.com</div>
+          </div>
+          <div class="u-sub" id="upnSub">Title and department come from the blueprint.</div>
+        </div>
+
+        <div class="panel-foot">
+          <button type="button" class="btn btn-ghost" data-back="1">Back</button>
+          <button type="button" class="btn btn-primary" id="toStep3">Continue to access picks</button>
+        </div>
+      </section>
+
+      <!-- Panel 3 Access -->
+      <section class="panel" id="panel3">
+        <h2>Step 3. Pick tenant items by search</h2>
+        <p class="lede">Every list below comes from the signed in tenant. Pick by name, never by ID. If a blueprint search finds nothing, the full list is shown instead, and a missed search never stops the run.</p>
+        <div id="pickers"></div>
+        <div class="panel-foot">
+          <button type="button" class="btn btn-ghost" data-back="2">Back</button>
+          <button type="button" class="btn btn-primary" id="toStep4">Review the run</button>
+        </div>
+      </section>
+
+      <!-- Panel 4 Review -->
+      <section class="panel" id="panel4">
+        <h2>Step 4. Review before it runs</h2>
+        <p class="lede">This is exactly what the pipeline will do. Stages with nothing selected are skipped cleanly, with the reason recorded in the audit trail.</p>
+        <div class="review-box" id="reviewBox"></div>
+        <div class="panel-foot">
+          <button type="button" class="btn btn-ghost" data-back="3">Back</button>
+          <button type="button" class="btn btn-navy" id="toStep5">Looks right. Go to run</button>
+        </div>
+      </section>
+
+      <!-- Panel 5 Run -->
+      <section class="panel" id="panel5">
+        <h2>Step 5. Run the pipeline</h2>
+        <p class="lede">Five stages run in order. Stage independence means one stage can be skipped or fail without stopping the rest, and every call lands in the audit trail below.</p>
+        <div class="terminal" id="terminal" aria-live="polite">Ready. Press Run pipeline when you are set.</div>
+
+        <div class="result-card" id="resultCard">
+          <h3 id="resultTitle">Provisioned</h3>
+          <p id="resultLine" style="color:var(--ink-2)"></p>
+          <div class="pass-box">
+            <div style="flex:1;min-width:200px">
+              <div style="font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-family:'IBM Plex Mono',monospace">Temporary password, visible for 24 hours</div>
+              <div class="pw" id="tempPass">••••••••••••••••</div>
+              <div style="font-size:.82rem;color:var(--ink-3)">The employee changes it on first sign in. Clear or rotate it after handover.</div>
+            </div>
+            <button type="button" class="btn btn-primary small" id="copyPass">Copy password</button>
+            <button type="button" class="btn btn-ghost small" id="togglePass">Show</button>
+          </div>
+          <div class="result-grid">
+            <div class="rg"><div class="k">UPN</div><div class="v mono" id="resUpn" style="font-size:.82rem"></div></div>
+            <div class="rg"><div class="k">Run ID</div><div class="v mono" id="resRun" style="font-size:.78rem"></div></div>
+            <div class="rg"><div class="k">Duration</div><div class="v" id="resDur"></div></div>
+          </div>
+        </div>
+
+        <div class="panel-foot">
+          <button type="button" class="btn btn-ghost" id="resetRun">Start a new onboarding</button>
+          <button type="button" class="btn btn-primary" id="runBtn">Run pipeline</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Audit -->
+  <section class="card audit-card" aria-label="Audit trail">
+    <h2>Audit trail</h2>
+    <p class="sub">Every Graph call the pipeline makes, with method, status code, and timing. Skipped stages record why, with no status code, because no call was made.</p>
+    <div id="auditWrap">
+      <p class="audit-empty">No run yet in this session. The last completed run, Mei Lin, is in the queue on the left.</p>
     </div>
-    <button class="btn btn-primary" type="button" id="topCta">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg>
-      Onboard Employee
-    </button>
-  </header>
-
-  <main>
-    <!-- ============ OVERVIEW ============ -->
-    <section id="view-overview">
-      <div class="page-head">
-        <div>
-          <h1>Microsoft 365 Onboarding Queue</h1>
-          <p>Automated Entra ID account creation, license assignment, team distribution lists, shared mailboxes, and SharePoint access.</p>
-        </div>
-        <div style="display:flex;align-items:center;gap:.6rem;font-size:.8rem;color:var(--text-2)">
-          <span id="overviewModeNote">Running in Sandbox Preview</span>
-          <span aria-hidden="true">·</span>
-          <button type="button" id="gotoApiBtn" style="border:0;background:none;color:var(--accent);font-weight:500;font-size:.8rem;padding:.3rem">Connect Live Tenant</button>
-        </div>
-      </div>
-
-      <div class="stats" id="statsStrip"></div>
-
-      <div class="toolbar">
-        <div class="searchbox">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-          <input type="text" id="runSearch" placeholder="Search employee, email, department, or role..." aria-label="Search onboarding runs" />
-        </div>
-        <div class="seg" role="tablist" aria-label="Filter runs by status">
-          <button type="button" class="on" data-filter="all">All Runs</button>
-          <button type="button" data-filter="completed">Completed</button>
-          <button type="button" data-filter="issues">Needs Attention</button>
-        </div>
-      </div>
-
-      <div class="tablewrap">
-        <table aria-label="Onboarding runs">
-          <thead><tr>
-            <th>Employee</th><th>Role Blueprint</th>
-            <th class="num">Licenses</th><th class="num">Dist. Lists</th><th class="num">Mailboxes</th><th class="num">SharePoint</th>
-            <th>Status</th><th class="num">Provisioned</th><th aria-label="Inspect"></th>
-          </tr></thead>
-          <tbody id="runsBody"></tbody>
-        </table>
-        <div class="empty hidden" id="runsEmpty">
-          <div class="t" id="runsEmptyTitle">No matching onboarding records</div>
-          <div class="s">Adjust your search query or status filter to see other runs.</div>
-        </div>
-      </div>
-      <p style="font-size:.75rem;color:var(--text-3);margin-top:.8rem">Select any row to open the full API audit trail for that run: exact Graph endpoints, HTTP status codes, and execution timings.</p>
-    </section>
-
-    <!-- ============ ONBOARDING ============ -->
-    <section id="view-onboarding" class="hidden">
-      <div class="page-head">
-        <div>
-          <h1>Onboard New Employee</h1>
-          <p>Configure identity details and role based entitlements, then execute automated Microsoft 365 provisioning in one step.</p>
-        </div>
-      </div>
-      <div id="wizAlert"></div>
-      <div class="wiz">
-        <form id="wizForm" novalidate>
-          <h2 class="sec-title"><span class="n">01</span> Identity &amp; Directory Profile</h2>
-          <div class="form-grid">
-            <div class="field"><label for="fFirst">First Name *</label><input id="fFirst" type="text" autocomplete="off" placeholder="e.g. Sofia" /></div>
-            <div class="field"><label for="fLast">Last Name *</label><input id="fLast" type="text" autocomplete="off" placeholder="e.g. Marino" /></div>
-            <div class="field"><label for="fNick">Username (mailNickname) *</label><input id="fNick" type="text" autocomplete="off" placeholder="sofia.marino" /><div class="hint">Auto generated from the name. Edit to override.</div></div>
-            <div class="field"><label for="fDomain">Domain</label><input id="fDomain" type="text" value="contoso.com" /></div>
-            <div class="field"><label for="fTitle">Job Title</label><input id="fTitle" type="text" placeholder="Defaults to the blueprint name" /></div>
-            <div class="field"><label for="fBlueprint">Role Blueprint *</label><select id="fBlueprint"></select></div>
-            <div class="field"><label for="fDept">Department</label><input id="fDept" type="text" /></div>
-            <div class="field"><label for="fLoc">Usage Location</label><select id="fLoc">
-              <option value="US">United States (US)</option><option value="GB">United Kingdom (GB)</option>
-              <option value="CA">Canada (CA)</option><option value="DE">Germany (DE)</option>
-              <option value="AU">Australia (AU)</option><option value="SG">Singapore (SG)</option><option value="IN">India (IN)</option>
-            </select></div>
-            <div class="field"><label for="fManager">Manager Email (optional)</label><input id="fManager" type="email" placeholder="manager@contoso.com" /></div>
-            <div class="field"><label for="fStart">Start Date</label><input id="fStart" type="date" /></div>
-          </div>
-          <label class="checkline" style="margin-top:.8rem"><input type="checkbox" id="fForce" checked /> Force password change on first sign in (one time temporary password)</label>
-
-          <h2 class="sec-title" style="margin-top:2rem"><span class="n">02</span> Role Based Provisioning Entitlements</h2>
-          <p style="font-size:.8rem;color:var(--text-3);margin:-.4rem 0 1.1rem">Seeded from the selected blueprint. Adjust per employee before running; the pipeline uses exactly what is ticked here.</p>
-          <div id="pickGroups"></div>
-
-          <div style="display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.4rem">
-            <button class="btn btn-primary" type="submit" id="runBtn">
-              Run 5 Stage Provisioning
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            </button>
-            <button class="btn btn-ghost" type="button" id="resetBtn">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
-              Reset Form
-            </button>
-          </div>
-          <div id="wizResult" style="margin-top:1.2rem"></div>
-        </form>
-
-        <div class="panel pipe">
-          <div class="panel-h"><div><div class="t">5 Stage Automated Pipeline</div><div class="s" id="pipeModeLabel">Sandbox Preview execution</div></div></div>
-          <div class="panel-b" style="padding-top:.6rem;padding-bottom:.6rem">
-            <ol class="pipe-list" id="pipeList"></ol>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ BLUEPRINTS ============ -->
-    <section id="view-blueprints" class="hidden">
-      <div class="page-head">
-        <div>
-          <h1>Role Provisioning Blueprints</h1>
-          <p>Role templates that pre configure licenses, distribution lists, shared mailboxes, and SharePoint sites for every new hire in that role.</p>
-        </div>
-        <button class="btn btn-primary" type="button" id="newBpBtn">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-          New Blueprint
-        </button>
-      </div>
-      <div class="bp-grid" id="bpGrid"></div>
-    </section>
-
-    <!-- ============ API ============ -->
-    <section id="view-api" class="hidden">
-      <div class="page-head">
-        <div>
-          <h1>Microsoft 365 API</h1>
-          <p>Connect a Microsoft Entra ID tenant via OAuth 2.0 to create live accounts, assign subscribed SKUs, sync distribution lists, and grant SharePoint site permissions. In this standalone build the token exchange is simulated locally; no credentials leave the page.</p>
-        </div>
-      </div>
-
-      <div class="grid2" style="align-items:start">
-        <div style="display:flex;flex-direction:column;gap:1rem">
-          <div class="panel">
-            <div class="panel-h"><div><div class="t">Tenant Connection</div><div class="s" id="connSub">Not connected. Sandbox Preview is active.</div></div>
-              <span class="badge warn" id="connBadge">Sandbox</span></div>
-            <div class="panel-b">
-              <div class="form-grid">
-                <div class="field"><label for="cTenant">Tenant ID (AZURE_TENANT_ID)</label><input id="cTenant" type="text" placeholder="xxxxxxxx xxxx xxxx xxxx xxxxxxxxxxxx or common" /></div>
-                <div class="field"><label for="cClient">Client ID (AZURE_CLIENT_ID)</label><input id="cClient" type="text" placeholder="Application (client) ID" /></div>
-                <div class="field" style="grid-column:1/-1"><label for="cSecret">Client Secret (AZURE_CLIENT_SECRET)</label><input id="cSecret" type="password" placeholder="Client secret value" autocomplete="off" /><div class="hint">Held in memory for this session only. It is never stored, displayed again, or sent anywhere by this page.</div></div>
-                <div class="field" style="grid-column:1/-1"><label for="cDomain">Tenant Domain</label><input id="cDomain" type="text" placeholder="yourtenant.com" /></div>
-              </div>
-              <div id="connMsg" style="margin-top:.9rem"></div>
-              <div style="display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1rem">
-                <button class="btn btn-primary" type="button" id="connectBtn">Connect Microsoft 365</button>
-                <button class="btn btn-ghost hidden" type="button" id="disconnectBtn">Disconnect</button>
-              </div>
-            </div>
-          </div>
-
-          <div class="panel">
-            <div class="panel-h"><div><div class="t">OAuth Setup: App Registration</div><div class="s">Azure Portal, Microsoft Entra ID, App registrations</div></div></div>
-            <div class="panel-b" style="display:flex;flex-direction:column;gap:1rem">
-              <div>
-                <div style="font-size:.8rem;font-weight:600;margin-bottom:.4rem">1. Redirect URIs (Web platform)</div>
-                <p style="font-size:.78rem;color:var(--text-3);margin:0 0 .5rem">Register these on the original hosted deployment. This standalone page runs app only simulation and needs no redirect URI of its own.</p>
-                <div style="display:flex;flex-direction:column;gap:.45rem">
-                  <div class="codebox"><span>https://ais-dev-ihyntsombcw4yq2capzsd5-637311053794.us-east1.run.app/auth/callback</span><button class="btn btn-subtle copy-btn" type="button" data-copy="https://ais-dev-ihyntsombcw4yq2capzsd5-637311053794.us-east1.run.app/auth/callback" style="padding:.3rem .6rem;font-size:.72rem">Copy</button></div>
-                  <div class="codebox"><span>https://ais-pre-ihyntsombcw4yq2capzsd5-637311053794.us-east1.run.app/auth/callback</span><button class="btn btn-subtle copy-btn" type="button" data-copy="https://ais-pre-ihyntsombcw4yq2capzsd5-637311053794.us-east1.run.app/auth/callback" style="padding:.3rem .6rem;font-size:.72rem">Copy</button></div>
-                </div>
-              </div>
-              <div>
-                <div style="font-size:.8rem;font-weight:600;margin-bottom:.45rem">2. Microsoft Graph API permissions (admin consent)</div>
-                <div class="scope-list">
-                  <span>User.ReadWrite.All</span><span>Directory.ReadWrite.All</span>
-                  <span>Group.ReadWrite.All</span><span>Sites.FullControl.All</span>
-                  <span>Mail.ReadWrite</span><span>Organization.Read.All</span>
-                </div>
-              </div>
-              <div>
-                <div style="font-size:.8rem;font-weight:600;margin-bottom:.4rem">3. Environment variables</div>
-                <div class="codebox" style="display:block;line-height:1.9">AZURE_TENANT_ID = your Entra ID tenant ID (or common)<br/>AZURE_CLIENT_ID = app registration Application (client) ID<br/>AZURE_CLIENT_SECRET = client secret value</div>
-              </div>
-              <div>
-                <div style="font-size:.8rem;font-weight:600;margin-bottom:.4rem">4. Token endpoint the live system validates against</div>
-                <div class="codebox"><span>POST https://login.microsoftonline.com/{tenant}/oauth2/v2.0/token</span><button class="btn btn-subtle copy-btn" type="button" data-copy="https://login.microsoftonline.com/{tenant}/oauth2/v2.0/token" style="padding:.3rem .6rem;font-size:.72rem">Copy</button></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="panel">
-          <div class="panel-h"><div><div class="t">Tenant Catalog</div><div class="s" id="catSub">Sandbox catalog for contoso.com</div></div>
-            <span class="badge mode" id="catBadge">source: sandbox</span></div>
-          <div class="panel-b">
-            <div class="tabs" id="catTabs">
-              <button type="button" class="on" data-cat="licenses">Licenses</button>
-              <button type="button" data-cat="dls">Distribution Lists</button>
-              <button type="button" data-cat="mailboxes">Shared Mailboxes</button>
-              <button type="button" data-cat="sites">SharePoint Sites</button>
-            </div>
-            <div class="cat-wrap"><table class="cat-table" aria-label="Tenant catalog"><thead id="catHead"></thead><tbody id="catBody"></tbody></table></div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
+  </section>
 </div>
 
-<!-- Audit drawer -->
-<div class="drawer-scrim" id="drawerScrim"></div>
-<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Provisioning audit detail">
-  <div class="drawer-h">
-    <div style="min-width:0">
-      <h2 id="dName">Employee</h2>
-      <div style="display:flex;flex-wrap:wrap;gap:.45rem;align-items:center;font-size:.75rem;color:var(--text-3);margin-top:.3rem">
-        <span class="mono" id="dUpn" style="color:var(--text-2)"></span><span aria-hidden="true">·</span>
-        <span id="dBp"></span><span aria-hidden="true">·</span><span id="dMode"></span>
-      </div>
-    </div>
-    <button class="icon-btn" type="button" id="drawerClose" aria-label="Close audit panel">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
-    </button>
-  </div>
-  <div class="drawer-b" id="drawerBody"></div>
-  <div class="drawer-f"><span>Run ID: <span class="mono" id="dRunId"></span></span>
-    <button class="btn btn-ghost" type="button" id="drawerClose2" style="padding:.45rem .9rem;font-size:.75rem">Close</button></div>
-</aside>
+<footer>EntraFlow simulation. Every tenant name, person, and address on this page is fictional sample data. Passwords shown here are generated in your browser and go nowhere.</footer>
 
-<!-- Blueprint modal -->
-<div class="modal-scrim" id="bpModalScrim">
-  <div class="modal" role="dialog" aria-modal="true" aria-label="Blueprint editor">
-    <div class="modal-h"><h2 id="bpModalTitle">New Blueprint</h2>
-      <button class="icon-btn" type="button" id="bpModalClose" aria-label="Close editor">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
-      </button></div>
-    <div class="modal-b">
-      <div id="bpModalAlert"></div>
-      <div class="form-grid">
-        <div class="field"><label for="bName">Blueprint Name *</label><input id="bName" type="text" placeholder="e.g. Data Analyst" /></div>
-        <div class="field"><label for="bDept">Department *</label><input id="bDept" type="text" placeholder="e.g. Data &amp; Analytics" /></div>
-        <div class="field"><label for="bLoc">Default Usage Location</label><select id="bLoc">
-          <option value="US">United States (US)</option><option value="GB">United Kingdom (GB)</option>
-          <option value="CA">Canada (CA)</option><option value="DE">Germany (DE)</option>
-          <option value="AU">Australia (AU)</option><option value="SG">Singapore (SG)</option><option value="IN">India (IN)</option>
-        </select></div>
-        <div class="field"><label for="bDesc">Description</label><input id="bDesc" type="text" placeholder="What this role gets on day one" /></div>
+<!-- Sign in modal -->
+<div class="modal-back" id="signinModal" role="dialog" aria-modal="true" aria-labelledby="signinTitle">
+  <div class="modal">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+      <span class="ms-squares" aria-hidden="true"><i style="background:#F25022;width:13px;height:13px"></i><i style="background:#7FBA00;width:13px;height:13px"></i><i style="background:#00A4EF;width:13px;height:13px"></i><i style="background:#FFB900;width:13px;height:13px"></i></span>
+      <span style="font-weight:600;color:var(--ink-2);font-size:.9rem">Microsoft sign in, simulated popup</span>
+    </div>
+    <h3 id="signinTitle">Sign in to EntraFlow</h3>
+    <p class="m-sub">This is the separate sign in window from Step 1. In the real run it opens on your machine and returns on localhost port 8400.</p>
+    <form id="signinForm">
+      <div class="field">
+        <label class="flabel" for="adminEmail">Admin account</label>
+        <input type="text" id="adminEmail" value="admin@harborline.example.com" autocomplete="off">
       </div>
-      <div id="bpPickGroups" style="margin-top:1.3rem"></div>
-    </div>
-    <div class="modal-f">
-      <button class="btn btn-ghost" type="button" id="bpCancel">Cancel</button>
-      <button class="btn btn-primary" type="button" id="bpSave">Save Blueprint</button>
-    </div>
+      <div class="field">
+        <label class="flabel" for="adminPass">Password</label>
+        <input type="text" id="adminPass" value="••••••••••••" autocomplete="off">
+      </div>
+      <div class="field">
+        <label class="flabel" for="mfaCode">Authenticator code, MFA</label>
+        <input type="text" id="mfaCode" value="482 910" autocomplete="off" inputmode="numeric">
+        <p class="hint">Sandbox accepts any six digit code.</p>
+      </div>
+      <ul class="signin-steps" id="signinSteps">
+        <li data-s="1"><span class="st-ico">1</span><span>Opening the Microsoft sign in window</span></li>
+        <li data-s="2"><span class="st-ico">2</span><span>Waiting for the popup to finish, up to 5 minutes</span></li>
+        <li data-s="3"><span class="st-ico">3</span><span>Return received. Discovering the tenant from the sign in</span></li>
+      </ul>
+      <div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap">
+        <button type="button" class="btn btn-ghost" id="cancelSignin" style="flex:1">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="doSignin" style="flex:2;justify-content:center">Sign in</button>
+      </div>
+    </form>
   </div>
 </div>
 
 <div class="toast" id="toast" role="status"></div>
 
 <script>
-"use strict";
-/* ================= Catalog (sandbox tenant: contoso.com) ================= */
-var CATALOG = {
-  tenantDomain: "contoso.com",
-  licenses: [
-    {skuId:"06ebc4ee-1bb5-47dd-8120-11324bc54e06", skuPartNumber:"SPE_E5", displayName:"Microsoft 365 E5", availableUnits:42, consumedUnits:158},
-    {skuId:"05e9a617-0261-4cee-bb44-138d3ef5d965", skuPartNumber:"SPE_E3", displayName:"Microsoft 365 E3", availableUnits:64, consumedUnits:236},
-    {skuId:"cbdc14ab-d96c-4c30-b9f4-6ada7cdc1d46", skuPartNumber:"SPB", displayName:"Microsoft 365 Business Premium", availableUnits:29, consumedUnits:71},
-    {skuId:"a403ebcc-fae0-4ca2-8c8c-7a907fd6c235", skuPartNumber:"POWER_BI_PRO", displayName:"Power BI Pro", availableUnits:18, consumedUnits:42},
-    {skuId:"c5928f49-12ba-48f7-ada3-0d743a3601d5", skuPartNumber:"VISIOCLIENT", displayName:"Visio Plan 2", availableUnits:11, consumedUnits:19},
-    {skuId:"639dec6b-bb19-468b-871c-c5c441c4b0cb", skuPartNumber:"PROJECTPROFESSIONAL", displayName:"Project Plan 3", availableUnits:14, consumedUnits:26}
-  ],
-  distributionLists: [
-    {id:"grp-all-company", displayName:"All Company Announcements", email:"all-company@contoso.com", type:"Distribution List"},
-    {id:"grp-eng-all", displayName:"Engineering Team", email:"engineering@contoso.com", type:"Distribution List"},
-    {id:"grp-eng-oncall", displayName:"Platform Reliability & On-Call", email:"platform-oncall@contoso.com", type:"Mail-Enabled Security"},
-    {id:"grp-design-guild", displayName:"Product & Design Guild", email:"design-guild@contoso.com", type:"Microsoft 365 Group"},
-    {id:"grp-finance-team", displayName:"Finance & Accounting", email:"finance-team@contoso.com", type:"Distribution List"},
-    {id:"grp-support-tier2", displayName:"Customer Operations Tier 2", email:"support-tier2@contoso.com", type:"Distribution List"},
-    {id:"grp-sales-amer", displayName:"Enterprise Sales AMER", email:"sales-amer@contoso.com", type:"Distribution List"}
-  ],
-  sharedMailboxes: [
-    {id:"mbx-devops-alerts", displayName:"DevOps Release Alerts", email:"releases@contoso.com", accessLevel:"Full Access & Send As", autoProvisionIfMissing:true},
-    {id:"mbx-design-requests", displayName:"Design Review Intake", email:"design-intake@contoso.com", accessLevel:"Full Access & Send As", autoProvisionIfMissing:true},
-    {id:"mbx-ap-invoices", displayName:"Accounts Payable", email:"ap@contoso.com", accessLevel:"Full Access & Send As", autoProvisionIfMissing:true},
-    {id:"mbx-customer-support", displayName:"Customer Support Desk", email:"support@contoso.com", accessLevel:"Full Access & Send As", autoProvisionIfMissing:true},
-    {id:"mbx-sales-desk", displayName:"Enterprise Deal Desk", email:"dealdesk@contoso.com", accessLevel:"Full Access", autoProvisionIfMissing:true}
-  ],
-  sharePointSites: [
-    {id:"sp-intranet-hub", displayName:"Company Intranet Hub", webUrl:"https://contoso.sharepoint.com/sites/Intranet", permissionRole:"Visitor (Read)"},
-    {id:"sp-engineering-docs", displayName:"Engineering Architecture & RFCs", webUrl:"https://contoso.sharepoint.com/sites/Engineering", permissionRole:"Member (Edit)"},
-    {id:"sp-design-system", displayName:"Design System & Brand Assets", webUrl:"https://contoso.sharepoint.com/sites/DesignSystem", permissionRole:"Member (Edit)"},
-    {id:"sp-finance-vault", displayName:"Finance & Quarterly Reporting", webUrl:"https://contoso.sharepoint.com/sites/Finance", permissionRole:"Member (Edit)"},
-    {id:"sp-support-kb", displayName:"Support Runbooks & Escalations", webUrl:"https://contoso.sharepoint.com/sites/SupportOps", permissionRole:"Member (Edit)"},
-    {id:"sp-sales-enablement", displayName:"Sales Playbooks & RFPs", webUrl:"https://contoso.sharepoint.com/sites/SalesEnablement", permissionRole:"Member (Edit)"}
-  ]
-};
-function lic(i){return CATALOG.licenses[i];} function dl(i){return CATALOG.distributionLists[i];}
-function mbx(i){return CATALOG.sharedMailboxes[i];} function sp(i){return CATALOG.sharePointSites[i];}
+(function(){
+  "use strict";
 
-var PRESET_IDS = ["bp-software-engineer","bp-product-designer","bp-finance-analyst","bp-customer-ops","bp-sales-ae"];
-var blueprints = [
-  {id:"bp-software-engineer", name:"Software Engineer", department:"Engineering", description:"Full stack and platform engineering profile with M365 E5, release mailbox delegation, and architecture SharePoint access.", defaultUsageLocation:"US", licenses:[lic(0),lic(4)], distributionLists:[dl(0),dl(1),dl(2)], sharedMailboxes:[mbx(0)], sharePointSites:[sp(0),sp(1)], updatedAt:"2026-11-10T14:20:00.000Z"},
-  {id:"bp-product-designer", name:"Product Designer", department:"Design", description:"Product and systems design onboarding with M365 E3, Design Review shared mailbox, and Design System SharePoint library.", defaultUsageLocation:"US", licenses:[lic(1)], distributionLists:[dl(0),dl(3)], sharedMailboxes:[mbx(1)], sharePointSites:[sp(0),sp(2)], updatedAt:"2026-11-11T09:15:00.000Z"},
-  {id:"bp-finance-analyst", name:"Finance Analyst", department:"Finance", description:"FP&A and accounting access bundle with M365 E5, Power BI Pro, Accounts Payable shared mailbox, and Finance SharePoint.", defaultUsageLocation:"US", licenses:[lic(0),lic(3)], distributionLists:[dl(0),dl(4)], sharedMailboxes:[mbx(2)], sharePointSites:[sp(0),sp(3)], updatedAt:"2026-11-12T16:40:00.000Z"},
-  {id:"bp-customer-ops", name:"Customer Support Specialist", department:"Customer Operations", description:"Support operations profile with Business Premium, Support Desk shared mailbox (Full Access & Send As), and Runbooks SharePoint.", defaultUsageLocation:"US", licenses:[lic(2)], distributionLists:[dl(0),dl(5)], sharedMailboxes:[mbx(3)], sharePointSites:[sp(0),sp(4)], updatedAt:"2026-11-14T11:05:00.000Z"},
-  {id:"bp-sales-ae", name:"Account Executive", department:"Sales", description:"Commercial sales onboarding with M365 E3, Power BI Pro, Deal Desk shared mailbox, and Sales Enablement SharePoint.", defaultUsageLocation:"US", licenses:[lic(1),lic(3)], distributionLists:[dl(0),dl(6)], sharedMailboxes:[mbx(4)], sharePointSites:[sp(0),sp(5)], updatedAt:"2026-11-15T18:30:00.000Z"}
-];
+  /* ---------------- Sample tenant data, from one real completed run ---------------- */
+  var DOMAINS = [
+    {name:"harborline.example.com", note:"Verified domain"},
+    {name:"harborlineit.onmicrosoft.com", note:"Verified domain"},
+    {name:"partner.example.com", note:"Verified domain"}
+  ];
+  var LOCATIONS = [
+    {name:"Canada", code:"CA"}, {name:"United States", code:"US"},
+    {name:"United Kingdom", code:"GB"}, {name:"Australia", code:"AU"}, {name:"Mexico", code:"MX"}
+  ];
+  var BLUEPRINTS = [
+    {id:"eng", name:"Engineering", title:"Software Engineer", dept:"Engineering",
+     lic:"E3", groups:["Engineering","All Staff"], mailbox:"engineering", site:"Engineering"},
+    {id:"des", name:"Design", title:"Product Designer", dept:"Design",
+     lic:"E3", groups:["Design","All Staff"], mailbox:"design", site:"Design"},
+    {id:"fin", name:"Finance", title:"Financial Analyst", dept:"Finance",
+     lic:"E3", groups:["Finance","All Staff"], mailbox:"finance", site:"Finance"},
+    {id:"ops", name:"Customer Operations", title:"Support Specialist", dept:"Customer Operations",
+     lic:"E3", groups:["Customer Operations","All Staff"], mailbox:"support", site:"Customer Operations"},
+    {id:"sal", name:"Sales", title:"Account Executive", dept:"Sales",
+     lic:"E3", groups:["Sales","All Staff"], mailbox:"sales", site:"Sales"},
+    {id:"cus", name:"Custom", title:"Team Member", dept:"General",
+     lic:"", groups:["All Staff"], mailbox:"", site:""}
+  ];
+  var LICENSES = [
+    {name:"Microsoft 365 E3", sku:"ENTERPRISEPACK", seats:0, status:"Suspended"},
+    {name:"FLOW_FREE", sku:"FLOW_FREE", seats:9999, status:""},
+    {name:"CCIBOTS_PRIVPREV_VIRAL", sku:"CCIBOTS_PRIVPREV_VIRAL", seats:10000, status:""},
+    {name:"Exchange Online Plan 1", sku:"EXCHANGESTANDARD", seats:0, status:""},
+    {name:"Microsoft Entra ID P2", sku:"AAD_PREMIUM_P2", seats:99, status:""},
+    {name:"Power BI Standard", sku:"POWER_BI_STANDARD", seats:999998, status:""},
+    {name:"Microsoft Teams Phone", sku:"MCOPSTNC", seats:10000000, status:""},
+    {name:"Power Pages vTrial for Makers", sku:"Power_Pages_vTrial_for_Makers", seats:10000, status:""},
+    {name:"Microsoft Entra ID P1", sku:"AAD_PREMIUM", seats:0, status:"Suspended"},
+    {name:"Power Apps Developer Plan", sku:"POWERAPPS_DEV", seats:9999, status:""},
+    {name:"Microsoft Entra ID Governance", sku:"Microsoft_Entra_ID_Governance", seats:24, status:""}
+  ];
+  var GROUPS = [
+    {name:"SG-Auditors-External", type:"Security group", sub:"SG-Auditors-External", dynamic:false},
+    {name:"Projects", type:"Microsoft 365 group", sub:"Projects@harborline.example.com", dynamic:false},
+    {name:"Allow Local Admin", type:"Security group", sub:"", dynamic:false},
+    {name:"All Users", type:"Security group", sub:"Rule: All Users", dynamic:true},
+    {name:"Lab6-Access", type:"Security group", sub:"", dynamic:false},
+    {name:"SG-Warehouse-FleetOps", type:"Security group", sub:"Rule: department is WarehouseOperations", dynamic:true},
+    {name:"Helpdesk", type:"Security group", sub:"Helpdesk Role", dynamic:false},
+    {name:"Group for Answers in Viva Engage", type:"Microsoft 365 group", sub:"groupforanswersinvivaengage@harborline.example.com", dynamic:false},
+    {name:"SG-External-Users", type:"Security group", sub:"Rule: userType is Guest", dynamic:true},
+    {name:"SG-FleetEngineers", type:"Security group", sub:"", dynamic:false},
+    {name:"SG-SSPR-Pilots", type:"Security group", sub:"", dynamic:false},
+    {name:"Enable Passwordless Auth", type:"Security group", sub:"People choosing the passwordless method", dynamic:false},
+    {name:"All Company", type:"Microsoft 365 group", sub:"allcompany217@harborline.example.com", dynamic:false},
+    {name:"All Company", type:"Microsoft 365 group", sub:"allcompany@harborline.example.com", dynamic:false},
+    {name:"Corporate Devices", type:"Security group", sub:"Rule: deviceOwnership is Company", dynamic:true},
+    {name:"All Company", type:"Microsoft 365 group", sub:"allcompany413@harborline.example.com", dynamic:false}
+  ];
+  var MAILBOXES = [
+    {name:"IT Help", email:"ithelp@harborline.example.com"},
+    {name:"Daniel Reyes", email:"daniel.reyes@harborline.example.com"},
+    {name:"Alex Rivera", email:"alex.rivera@harborline.example.com"},
+    {name:"James Okafor", email:"james.okafor@harborline.example.com"}
+  ];
+  var SITES = [
+    {name:"Communication site, root site", url:"https://harborlineit.sharepoint.com"}
+  ];
+  var PEOPLE = [
+    {name:"Administrator", email:"admin@harborline.example.com"},
+    {name:"Daniel Reyes", email:"daniel.reyes@harborline.example.com"},
+    {name:"Alex Rivera", email:"alex.rivera@harborline.example.com"},
+    {name:"James Okafor", email:"james.okafor@harborline.example.com"}
+  ];
+  var STAGES = [
+    {n:1, name:"Account Creation", desc:"User, UPN, and manager"},
+    {n:2, name:"License Assignment", desc:"Usage location, then seats"},
+    {n:3, name:"Groups and Lists", desc:"Role based group membership"},
+    {n:4, name:"Shared Mailbox", desc:"Access and delegation"},
+    {n:5, name:"SharePoint Access", desc:"Site permissions"}
+  ];
 
-/* Seed runs: audit trails as recorded by the original system */
-function seedStep(key,label,status,endpoint,httpStatus,durationMs,summary,details,errorMessage){
-  return {key:key,label:label,status:status,endpoint:endpoint,httpMethod:"POST",httpStatus:httpStatus,durationMs:durationMs,summary:summary,details:details||[],errorMessage:errorMessage||null};
-}
-var runs = [
-  {id:"run-20261116-01", employeeName:"Hannah Lindqvist", firstName:"Hannah", lastName:"Lindqvist", userPrincipalName:"hannah.lindqvist@contoso.com", jobTitle:"Senior Backend Engineer", department:"Engineering", usageLocation:"US", managerEmail:"david.park@contoso.com", startDate:"2026-11-16", roleBlueprintId:"bp-software-engineer", roleBlueprintName:"Software Engineer", executionMode:"sandbox", status:"completed", entraUserId:"8a4f9d21-6c3e-4b10-9f2a-1d7e8c45b201", temporaryPassword:null, passwordNote:"Cleared after first sign in window", createdAt:"2026-11-16T15:12:04.000Z", completedAt:"2026-11-16T15:12:09.000Z",
-   summaryCounts:{licensesAssigned:2,distributionListsJoined:3,sharedMailboxesAssigned:1,sharePointSitesGranted:2},
-   steps:[
-     seedStep("create_account","Create Microsoft 365 Account","completed","POST /v1.0/users",201,1100,"Created Entra ID user hannah.lindqvist@contoso.com",["Object ID: 8a4f9d21-6c3e-4b10-9f2a-1d7e8c45b201","Usage location set to US · Password reset required on first sign in"]),
-     seedStep("assign_licenses","Assign User Licenses","completed","POST /v1.0/users/8a4f9d21-6c3e-4b10-9f2a-1d7e8c45b201/assignLicense",200,930,"Assigned 2 subscribed license SKUs",["Microsoft 365 E5 (SPE_E5)","Visio Plan 2 (VISIOCLIENT)"]),
-     seedStep("populate_distribution_lists","Populate Team Distribution Lists","completed","POST /v1.0/groups/{groupId}/members/$ref",204,920,"Added member to 3 role based distribution lists",["all-company@contoso.com (Distribution List)","engineering@contoso.com (Distribution List)","platform-oncall@contoso.com (Mail-Enabled Security)"]),
-     seedStep("provision_shared_mailboxes","Provision & Assign Shared Mailboxes","completed","POST /beta/admin/exchange/mailboxes/releases@contoso.com/permissions",200,900,"Verified & delegated 1 shared mailbox",["releases@contoso.com, Full Access & Send As granted"]),
-     seedStep("grant_sharepoint_access","Grant SharePoint Site Access","completed","POST /v1.0/sites/{siteId}/permissions",201,920,"Granted access to 2 SharePoint sites upon setup completion",["Company Intranet Hub, Visitor (Read)","Engineering Architecture & RFCs, Member (Edit)"])
-   ]},
-  {id:"run-20261115-02", employeeName:"Marcus Vance", firstName:"Marcus", lastName:"Vance", userPrincipalName:"marcus.vance@contoso.com", jobTitle:"Senior Financial Analyst", department:"Finance", usageLocation:"US", managerEmail:"claire.bennett@contoso.com", startDate:"2026-11-18", roleBlueprintId:"bp-finance-analyst", roleBlueprintName:"Finance Analyst", executionMode:"sandbox", status:"completed", entraUserId:"3d1b7e84-2a91-4d56-8e3c-7f12a908c412", temporaryPassword:null, passwordNote:"Cleared after first sign in window", createdAt:"2026-11-15T17:44:10.000Z", completedAt:"2026-11-15T17:44:15.000Z",
-   summaryCounts:{licensesAssigned:2,distributionListsJoined:2,sharedMailboxesAssigned:1,sharePointSitesGranted:2},
-   steps:[
-     seedStep("create_account","Create Microsoft 365 Account","completed","POST /v1.0/users",201,950,"Created Entra ID user marcus.vance@contoso.com",["Object ID: 3d1b7e84-2a91-4d56-8e3c-7f12a908c412","Usage location set to US · Password reset required on first sign in"]),
-     seedStep("assign_licenses","Assign User Licenses","completed","POST /v1.0/users/3d1b7e84-2a91-4d56-8e3c-7f12a908c412/assignLicense",200,900,"Assigned 2 subscribed license SKUs",["Microsoft 365 E5 (SPE_E5)","Power BI Pro (POWER_BI_PRO)"]),
-     seedStep("populate_distribution_lists","Populate Team Distribution Lists","completed","POST /v1.0/groups/{groupId}/members/$ref",204,970,"Added member to 2 role based distribution lists",["all-company@contoso.com (Distribution List)","finance-team@contoso.com (Distribution List)"]),
-     seedStep("provision_shared_mailboxes","Provision & Assign Shared Mailboxes","completed","POST /beta/admin/exchange/mailboxes/ap@contoso.com/permissions",200,960,"Verified & delegated 1 shared mailbox",["ap@contoso.com, Full Access & Send As granted"]),
-     seedStep("grant_sharepoint_access","Grant SharePoint Site Access","completed","POST /v1.0/sites/{siteId}/permissions",201,950,"Granted access to 2 SharePoint sites upon setup completion",["Company Intranet Hub, Visitor (Read)","Finance & Quarterly Reporting, Member (Edit)"])
-   ]},
-  {id:"run-20261114-03", employeeName:"Priya Subramanian", firstName:"Priya", lastName:"Subramanian", userPrincipalName:"priya.subramanian@contoso.com", jobTitle:"Customer Support Lead", department:"Customer Operations", usageLocation:"US", managerEmail:"", startDate:"2026-11-17", roleBlueprintId:"bp-customer-ops", roleBlueprintName:"Customer Support Specialist", executionMode:"sandbox", status:"completed", entraUserId:"5e9c2f10-7b83-4c01-a14d-9b34e672a819", temporaryPassword:null, passwordNote:"Cleared after first sign in window", createdAt:"2026-11-14T10:02:31.000Z", completedAt:"2026-11-14T10:02:35.000Z",
-   summaryCounts:{licensesAssigned:1,distributionListsJoined:2,sharedMailboxesAssigned:1,sharePointSitesGranted:2},
-   steps:[
-     seedStep("create_account","Create Microsoft 365 Account","completed","POST /v1.0/users",201,850,"Created Entra ID user priya.subramanian@contoso.com",["Object ID: 5e9c2f10-7b83-4c01-a14d-9b34e672a819","Usage location set to US · Password reset required on first sign in"]),
-     seedStep("assign_licenses","Assign User Licenses","completed","POST /v1.0/users/5e9c2f10-7b83-4c01-a14d-9b34e672a819/assignLicense",200,800,"Assigned 1 subscribed license SKU",["Microsoft 365 Business Premium (SPB)"]),
-     seedStep("populate_distribution_lists","Populate Team Distribution Lists","completed","POST /v1.0/groups/{groupId}/members/$ref",204,750,"Added member to 2 role based distribution lists",["all-company@contoso.com (Distribution List)","support-tier2@contoso.com (Distribution List)"]),
-     seedStep("provision_shared_mailboxes","Provision & Assign Shared Mailboxes","completed","POST /beta/admin/exchange/mailboxes/support@contoso.com/permissions",200,700,"Verified & delegated 1 shared mailbox",["support@contoso.com, Full Access & Send As granted"]),
-     seedStep("grant_sharepoint_access","Grant SharePoint Site Access","completed","POST /v1.0/sites/{siteId}/permissions",201,700,"Granted access to 2 SharePoint sites upon setup completion",["Company Intranet Hub, Visitor (Read)","Support Runbooks & Escalations, Member (Edit)"])
-   ]},
-  {id:"run-20261113-04", employeeName:"Elena Rostova", firstName:"Elena", lastName:"Rostova", userPrincipalName:"elena.rostova@contoso.com", jobTitle:"Lead Engineer", department:"Engineering", usageLocation:"GB", managerEmail:"david.park@contoso.com", startDate:"2026-11-13", roleBlueprintId:"bp-software-engineer", roleBlueprintName:"Software Engineer", executionMode:"sandbox", status:"partial_failure", entraUserId:"bca8be79-4118-4319-beb1-88147953b945", temporaryPassword:null, passwordNote:"Cleared after first sign in window", createdAt:"2026-11-13T09:21:44.000Z", completedAt:"2026-11-13T09:21:47.000Z",
-   summaryCounts:{licensesAssigned:0,distributionListsJoined:0,sharedMailboxesAssigned:1,sharePointSitesGranted:0},
-   steps:[
-     seedStep("create_account","Create Microsoft 365 Account","completed","POST /v1.0/users",201,585,"Created Entra ID user elena.rostova@contoso.com",["Object ID: bca8be79-4118-4319-beb1-88147953b945","Usage location set to GB · Password reset required on first sign in"]),
-     seedStep("assign_licenses","Assign User Licenses","failed","POST /v1.0/users/bca8be79-4118-4319-beb1-88147953b945/assignLicense",400,369,"License assignment failed",["Microsoft 365 E5 (SPE_E5)","Visio Plan 2 (VISIOCLIENT)"],"Graph error 400: No available units for one or more SKUs in this tenant. Free units or purchase more seats, then retry this stage."),
-     seedStep("populate_distribution_lists","Populate Team Distribution Lists","failed","POST /v1.0/groups/{groupId}/members/$ref",207,410,"Distribution list population partially failed",["all-company@contoso.com (Distribution List)","engineering@contoso.com (Distribution List)","platform-oncall@contoso.com (Mail-Enabled Security)"],"Graph error 207: 1 of 3 memberships could not be applied. Mail enabled security groups require Exchange Online provisioning to finish first."),
-     seedStep("provision_shared_mailboxes","Provision & Assign Shared Mailboxes","completed","POST /beta/admin/exchange/mailboxes/releases@contoso.com/permissions",200,191,"Verified & delegated 1 shared mailbox",["releases@contoso.com, Full Access & Send As granted"]),
-     seedStep("grant_sharepoint_access","Grant SharePoint Site Access","failed","POST /v1.0/sites/{siteId}/permissions",207,620,"SharePoint grant partially failed",["Company Intranet Hub, Visitor (Read)","Engineering Architecture & RFCs, Member (Edit)"],"Graph error 207: Site permission grant pending while the user object replicates. Retry after replication completes.")
-   ]}
-];
+  /* ---------------- State ---------------- */
+  var state = {
+    mode:"Sandbox", signedIn:false, step:1, maxStep:1,
+    blueprint:BLUEPRINTS[0], location:LOCATIONS[0], domain:DOMAINS[0].name,
+    manager:null, licenses:[], groups:[], mailbox:null, site:null,
+    running:false, password:"", passVisible:false, runId:""
+  };
+  var queue = [
+    {name:"Mei Lin", upn:"mei.lin@harborline.example.com", bp:"Engineering", status:"Provisioned", run:"7f3a91c2", when:"Sample run, Sandbox mode"}
+  ];
 
-/* ================= State ================= */
-var state = {
-  view:"overview", filter:"all", search:"",
-  mode:"sandbox", /* sandbox | live */
-  tenant:{domain:"contoso.com", org:"Contoso Preview Tenant", tenantId:"", clientId:""},
-  catTab:"licenses",
-  running:false
-};
-var STAGE_DEFS = [
-  {key:"create_account", title:"Create Microsoft 365 Account", endpoint:"POST /v1.0/users"},
-  {key:"assign_licenses", title:"Assign User Licenses", endpoint:"POST /v1.0/users/{id}/assignLicense"},
-  {key:"populate_distribution_lists", title:"Populate Team Distribution Lists", endpoint:"POST /v1.0/groups/{id}/members/$ref"},
-  {key:"provision_shared_mailboxes", title:"Provision & Assign Shared Mailboxes", endpoint:"Exchange Online: Add-MailboxPermission / Add-RecipientPermission"},
-  {key:"grant_sharepoint_access", title:"Grant SharePoint Site Access", endpoint:"POST /v1.0/sites/{id}/permissions"}
-];
-
-/* ================= Helpers ================= */
-function $(id){return document.getElementById(id);}
-function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
-function guid(){var a=new Uint8Array(16);crypto.getRandomValues(a);a[6]=(a[6]&15)|64;a[8]=(a[8]&63)|128;var h=Array.prototype.map.call(a,function(b){return ("0"+b.toString(16)).slice(-2);}).join("");return h.slice(0,8)+"-"+h.slice(8,12)+"-"+h.slice(12,16)+"-"+h.slice(16,20)+"-"+h.slice(20);}
-function genPassword(){var pools={u:"ABCDEFGHJKLMNPQRSTUVWXYZ",l:"abcdefghijkmnopqrstuvwxyz",d:"23456789",s:"!@#$%&*"};var all=pools.u+pools.l+pools.d+pools.s;function pick(p){var b=new Uint8Array(1);crypto.getRandomValues(b);return p[b[0]%p.length];}var chars=[pick(pools.u),pick(pools.u),pick(pools.l),pick(pools.l),pick(pools.d),pick(pools.d),pick(pools.s)];for(var i=0;i<9;i++)chars.push(pick(all));for(var j=chars.length-1;j>0;j--){var r=new Uint8Array(1);crypto.getRandomValues(r);var k=r[0]%(j+1);var t=chars[j];chars[j]=chars[k];chars[k]=t;}return chars.join("");}
-function fmtDate(iso){try{return new Intl.DateTimeFormat("en-US",{month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"}).format(new Date(iso));}catch(e){return iso;}}
-function toast(msg){var t=$("toast");t.textContent=msg;t.classList.add("show");setTimeout(function(){t.classList.remove("show");},2200);}
-function copyText(txt,msg){function done(){toast(msg||"Copied to clipboard");}if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(done,function(){fallback();});}else{fallback();}function fallback(){var ta=document.createElement("textarea");ta.value=txt;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.select();try{document.execCommand("copy");done();}catch(e){toast("Copy failed. Select and copy manually.");}document.body.removeChild(ta);}}
-function statusBadge(st){if(st==="completed")return '<span class="badge ok">Completed</span>';if(st==="partial_failure")return '<span class="badge warn">Partial Failure</span>';if(st==="failed")return '<span class="badge bad">Failed</span>';return '<span class="badge mode">In Progress</span>';}
-
-/* ================= Navigation ================= */
-var CRUMBS={overview:"Onboarding Queue",onboarding:"New Onboarding",blueprints:"Role Blueprints",api:"Microsoft 365 API"};
-function setView(v){
-  state.view=v;
-  ["overview","onboarding","blueprints","api"].forEach(function(k){$("view-"+k).classList.toggle("hidden",k!==v);});
-  document.querySelectorAll("#mainNav .nav-btn").forEach(function(b){b.classList.toggle("active",b.getAttribute("data-view")===v);});
-  $("crumbCur").textContent=CRUMBS[v];
-  $("sidebar").classList.remove("open");$("mobileScrim").classList.remove("open");
-  window.scrollTo({top:0});
-}
-document.querySelectorAll("#mainNav .nav-btn").forEach(function(b){b.addEventListener("click",function(){setView(b.getAttribute("data-view"));});});
-$("burgerBtn").addEventListener("click",function(){$("sidebar").classList.add("open");$("mobileScrim").classList.add("open");});
-$("mobileScrim").addEventListener("click",function(){$("sidebar").classList.remove("open");$("mobileScrim").classList.remove("open");});
-$("topCta").addEventListener("click",function(){setView("onboarding");});
-$("gotoApiBtn").addEventListener("click",function(){setView("api");});
-
-/* ================= Overview ================= */
-function renderStats(){
-  var t={a:0,l:0,d:0,m:0,s:0};
-  runs.forEach(function(r){t.a++;t.l+=r.summaryCounts.licensesAssigned;t.d+=r.summaryCounts.distributionListsJoined;t.m+=r.summaryCounts.sharedMailboxesAssigned;t.s+=r.summaryCounts.sharePointSitesGranted;});
-  $("statsStrip").innerHTML=
-    '<div class="stat"><div class="k">Accounts Created</div><div class="v">'+t.a+'</div><div class="s">Across '+blueprints.length+' role blueprints</div></div>'+
-    '<div class="stat"><div class="k">Licenses Provisioned</div><div class="v">'+t.l+'</div><div class="s">Assigned via Graph SKU API</div></div>'+
-    '<div class="stat"><div class="k">DLs &amp; Shared Mailboxes</div><div class="v">'+(t.d+t.m)+'</div><div class="s">'+t.d+' lists · '+t.m+' mailboxes</div></div>'+
-    '<div class="stat"><div class="k">SharePoint Grants</div><div class="v">'+t.s+'</div><div class="s">Applied after account setup</div></div>';
-}
-function renderRuns(){
-  var q=state.search.trim().toLowerCase();
-  var list=runs.filter(function(r){
-    if(state.filter==="completed"&&r.status!=="completed")return false;
-    if(state.filter==="issues"&&r.status==="completed")return false;
-    if(!q)return true;
-    return r.employeeName.toLowerCase().indexOf(q)>-1||r.userPrincipalName.toLowerCase().indexOf(q)>-1||r.department.toLowerCase().indexOf(q)>-1||r.roleBlueprintName.toLowerCase().indexOf(q)>-1;
-  });
-  var body=$("runsBody");
-  body.innerHTML=list.map(function(r){
-    return '<tr data-run="'+r.id+'">'+
-      '<td><div class="emp-name">'+esc(r.employeeName)+'</div><div class="emp-upn">'+esc(r.userPrincipalName)+'</div></td>'+
-      '<td data-l="Blueprint">'+esc(r.roleBlueprintName)+'</td>'+
-      '<td class="num" data-l="Licenses">'+r.summaryCounts.licensesAssigned+'</td>'+
-      '<td class="num" data-l="Dist. Lists">'+r.summaryCounts.distributionListsJoined+'</td>'+
-      '<td class="num" data-l="Mailboxes">'+r.summaryCounts.sharedMailboxesAssigned+'</td>'+
-      '<td class="num" data-l="SharePoint">'+r.summaryCounts.sharePointSitesGranted+'</td>'+
-      '<td data-l="Status">'+statusBadge(r.status)+'</td>'+
-      '<td class="num" data-l="Provisioned">'+fmtDate(r.completedAt||r.createdAt)+'</td>'+
-      '<td style="color:var(--text-4)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></td></tr>';
-  }).join("");
-  $("runsEmpty").classList.toggle("hidden",list.length>0);
-  $("runsEmptyTitle").textContent=runs.length===0?"No employees onboarded yet":"No matching onboarding records";
-  body.querySelectorAll("tr[data-run]").forEach(function(tr){tr.addEventListener("click",function(){openDrawer(tr.getAttribute("data-run"));});});
-  renderStats();
-}
-$("runSearch").addEventListener("input",function(e){state.search=e.target.value;renderRuns();});
-document.querySelectorAll(".seg button").forEach(function(b){b.addEventListener("click",function(){document.querySelectorAll(".seg button").forEach(function(x){x.classList.remove("on");});b.classList.add("on");state.filter=b.getAttribute("data-filter");renderRuns();});});
-
-/* ================= Audit drawer ================= */
-var drawerRun=null;
-function openDrawer(id){
-  drawerRun=runs.filter(function(r){return r.id===id;})[0]||null;
-  if(!drawerRun)return;
-  var r=drawerRun;
-  $("dName").textContent=r.employeeName;
-  $("dUpn").textContent=r.userPrincipalName;
-  $("dBp").textContent=r.roleBlueprintName;
-  $("dMode").textContent=r.executionMode==="live"?"Microsoft Graph Live (simulated)":"Sandbox Preview";
-  $("dRunId").textContent=r.id;
-  var pwdHtml="";
-  if(r.temporaryPassword){
-    pwdHtml='<div class="pwd-box"><div style="display:flex;gap:.7rem;align-items:center;min-width:0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-3);flex-shrink:0"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/></svg><div><div style="font-size:.72rem;color:var(--text-3)">Temporary Sign In Password (reset required on first login)</div><div class="mono" style="font-size:.9rem;font-weight:600;margin-top:.15rem">'+esc(r.temporaryPassword)+'</div><div style="font-size:.68rem;color:var(--text-4)">Visible for this session only. Clear it once the employee has signed in.</div></div></div><div style="display:flex;gap:.45rem"><button class="btn btn-ghost" type="button" id="dCopyPwd" style="padding:.45rem .8rem;font-size:.75rem">Copy Password</button><button class="btn btn-subtle" type="button" id="dClearPwd" style="padding:.45rem .8rem;font-size:.75rem">Clear Now</button></div></div>';
-  } else if(r.passwordNote){
-    pwdHtml='<div class="pwd-box"><div style="font-size:.78rem;color:var(--text-3)">Temporary password: '+esc(r.passwordNote)+'.</div></div>';
+  function $(id){ return document.getElementById(id); }
+  function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];}); }
+  function toast(msg){
+    var t=$("toast"); t.textContent=msg; t.classList.add("show");
+    setTimeout(function(){ t.classList.remove("show"); }, 2600);
   }
-  var stepsHtml=r.steps.map(function(s,i){
-    var failed=s.status==="failed", skipped=s.status==="skipped";
-    var icon=failed?'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--bad)" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>':(skipped?'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-4)" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/></svg>':'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ok)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>');
-    var meta=esc(s.endpoint)+(s.httpStatus?' · HTTP '+s.httpStatus:"")+(typeof s.durationMs==="number"&&s.durationMs>0?" · "+s.durationMs+"ms":"");
-    var det=s.details&&s.details.length?'<ul>'+s.details.map(function(d){return "<li>"+esc(d)+"</li>";}).join("")+"</ul>":"";
-    var err=s.errorMessage?'<div class="err-box">'+esc(s.errorMessage)+"</div>":"";
-    return '<div class="audit-step"><div class="row"><div style="display:flex;gap:.7rem;min-width:0"><div style="margin-top:.15rem;flex-shrink:0">'+icon+'</div><div style="min-width:0"><div style="font-size:.875rem;font-weight:500">0'+(i+1)+". "+esc(s.label)+'</div><div style="font-size:.78rem;color:var(--text-2);margin-top:.15rem">'+esc(s.summary)+'</div><div class="meta">'+meta+"</div></div></div>"+'<span class="st" style="color:'+(failed?"var(--bad)":skipped?"var(--text-4)":"var(--ok)")+'">'+(failed?"Failed":skipped?"Skipped":"Completed")+"</span></div>"+det+err+"</div>";
-  }).join("");
-  $("drawerBody").innerHTML=
-    '<div class="kv-grid">'+
-    '<div class="kv"><div class="k">Job Title</div><div class="v">'+esc(r.jobTitle)+'</div></div>'+
-    '<div class="kv"><div class="k">Department</div><div class="v">'+esc(r.department)+'</div></div>'+
-    '<div class="kv"><div class="k">Start Date</div><div class="v mono">'+esc(r.startDate)+'</div></div>'+
-    '<div class="kv"><div class="k">Usage Location</div><div class="v mono">'+esc(r.usageLocation)+'</div></div>'+
-    '<div class="kv"><div class="k">Status</div><div class="v">'+statusBadge(r.status)+'</div></div>'+
-    '<div class="kv"><div class="k">Manager</div><div class="v">'+esc(r.managerEmail||"Not set")+'</div></div>'+
-    '<div class="kv" style="grid-column:1/-1"><div class="k">Entra ID Object ID</div><div class="v mono" style="font-size:.78rem">'+esc(r.entraUserId||"Not created")+(r.entraUserId?' <button class="btn btn-subtle" type="button" id="dCopyOid" style="padding:.2rem .55rem;font-size:.7rem;margin-left:.4rem">Copy</button>':"")+"</div></div>"+
-    "</div>"+pwdHtml+
-    '<h3 style="font-size:.9rem;font-weight:600;margin:1.6rem 0 .2rem">Provisioning Pipeline Execution</h3><p style="font-size:.75rem;color:var(--text-3);margin:0">Sequential Microsoft Graph API operations executed for this onboarding run.</p>'+
-    '<div style="margin-top:.4rem">'+stepsHtml+"</div>";
-  $("drawerScrim").classList.add("open");$("drawer").classList.add("open");
-  var cp=$("dCopyPwd");if(cp)cp.addEventListener("click",function(){copyText(r.temporaryPassword,"Temporary password copied");});
-  var cl=$("dClearPwd");if(cl)cl.addEventListener("click",function(){r.temporaryPassword=null;r.passwordNote="Cleared by admin";openDrawer(r.id);toast("Temporary password cleared");});
-  var co=$("dCopyOid");if(co)co.addEventListener("click",function(){copyText(r.entraUserId,"Object ID copied");});
-}
-function closeDrawer(){$("drawerScrim").classList.remove("open");$("drawer").classList.remove("open");}
-$("drawerScrim").addEventListener("click",closeDrawer);
-$("drawerClose").addEventListener("click",closeDrawer);
-$("drawerClose2").addEventListener("click",closeDrawer);
-document.addEventListener("keydown",function(e){if(e.key==="Escape"){closeDrawer();closeBpModal();}});
-
-/* ================= Pick lists (shared builder) ================= */
-function pickGroupHTML(kind,label,sub,items,selectedIds,titleFn,subFn,tagFn){
-  var rows=items.map(function(it){
-    var checked=selectedIds.indexOf(it.id||it.skuId)>-1;
-    var key=it.id||it.skuId;
-    return '<label class="pick-item"><input type="checkbox" data-kind="'+kind+'" data-key="'+esc(key)+'" '+(checked?"checked":"")+' /><span style="min-width:0"><span class="pt">'+esc(titleFn(it))+'</span><br/><span class="ps">'+esc(subFn(it))+"</span></span>"+(tagFn?'<span class="tag">'+esc(tagFn(it))+"</span>":"")+"</label>";
-  }).join("");
-  return '<div class="pick-group"><div class="pg-label">'+esc(label)+'</div><div class="pg-sub">'+esc(sub)+'</div><div class="pick-list">'+rows+"</div></div>";
-}
-function catalogGroups(selected){
-  return pickGroupHTML("licenses","License SKUs","Assigned with POST /v1.0/users/{id}/assignLicense using the tenant SKU ID.",CATALOG.licenses,selected.licenses.map(function(x){return x.skuId;}),function(x){return x.displayName;},function(x){return x.skuPartNumber+" · SKU "+x.skuId;},function(x){return x.availableUnits+" free";})
-    + pickGroupHTML("dls","Team Distribution Lists","Membership added with POST /v1.0/groups/{groupId}/members/$ref.",CATALOG.distributionLists,selected.dls.map(function(x){return x.id;}),function(x){return x.displayName;},function(x){return x.email;},function(x){return x.type;})
-    + pickGroupHTML("mailboxes","Shared Mailboxes (Auto Provision & Delegate)","Delegated in Exchange Online with Add-MailboxPermission and Add-RecipientPermission.",CATALOG.sharedMailboxes,selected.mailboxes.map(function(x){return x.id;}),function(x){return x.displayName;},function(x){return x.email;},function(x){return x.accessLevel;})
-    + pickGroupHTML("sites","SharePoint Site Access (Granted on Completion)","Granted with POST /v1.0/sites/{siteId}/permissions once account setup completes.",CATALOG.sharePointSites,selected.sites.map(function(x){return x.id;}),function(x){return x.displayName;},function(x){return x.webUrl;},function(x){return x.permissionRole;});
-}
-function readPicks(container,current){
-  var next={licenses:current.licenses.slice(),dls:current.dls.slice(),mailboxes:current.mailboxes.slice(),sites:current.sites.slice()};
-  container.querySelectorAll("input[type=checkbox][data-kind]").forEach(function(cb){
-    var kind=cb.getAttribute("data-kind"),key=cb.getAttribute("data-key");
-    var pool=kind==="licenses"?CATALOG.licenses:kind==="dls"?CATALOG.distributionLists:kind==="mailboxes"?CATALOG.sharedMailboxes:CATALOG.sharePointSites;
-    var item=pool.filter(function(x){return (x.id||x.skuId)===key;})[0];
-    var arr=kind==="licenses"?next.licenses:kind==="dls"?next.dls:kind==="mailboxes"?next.mailboxes:next.sites;
-    var idx=-1;for(var i=0;i<arr.length;i++){if((arr[i].id||arr[i].skuId)===key)idx=i;}
-    if(cb.checked&&idx===-1&&item)arr.push(item);
-    if(!cb.checked&&idx>-1)arr.splice(idx,1);
-  });
-  return next;
-}
-
-/* ================= Onboarding wizard ================= */
-var wizSel={licenses:[],dls:[],mailboxes:[],sites:[]};
-var nickEdited=false;
-function currentBlueprint(){var id=$("fBlueprint").value;return blueprints.filter(function(b){return b.id===id;})[0]||blueprints[0]||null;}
-function renderBlueprintOptions(){
-  $("fBlueprint").innerHTML=blueprints.map(function(b){return '<option value="'+b.id+'">'+esc(b.name)+" · "+esc(b.department)+"</option>";}).join("");
-}
-function seedFromBlueprint(){
-  var bp=currentBlueprint();if(!bp)return;
-  $("fDept").value=bp.department;$("fLoc").value=bp.defaultUsageLocation||"US";
-  wizSel={licenses:bp.licenses.slice(),dls:bp.distributionLists.slice(),mailboxes:bp.sharedMailboxes.slice(),sites:bp.sharePointSites.slice()};
-  renderPicks();renderPipe(-1,[]);
-}
-function renderPicks(){$("pickGroups").innerHTML=catalogGroups(wizSel);
-  $("pickGroups").querySelectorAll("input[type=checkbox]").forEach(function(cb){cb.addEventListener("change",function(){wizSel=readPicks($("pickGroups"),wizSel);renderPipe(-1,[]);});});
-}
-function stageDetail(i){
-  var nick=$("fNick").value.trim(),dom=$("fDomain").value.trim()||"contoso.com";
-  if(i===0)return nick?nick+"@"+dom:"Entra ID user principal";
-  if(i===1)return wizSel.licenses.length+" SKU"+(wizSel.licenses.length===1?"":"s")+" queued";
-  if(i===2)return wizSel.dls.length+" list"+(wizSel.dls.length===1?"":"s")+" mapped to role";
-  if(i===3)return wizSel.mailboxes.length+" mailbox"+(wizSel.mailboxes.length===1?"":"es")+" delegated";
-  return wizSel.sites.length+" site"+(wizSel.sites.length===1?"":"s")+" granted on completion";
-}
-function renderPipe(activeIdx,results){
-  $("pipeList").innerHTML=STAGE_DEFS.map(function(s,i){
-    var st="pending";
-    if(results&&results[i])st=results[i].status;
-    else if(state.running){st=i<activeIdx?"done":i===activeIdx?"running":"pending";}
-    var cls=st==="completed"||st==="done"?"done":st==="failed"?"failed":st==="skipped"?"skipped":st==="running"?"running":"";
-    var inner=cls==="done"?'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>':cls==="failed"?'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>':st==="running"?'<span class="spin"></span>':String(i+1);
-    var stTxt=cls==="done"?"Completed":cls==="failed"?"Failed":cls==="skipped"?"Skipped":st==="running"?"Running":"Queued";
-    var stColor=cls==="done"?"var(--ok)":cls==="failed"?"var(--bad)":cls==="skipped"?"var(--text-4)":st==="running"?"var(--accent)":"var(--text-4)";
-    var res=results&&results[i];
-    var extra=res&&res.httpStatus?' · HTTP '+res.httpStatus+(res.durationMs?" · "+res.durationMs+"ms":""):"";
-    return '<li class="pipe-step '+cls+'"><div class="pipe-ic">'+inner+'</div><div style="min-width:0"><div class="pt">'+esc(s.title)+'</div><div class="pd">'+esc(stageDetail(i))+'</div><div class="pe">'+esc(s.endpoint)+extra+'</div></div><span class="pst" style="color:'+stColor+'">'+stTxt+"</span></li>";
-  }).join("");
-}
-$("fBlueprint").addEventListener("change",seedFromBlueprint);
-$("fFirst").addEventListener("input",autoNick);$("fLast").addEventListener("input",autoNick);
-$("fNick").addEventListener("input",function(){nickEdited=true;renderPipe(-1,[]);});
-$("fDomain").addEventListener("input",function(){renderPipe(-1,[]);});
-function autoNick(){if(nickEdited)return;var f=$("fFirst").value.trim().toLowerCase().replace(/[^a-z0-9]/g,""),l=$("fLast").value.trim().toLowerCase().replace(/[^a-z0-9]/g,"");$("fNick").value=f&&l?f+"."+l:f;renderPipe(-1,[]);}
-$("resetBtn").addEventListener("click",function(){
-  $("fFirst").value="";$("fLast").value="";$("fNick").value="";nickEdited=false;$("fTitle").value="";$("fManager").value="";
-  $("wizResult").innerHTML="";$("wizAlert").innerHTML="";seedFromBlueprint();
-});
-function wizError(msg){$("wizAlert").innerHTML='<div class="alert bad"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg><span>'+esc(msg)+"</span></div>";}
-
-$("wizForm").addEventListener("submit",function(e){
-  e.preventDefault();
-  if(state.running)return;
-  var first=$("fFirst").value.trim(),last=$("fLast").value.trim(),nick=$("fNick").value.trim().toLowerCase();
-  var dom=$("fDomain").value.trim()||state.tenant.domain||"contoso.com";
-  var bp=currentBlueprint();
-  $("wizAlert").innerHTML="";$("wizResult").innerHTML="";
-  if(!first||!last||!nick){wizError("Please complete the employee first name, last name, and username.");return;}
-  if(!bp){wizError("No role blueprint is available. Create one in Role Blueprints first.");return;}
-  var upn=nick+"@"+dom;
-  var duplicate=runs.some(function(r){return r.userPrincipalName.toLowerCase()===upn.toLowerCase()&&r.status!=="failed";});
-  var userId=guid(),pwd=genPassword();
-  var now=new Date();
-  var steps=[];
-  /* Stage 1: duplicate UPN check fails honestly with 409, later stages skip */
-  if(duplicate){
-    steps.push({key:"create_account",label:"Create Microsoft 365 Account",status:"failed",endpoint:"POST /v1.0/users",httpMethod:"POST",httpStatus:409,durationMs:412,summary:"Account creation failed for "+upn,details:["Usage location "+$("fLoc").value+" · Password profile generated but not applied"],errorMessage:"Graph error 409: Another object with the same value for property userPrincipalName already exists in this tenant. Pick a different username and run again."});
-    for(var i=1;i<5;i++)steps.push({key:STAGE_DEFS[i].key,label:STAGE_DEFS[i].title,status:"skipped",endpoint:STAGE_DEFS[i].endpoint,httpMethod:"POST",httpStatus:null,durationMs:0,summary:"Skipped because account creation failed",details:[]});
-    finishRun(steps,"failed",null,null);
-    return;
+  function newRunId(){
+    function h(n){ var s=""; for(var i=0;i<n;i++){ s+="0123456789abcdef".charAt(Math.floor(Math.random()*16)); } return s; }
+    return h(8)+"-"+h(4)+"-"+h(4)+"-"+h(4)+"-"+h(12);
   }
-  steps.push({key:"create_account",label:"Create Microsoft 365 Account",status:"completed",endpoint:"POST /v1.0/users",httpMethod:"POST",httpStatus:201,durationMs:0,summary:"Created Entra ID user "+upn,details:["Object ID: "+userId,"Usage location set to "+$("fLoc").value+($("fForce").checked?" · Password reset required on first sign in":" · Password reset not forced")]});
-  steps.push({key:"assign_licenses",label:"Assign User Licenses",status:"completed",endpoint:"POST /v1.0/users/"+userId+"/assignLicense",httpMethod:"POST",httpStatus:200,durationMs:0,summary:"Assigned "+wizSel.licenses.length+" subscribed license SKU"+(wizSel.licenses.length===1?"":"s"),details:wizSel.licenses.map(function(x){return x.displayName+" ("+x.skuPartNumber+") · SKU ID "+x.skuId;})});
-  steps.push({key:"populate_distribution_lists",label:"Populate Team Distribution Lists",status:"completed",endpoint:"POST /v1.0/groups/{groupId}/members/$ref",httpMethod:"POST",httpStatus:204,durationMs:0,summary:"Added member to "+wizSel.dls.length+" role based distribution list"+(wizSel.dls.length===1?"":"s"),details:wizSel.dls.map(function(x){return x.email+" ("+x.type+")";})});
-  steps.push({key:"provision_shared_mailboxes",label:"Provision & Assign Shared Mailboxes",status:"completed",endpoint:"Exchange Online: Add-MailboxPermission / Add-RecipientPermission",httpMethod:"POST",httpStatus:200,durationMs:0,summary:"Verified & delegated "+wizSel.mailboxes.length+" shared mailbox"+(wizSel.mailboxes.length===1?"":"es"),details:wizSel.mailboxes.map(function(x){return x.email+", "+x.accessLevel+" granted"+(x.autoProvisionIfMissing?" · auto provisioned if missing":"");})});
-  steps.push({key:"grant_sharepoint_access",label:"Grant SharePoint Site Access",status:"completed",endpoint:"POST /v1.0/sites/{siteId}/permissions",httpMethod:"POST",httpStatus:201,durationMs:0,summary:"Granted access to "+wizSel.sites.length+" SharePoint site"+(wizSel.sites.length===1?"":"s")+" upon setup completion",details:wizSel.sites.map(function(x){return x.displayName+", "+x.permissionRole;})});
-  finishRun(steps,"completed",userId,pwd);
+  function newPassword(){
+    var chars="ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789";
+    var syms="*$#%!"; var p="";
+    for(var i=0;i<13;i++){ p+=chars.charAt(Math.floor(Math.random()*chars.length)); }
+    p = p.slice(0,4)+syms.charAt(Math.floor(Math.random()*syms.length))+p.slice(4,9)+Math.floor(Math.random()*90+10)+p.slice(11);
+    return p;
+  }
 
-  function finishRun(finalSteps,finalStatus,uid,pw){
-    state.running=true;$("runBtn").disabled=true;
-    renderPipe(0,[]);
-    var idx=0;
-    var base=520+Math.floor(Math.random()*260);
-    function tick(){
-      if(idx>0){finalSteps[idx-1].durationMs=base+Math.floor(Math.random()*420);}
-      if(idx>=finalSteps.length||finalSteps[idx].status==="skipped"){
-        state.running=false;$("runBtn").disabled=false;
-        var run={
-          id:"run-"+now.toISOString().slice(0,10).replace(/-/g,"")+"-"+String(runs.length+1).padStart(2,"0"),
-          employeeName:first+" "+last, firstName:first, lastName:last, userPrincipalName:upn,
-          jobTitle:$("fTitle").value.trim()||bp.name, department:$("fDept").value.trim()||bp.department,
-          usageLocation:$("fLoc").value, managerEmail:$("fManager").value.trim(), startDate:$("fStart").value||now.toISOString().slice(0,10),
-          roleBlueprintId:bp.id, roleBlueprintName:bp.name, executionMode:state.mode,
-          status:finalStatus, entraUserId:uid, temporaryPassword:pw, passwordNote:null,
-          createdAt:now.toISOString(), completedAt:new Date().toISOString(), steps:finalSteps,
-          summaryCounts:{licensesAssigned:finalStatus==="completed"?wizSel.licenses.length:0,distributionListsJoined:finalStatus==="completed"?wizSel.dls.length:0,sharedMailboxesAssigned:finalStatus==="completed"?wizSel.mailboxes.length:0,sharePointSitesGranted:finalStatus==="completed"?wizSel.sites.length:0}
-        };
-        runs.unshift(run);renderRuns();renderPipe(-1,finalSteps);
-        if(finalStatus==="completed"){
-          $("wizResult").innerHTML='<div class="alert ok" style="margin:0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg><span><strong>'+esc(run.employeeName)+'</strong> provisioned in '+(state.mode==="live"?"Live (simulated)":"Sandbox Preview")+' mode. Temporary password: <span class="mono" style="font-weight:600">'+esc(pw)+'</span></span></div><div style="display:flex;gap:.55rem;margin-top:.7rem;flex-wrap:wrap"><button class="btn btn-ghost" type="button" id="wizCopyPwd" style="font-size:.78rem">Copy Password</button><button class="btn btn-primary" type="button" id="wizInspect" style="font-size:.78rem">View Audit Trail</button><button class="btn btn-subtle" type="button" id="wizGotoQueue" style="font-size:.78rem">Go to Queue</button></div>';
-          $("wizCopyPwd").addEventListener("click",function(){copyText(pw,"Temporary password copied");});
-        } else {
-          $("wizResult").innerHTML='<div class="alert bad" style="margin:0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg><span>Provisioning failed at stage 1 with HTTP 409. <strong>'+esc(upn)+'</strong> already exists in this tenant, so no account, licenses, or access were created. The failed run is recorded in the queue.</span></div><div style="margin-top:.7rem"><button class="btn btn-ghost" type="button" id="wizInspect" style="font-size:.78rem">View Audit Trail</button></div>';
-        }
-        $("wizInspect").addEventListener("click",function(){openDrawer(run.id);});
-        var gq=$("wizGotoQueue");if(gq)gq.addEventListener("click",function(){setView("overview");});
-        return;
-      }
-      renderPipe(idx,finalSteps.map(function(s,j){return j<idx?s:null;} ).map(function(s,j){return s||{status:j===idx?"running":"pending"};}));
-      idx++;setTimeout(tick,560);
+  /* ---------------- Rail: stages ---------------- */
+  function renderStageRail(statuses){
+    var html="";
+    STAGES.forEach(function(s,i){
+      var st = statuses ? statuses[i] : "pending";
+      var label = st==="done" ? "Success" : st==="running" ? "Running" : st==="skipped" ? "Skipped" : "Waiting";
+      var icon = st==="done" ? "✓" : st==="skipped" ? "–" : String(s.n);
+      html += '<div class="stage-row '+st+'"><div class="stage-ico">'+icon+'</div><div><div class="s-name">Stage '+s.n+". "+esc(s.name)+'</div><div class="s-desc">'+esc(s.desc)+'</div></div><div class="s-status">'+label+"</div></div>";
+    });
+    $("stageRail").innerHTML = html;
+  }
+  renderStageRail(null);
+
+  function renderQueue(){
+    var html="";
+    queue.forEach(function(q){
+      html += '<div class="queue-item"><div class="q-top"><span class="q-name">'+esc(q.name)+'</span><span class="badge good">'+esc(q.status)+'</span></div><div class="q-meta">'+esc(q.upn)+"<br>Blueprint "+esc(q.bp)+" · Run "+esc(q.run)+"<br>"+esc(q.when)+"</div></div>";
+    });
+    $("queueList").innerHTML = html;
+  }
+  renderQueue();
+
+  /* ---------------- Mode toggle ---------------- */
+  function setMode(m){
+    state.mode=m;
+    $("modeSandbox").setAttribute("aria-pressed", m==="Sandbox" ? "true":"false");
+    $("modeLive").setAttribute("aria-pressed", m==="Live" ? "true":"false");
+    $("kvMode").textContent=m;
+    toast(m==="Live" ? "Live mode. In the real console this writes to the tenant. Here it stays a simulation." : "Sandbox mode. Safe to explore, nothing is written.");
+  }
+  $("modeSandbox").addEventListener("click", function(){ setMode("Sandbox"); });
+  $("modeLive").addEventListener("click", function(){ setMode("Live"); });
+
+  /* ---------------- Sign in ---------------- */
+  $("openSignin").addEventListener("click", function(){ $("signinModal").classList.add("show"); });
+  $("cancelSignin").addEventListener("click", function(){ $("signinModal").classList.remove("show"); });
+  $("signinModal").addEventListener("click", function(e){ if(e.target===this){ this.classList.remove("show"); } });
+
+  $("signinForm").addEventListener("submit", function(e){
+    e.preventDefault();
+    var btn=$("doSignin"); btn.disabled=true; btn.textContent="Signing in…";
+    var steps=$("signinSteps"); steps.classList.add("show");
+    var lis=steps.querySelectorAll("li");
+    lis.forEach(function(li){ li.className=""; });
+    var i=0;
+    function advance(){
+      if(i>0){ lis[i-1].className="done"; lis[i-1].querySelector(".st-ico").textContent="✓"; }
+      if(i>=lis.length){ finishSignin(); return; }
+      lis[i].className="active"; i++;
+      setTimeout(advance, 750);
     }
-    tick();
-  }
-});
+    advance();
+  });
 
-/* ================= Blueprints ================= */
-function renderBlueprints(){
-  $("bpGrid").innerHTML=blueprints.map(function(b){
-    var preset=PRESET_IDS.indexOf(b.id)>-1;
-    var updated=fmtDate(b.updatedAt);
-    return '<article class="bp-card"><div class="bp-top"><div><div class="dept">'+esc(b.department)+'</div><h3>'+esc(b.name)+'</h3></div>'+(preset?'<span class="badge mode">Preset</span>':'<span class="badge ok">Custom</span>')+'</div>'+
-      '<p class="desc" style="margin:0">'+esc(b.description||"No description.")+'</p>'+
-      '<div class="bp-counts"><span>'+b.licenses.length+' license'+(b.licenses.length===1?"":"s")+'</span><span>'+b.distributionLists.length+' lists</span><span>'+b.sharedMailboxes.length+' mailboxes</span><span>'+b.sharePointSites.length+' sites</span><span>Usage: '+esc(b.defaultUsageLocation)+'</span></div>'+
-      '<div style="font-size:.7rem;color:var(--text-4)">Updated '+updated+'</div>'+
-      (preset?'<div class="lock-note"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Preset blueprints are protected. Duplicate to customize.</div>':"")+
-      '<div class="bp-actions">'+
-      (preset
-        ? '<button class="btn btn-ghost" type="button" data-act="dup" data-id="'+b.id+'">Duplicate</button><button class="btn btn-ghost" type="button" data-act="use" data-id="'+b.id+'">Use in Onboarding</button>'
-        : '<button class="btn btn-ghost" type="button" data-act="edit" data-id="'+b.id+'">Edit</button><button class="btn btn-ghost" type="button" data-act="use" data-id="'+b.id+'">Use</button><button class="btn btn-danger-ghost" type="button" data-act="del" data-id="'+b.id+'">Delete</button>')+
-      "</div></article>";
-  }).join("")||'<div class="empty panel"><div class="t">No blueprints yet</div><div class="s">Create your first role blueprint to pre configure onboarding.</div></div>';
-  $("bpGrid").querySelectorAll("button[data-act]").forEach(function(btn){
-    btn.addEventListener("click",function(){
-      var id=btn.getAttribute("data-id"),act=btn.getAttribute("data-act");
-      var bp=blueprints.filter(function(b){return b.id===id;})[0];if(!bp)return;
-      if(act==="use"){renderBlueprintOptions();$("fBlueprint").value=id;seedFromBlueprint();setView("onboarding");toast("Blueprint loaded into the onboarding form");}
-      if(act==="dup"){var copy=JSON.parse(JSON.stringify(bp));copy.id="bp-custom-"+Date.now();copy.name=bp.name+" (Copy)";copy.updatedAt=new Date().toISOString();blueprints.push(copy);renderBlueprints();renderBlueprintOptions();toast("Preset duplicated as an editable custom blueprint");}
-      if(act==="edit")openBpModal(bp);
-      if(act==="del"){blueprints=blueprints.filter(function(b){return b.id!==id;});renderBlueprints();renderBlueprintOptions();if(currentBlueprint())seedFromBlueprint();toast("Blueprint deleted");}
+  function finishSignin(){
+    $("signinModal").classList.remove("show");
+    var btn=$("doSignin"); btn.disabled=false; btn.textContent="Sign in";
+    $("signinSteps").classList.remove("show");
+    state.signedIn=true;
+    var email=$("adminEmail").value.trim() || "admin@harborline.example.com";
+    $("connEmail").textContent=email;
+    $("connectBox").style.display="none";
+    $("connectedBox").classList.add("show");
+    $("loginChecks").style.display="grid";
+    $("tenantPill").classList.add("on"); $("tenantPillText").textContent="Tenant: Harborline IT";
+    $("adminPill").classList.add("on"); $("adminPillText").textContent=email;
+    $("kvAdmin").textContent=email; $("kvTenant").textContent="Harborline IT";
+    $("toStep2").disabled=false;
+    state.maxStep=Math.max(state.maxStep,2);
+    syncStepper();
+    toast("Signed in. Tenant Harborline IT discovered, no tenant ID typed.");
+  }
+  $("toStep2").addEventListener("click", function(){ goStep(2); });
+
+  /* ---------------- Stepper ---------------- */
+  function goStep(n){
+    state.step=n; state.maxStep=Math.max(state.maxStep,n);
+    for(var i=1;i<=5;i++){ $("panel"+i).classList.toggle("show", i===n); }
+    if(n===4){ renderReview(); }
+    syncStepper();
+    window.scrollTo({top:0, behavior:"smooth"});
+  }
+  function syncStepper(){
+    document.querySelectorAll(".stepper button").forEach(function(b){
+      var n=parseInt(b.getAttribute("data-step"),10);
+      b.classList.toggle("active", n===state.step);
+      b.classList.toggle("done", n<state.step);
+      b.disabled = n>state.maxStep;
+      if(n<state.step){ b.querySelector(".n").textContent="✓"; } else { b.querySelector(".n").textContent=String(n); }
+    });
+  }
+  document.querySelectorAll(".stepper button").forEach(function(b){
+    b.addEventListener("click", function(){
+      var n=parseInt(b.getAttribute("data-step"),10);
+      if(n<=state.maxStep){ goStep(n); }
     });
   });
-}
-/* Blueprint modal */
-var bpEditId=null,bpSel={licenses:[],dls:[],mailboxes:[],sites:[]};
-function openBpModal(bp){
-  bpEditId=bp?bp.id:null;
-  $("bpModalTitle").textContent=bp?("Edit Blueprint: "+bp.name):"New Blueprint";
-  $("bpModalAlert").innerHTML="";
-  $("bName").value=bp?bp.name:"";$("bDept").value=bp?bp.department:"";$("bLoc").value=bp?bp.defaultUsageLocation:"US";$("bDesc").value=bp?bp.description:"";
-  bpSel=bp?{licenses:bp.licenses.slice(),dls:bp.distributionLists.slice(),mailboxes:bp.sharedMailboxes.slice(),sites:bp.sharePointSites.slice()}:{licenses:[],dls:[],mailboxes:[],sites:[]};
-  $("bpPickGroups").innerHTML=catalogGroups(bpSel);
-  $("bpPickGroups").querySelectorAll("input[type=checkbox]").forEach(function(cb){cb.addEventListener("change",function(){bpSel=readPicks($("bpPickGroups"),bpSel);});});
-  $("bpModalScrim").classList.add("open");
-}
-function closeBpModal(){$("bpModalScrim").classList.remove("open");}
-$("newBpBtn").addEventListener("click",function(){openBpModal(null);});
-$("bpModalClose").addEventListener("click",closeBpModal);
-$("bpCancel").addEventListener("click",closeBpModal);
-$("bpModalScrim").addEventListener("click",function(e){if(e.target===$("bpModalScrim"))closeBpModal();});
-$("bpSave").addEventListener("click",function(){
-  var name=$("bName").value.trim(),dept=$("bDept").value.trim();
-  if(!name||!dept){$("bpModalAlert").innerHTML='<div class="alert bad"><span>Blueprint name and department are required.</span></div>';return;}
-  bpSel=readPicks($("bpPickGroups"),bpSel);
-  if(bpEditId){
-    var bp=blueprints.filter(function(b){return b.id===bpEditId;})[0];
-    bp.name=name;bp.department=dept;bp.defaultUsageLocation=$("bLoc").value;bp.description=$("bDesc").value.trim();
-    bp.licenses=bpSel.licenses;bp.distributionLists=bpSel.dls;bp.sharedMailboxes=bpSel.mailboxes;bp.sharePointSites=bpSel.sites;bp.updatedAt=new Date().toISOString();
-    toast("Blueprint updated");
-  } else {
-    blueprints.push({id:"bp-custom-"+Date.now(),name:name,department:dept,description:$("bDesc").value.trim(),defaultUsageLocation:$("bLoc").value,licenses:bpSel.licenses,distributionLists:bpSel.dls,sharedMailboxes:bpSel.mailboxes,sharePointSites:bpSel.sites,updatedAt:new Date().toISOString()});
-    toast("Blueprint created");
+  document.querySelectorAll("[data-back]").forEach(function(b){
+    b.addEventListener("click", function(){ goStep(parseInt(b.getAttribute("data-back"),10)); });
+  });
+
+  /* ---------------- Employee panel ---------------- */
+  var bpGrid=$("bpGrid");
+  BLUEPRINTS.forEach(function(bp,i){
+    var terms=[];
+    if(bp.lic){ terms.push("License search: "+bp.lic); }
+    if(bp.groups.length){ terms.push("Groups: "+bp.groups.join(", ")); }
+    if(bp.mailbox){ terms.push("Mailbox: "+bp.mailbox); }
+    if(bp.site){ terms.push("Site: "+bp.site); }
+    var div=document.createElement("div"); div.className="bp-card";
+    div.innerHTML='<input type="radio" name="bp" id="bp-'+bp.id+'" value="'+bp.id+'"'+(i===0?" checked":"")+'><label for="bp-'+bp.id+'"><div class="bp-name">'+esc(bp.name)+'</div><div class="bp-title">'+esc(bp.title)+" · "+esc(bp.dept)+'</div><div class="bp-terms">'+esc(terms.join(" · ") || "No preset searches. Pick everything by hand.")+"</div></label>";
+    bpGrid.appendChild(div);
+  });
+  bpGrid.addEventListener("change", function(e){
+    var bp=BLUEPRINTS.filter(function(b){ return b.id===e.target.value; })[0];
+    if(bp){ state.blueprint=bp; buildPickers(); updatePreview(); }
+  });
+
+  var locRow=$("locRow");
+  LOCATIONS.forEach(function(l,i){
+    var div=document.createElement("span"); div.className="chip";
+    div.innerHTML='<input type="radio" name="loc" id="loc-'+l.code+'" value="'+l.code+'"'+(i===0?" checked":"")+'><label for="loc-'+l.code+'">'+esc(l.name)+" · "+l.code+"</label>";
+    locRow.appendChild(div);
+  });
+  locRow.addEventListener("change", function(e){
+    var l=LOCATIONS.filter(function(x){ return x.code===e.target.value; })[0];
+    if(l){ state.location=l; updatePreview(); }
+  });
+
+  var domainSel=$("domainSel");
+  DOMAINS.forEach(function(d){
+    var o=document.createElement("option"); o.value=d.name; o.textContent=d.name+" · "+d.note; domainSel.appendChild(o);
+  });
+  domainSel.addEventListener("change", function(){ state.domain=this.value; updatePreview(); });
+
+  function cleanPart(s){ return s.toLowerCase().replace(/[^a-z0-9]/g,""); }
+  function empFirst(){ return $("firstName").value.trim(); }
+  function empLast(){ return $("lastName").value.trim(); }
+  function empUPN(){
+    var f=cleanPart(empFirst()), l=cleanPart(empLast());
+    if(!f && !l){ return "first.last@"+state.domain; }
+    return (f||"first")+"."+(l||"last")+"@"+state.domain;
   }
-  closeBpModal();renderBlueprints();renderBlueprintOptions();seedFromBlueprint();
-});
-
-/* ================= API view / connection ================= */
-function renderMode(){
-  var live=state.mode==="live";
-  $("modePill").classList.toggle("live",live);
-  $("modePillText").textContent=live?"Live (simulated)":"Sandbox Preview";
-  $("footOrg").textContent=state.tenant.org;
-  $("footDomain").textContent=(live?"Connected · ":"Sandbox · ")+state.tenant.domain;
-  $("overviewModeNote").textContent=live?"Running in Live mode (simulated token exchange)":"Running in Sandbox Preview";
-  $("gotoApiBtn").textContent=live?"Tenant Settings":"Connect Live Tenant";
-  $("pipeModeLabel").textContent=live?"Live mode (simulated Graph calls)":"Sandbox Preview execution";
-  $("connSub").textContent=live?("Connected to "+state.tenant.org+" · "+state.tenant.domain):"Not connected. Sandbox Preview is active.";
-  var badge=$("connBadge");
-  badge.textContent=live?"Live (simulated)":"Sandbox";
-  badge.className="badge "+(live?"ok":"warn");
-  $("disconnectBtn").classList.toggle("hidden",!live);
-  $("catSub").textContent=(live?"Live catalog (simulated) for ":"Sandbox catalog for ")+state.tenant.domain;
-  $("catBadge").textContent="source: "+(live?"live (simulated)":"sandbox");
-  $("fDomain").value=state.tenant.domain;
-}
-$("connectBtn").addEventListener("click",function(){
-  var tid=$("cTenant").value.trim(),cid=$("cClient").value.trim(),sec=$("cSecret").value,dom=$("cDomain").value.trim();
-  $("connMsg").innerHTML="";
-  function fail(msg){$("connMsg").innerHTML='<div class="alert bad" style="margin:0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg><span>'+esc(msg)+"</span></div>";}
-  if(!tid||!cid||!sec){fail("Tenant ID, Client ID, and Client Secret are all required. Nothing was connected, so the console stays in Sandbox Preview.");return;}
-  var guidRe=/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
-  if(tid.toLowerCase()!=="common"&&!guidRe.test(tid)){fail("Tenant ID must be a GUID or the word common. Check the value from your app registration and try again.");return;}
-  if(!guidRe.test(cid)){fail("Client ID must be the Application (client) ID GUID from your app registration.");return;}
-  if(!dom||dom.indexOf(".")===-1){fail("Enter the tenant domain, for example yourtenant.com.");return;}
-  var btn=$("connectBtn");btn.disabled=true;btn.innerHTML='<span class="spin" style="border-top-color:#fff;border-color:rgba(255,255,255,.35);border-top-color:#fff"></span> Validating credentials...';
-  setTimeout(function(){
-    btn.disabled=false;btn.textContent="Connect Microsoft 365";
-    state.mode="live";state.tenant={domain:dom,org:dom.split(".")[0].replace(/^\w/,function(c){return c.toUpperCase();})+" Tenant",tenantId:tid,clientId:cid};
-    $("cSecret").value="";
-    $("connMsg").innerHTML='<div class="alert ok" style="margin:0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg><span>Simulated token exchange succeeded against the tenant token endpoint. The console is now in Live mode and new runs are labeled Live. The client secret was cleared from the form and is not stored.</span></div>';
-    renderMode();renderCatalog();toast("Connected. Live mode (simulated) is active.");
-  },900);
-});
-$("disconnectBtn").addEventListener("click",function(){
-  state.mode="sandbox";state.tenant={domain:"contoso.com",org:"Contoso Preview Tenant",tenantId:"",clientId:""};
-  $("cTenant").value="";$("cClient").value="";$("cDomain").value="";$("connMsg").innerHTML="";
-  renderMode();renderCatalog();toast("Disconnected. Back to Sandbox Preview.");
-});
-document.querySelectorAll(".copy-btn").forEach(function(b){b.addEventListener("click",function(){copyText(b.getAttribute("data-copy"),"Copied");});});
-
-/* Catalog tabs */
-function renderCatalog(){
-  var tab=state.catTab,head=$("catHead"),body=$("catBody");
-  if(tab==="licenses"){
-    head.innerHTML="<tr><th>License</th><th>SKU Part Number</th><th>SKU ID</th><th class='num'>Free</th><th class='num'>Consumed</th></tr>";
-    body.innerHTML=CATALOG.licenses.map(function(x){return "<tr><td style='font-weight:500'>"+esc(x.displayName)+"</td><td class='mono' style='font-size:.75rem'>"+esc(x.skuPartNumber)+"</td><td class='mono' style='font-size:.7rem'>"+esc(x.skuId)+"</td><td class='num'>"+x.availableUnits+"</td><td class='num'>"+x.consumedUnits+"</td></tr>";}).join("");
-  } else if(tab==="dls"){
-    head.innerHTML="<tr><th>Display Name</th><th>Email</th><th>Type</th></tr>";
-    body.innerHTML=CATALOG.distributionLists.map(function(x){return "<tr><td style='font-weight:500'>"+esc(x.displayName)+"</td><td class='mono' style='font-size:.75rem'>"+esc(x.email)+"</td><td>"+esc(x.type)+"</td></tr>";}).join("");
-  } else if(tab==="mailboxes"){
-    head.innerHTML="<tr><th>Display Name</th><th>Email</th><th>Default Access</th><th>Auto Provision</th></tr>";
-    body.innerHTML=CATALOG.sharedMailboxes.map(function(x){return "<tr><td style='font-weight:500'>"+esc(x.displayName)+"</td><td class='mono' style='font-size:.75rem'>"+esc(x.email)+"</td><td>"+esc(x.accessLevel)+"</td><td>"+(x.autoProvisionIfMissing?"Yes":"No")+"</td></tr>";}).join("");
-  } else {
-    head.innerHTML="<tr><th>Site</th><th>URL</th><th>Default Permission</th></tr>";
-    body.innerHTML=CATALOG.sharePointSites.map(function(x){return "<tr><td style='font-weight:500'>"+esc(x.displayName)+"</td><td class='mono' style='font-size:.72rem'>"+esc(x.webUrl)+"</td><td>"+esc(x.permissionRole)+"</td></tr>";}).join("");
+  function updatePreview(){
+    $("upnPreview").textContent=empUPN();
+    $("upnSub").textContent=state.blueprint.title+" · "+state.blueprint.dept+" · Usage location "+state.location.code+(state.manager ? " · Manager "+state.manager.name : "");
   }
-}
-document.querySelectorAll("#catTabs button").forEach(function(b){b.addEventListener("click",function(){document.querySelectorAll("#catTabs button").forEach(function(x){x.classList.remove("on");});b.classList.add("on");state.catTab=b.getAttribute("data-cat");renderCatalog();});});
+  $("firstName").addEventListener("input", updatePreview);
+  $("lastName").addEventListener("input", updatePreview);
+  updatePreview();
 
-/* ================= Init ================= */
-$("fStart").value=new Date().toISOString().slice(0,10);
-renderBlueprintOptions();
-seedFromBlueprint();
-renderRuns();
-renderBlueprints();
-renderCatalog();
-renderMode();
+  /* Manager search */
+  var managerInput=$("managerInput"), managerResults=$("managerResults");
+  managerInput.addEventListener("input", function(){
+    var q=this.value.trim().toLowerCase();
+    if(state.manager && q!==state.manager.name && q!==state.manager.email){ state.manager=null; }
+    if(!q){ managerResults.classList.remove("show"); managerResults.innerHTML=""; updatePreview(); return; }
+    var hits=PEOPLE.filter(function(p){ return p.name.toLowerCase().indexOf(q)>-1 || p.email.toLowerCase().indexOf(q)>-1; });
+    if(!hits.length){
+      managerResults.innerHTML='<div class="pick-empty">No one matches that search. Leave it blank to skip the manager.</div>';
+      managerResults.classList.add("show"); updatePreview(); return;
+    }
+    managerResults.innerHTML="";
+    hits.forEach(function(p){
+      var b=document.createElement("button"); b.type="button";
+      b.innerHTML="<span><strong>"+esc(p.name)+'</strong><br><span class="m-em">'+esc(p.email)+"</span></span>";
+      b.addEventListener("click", function(){
+        state.manager=p; managerInput.value=p.name;
+        managerResults.classList.remove("show"); updatePreview();
+        toast("Manager set to "+p.name+".");
+      });
+      managerResults.appendChild(b);
+    });
+    managerResults.classList.add("show");
+    if(hits.length===1){
+      state.manager=hits[0];
+    }
+    updatePreview();
+  });
+
+  $("toStep3").addEventListener("click", function(){
+    var ok=true;
+    [["fFirst",empFirst()],["fLast",empLast()]].forEach(function(pair){
+      var bad=!pair[1];
+      $(pair[0]).classList.toggle("invalid", bad);
+      if(bad){ ok=false; }
+    });
+    if(!ok){ toast("Add the employee name first, then continue."); return; }
+    goStep(3);
+  });
+
+  /* ---------------- Pickers ---------------- */
+  function seatsText(n){ return n>=1000000 ? (n/1000000)+"M available" : n.toLocaleString("en-US")+" available"; }
+
+  function pickerShell(id, title, countLabel, noteHtml){
+    return '<div class="picker" id="pk-'+id+'"><div class="picker-head"><h3>'+esc(title)+' <span class="sel-count" id="cnt-'+id+'"></span></h3>'+noteHtml+'</div><div class="picker-search"><input type="search" placeholder="Search this list" aria-label="Search '+esc(title)+'" data-search="'+id+'"></div><div class="pick-list" id="list-'+id+'"></div></div>';
+  }
+
+  function buildPickers(){
+    var bp=state.blueprint;
+    var wrap=$("pickers"); wrap.innerHTML="";
+
+    /* Licenses */
+    var e3=LICENSES[0];
+    var licNote='<p class="note warn-note">Blueprint searched for <strong>'+esc(bp.lic||"a license")+'</strong> and found '+esc(e3.name)+" ("+e3.sku+") with 0 available seats and status Suspended. It was not auto selected, because assigning it would fail. Pick a license with seats below, or skip and the run continues either way.</p>";
+    if(!bp.lic){ licNote='<p class="note">Custom blueprint, so no license search ran. Pick from the full tenant list, or skip.</p>'; }
+    wrap.innerHTML += pickerShell("lic","Licenses, pick one or more","",licNote);
+    renderLicenses("");
+
+    /* Groups, one picker per blueprint group term */
+    bp.groups.forEach(function(term, gi){
+      var gid="grp"+gi;
+      var note='<p class="note">Blueprint searched for <strong>'+esc(term)+'</strong> and found no group with that name in this tenant. That is a search miss, not a tenant problem. The full list is shown, pick one instead. Dynamic groups are marked, because Graph refuses manual adds to them.</p>';
+      wrap.innerHTML += pickerShell(gid,"Group for: "+term,"",note);
+      renderGroups(gid,"");
+    });
+    if(!bp.groups.length){
+      wrap.innerHTML += pickerShell("grpX","Groups","",'<p class="note">No group searches in this blueprint.</p>');
+      renderGroups("grpX","");
+    }
+
+    /* Mailbox */
+    var mbNote = bp.mailbox
+      ? '<p class="note">Blueprint searched for <strong>'+esc(bp.mailbox)+'</strong> and found no shared mailbox with that name. Graph cannot tell a shared mailbox from a regular mailbox, so this list shows mailbox accounts by address. Pick only the shared mailbox for this role, or skip.</p>'
+      : '<p class="note">Custom blueprint, so no mailbox search ran. Pick one, or skip.</p>';
+    wrap.innerHTML += pickerShell("mb","Shared mailbox, optional","",mbNote);
+    renderMailboxes("");
+
+    /* Site */
+    var siteNote = bp.site
+      ? '<p class="note">Blueprint searched for <strong>'+esc(bp.site)+'</strong> and found no site with that name. The full list is shown, pick one instead, or skip.</p>'
+      : '<p class="note">Custom blueprint, so no site search ran. Pick one, or skip.</p>';
+    wrap.innerHTML += pickerShell("site","SharePoint site, optional","",siteNote);
+    renderSites("");
+
+    wrap.querySelectorAll("[data-search]").forEach(function(inp){
+      inp.addEventListener("input", function(){
+        var id=this.getAttribute("data-search"), q=this.value;
+        if(id==="lic"){ renderLicenses(q); }
+        else if(id==="mb"){ renderMailboxes(q); }
+        else if(id==="site"){ renderSites(q); }
+        else { renderGroups(id,q); }
+      });
+    });
+    updateCounts();
+  }
+
+  function itemHTML(kind, idx, name, sub, rightHtml, checked, disabled){
+    var id=kind+"-"+idx;
+    return '<div class="pick-item'+(disabled?" disabled":"")+'"><input type="'+(kind==="lic"||kind.indexOf("grp")===0?"checkbox":"radio")+'" name="'+kind+'" id="'+id+'" data-kind="'+kind+'" data-idx="'+idx+'"'+(checked?" checked":"")+(disabled?" disabled":"")+'><label for="'+id+'"><span class="box">'+(checked?"✓":"")+'</span><span class="p-main"><span class="p-name">'+esc(name)+'</span>'+(sub?'<br><span class="p-sub">'+esc(sub)+"</span>":"")+'</span><span class="p-right">'+rightHtml+"</span></label></div>";
+  }
+
+  function renderLicenses(q){
+    q=(q||"").toLowerCase();
+    var html="";
+    LICENSES.forEach(function(l,i){
+      if(q && (l.name+" "+l.sku).toLowerCase().indexOf(q)===-1){ return; }
+      var right='<span class="seats'+(l.seats===0?" none":"")+'">'+(l.seats===0?"0 available":seatsText(l.seats))+"</span>"+(l.status?'<br><span class="badge bad">'+esc(l.status)+"</span>":"");
+      html+=itemHTML("lic", i, l.name, l.sku, right, state.licenses.indexOf(i)>-1, false);
+    });
+    $("list-lic").innerHTML = html || '<div class="pick-empty">No licenses match that search.</div>';
+    bindPick("lic");
+  }
+  function renderGroups(gid,q){
+    q=(q||"").toLowerCase();
+    var html="";
+    GROUPS.forEach(function(g,i){
+      if(q && (g.name+" "+g.type+" "+g.sub).toLowerCase().indexOf(q)===-1){ return; }
+      var right = g.dynamic ? '<span class="badge warn">Dynamic</span>' : '<span class="badge teal">'+esc(g.type)+"</span>";
+      var sub = g.sub + (g.dynamic ? " · Members are set by rule, Graph refuses manual adds" : "");
+      var sel = (state.groups[gid]===i);
+      html+=itemHTML(gid, i, g.name, sub, right, sel, g.dynamic);
+    });
+    $("list-"+gid).innerHTML = html || '<div class="pick-empty">No groups match that search.</div>';
+    bindPick(gid);
+  }
+  function renderMailboxes(q){
+    q=(q||"").toLowerCase();
+    var html=itemHTML("mb", -1, "Skip shared mailbox", "Stage 4 will be recorded as skipped", "", state.mailbox===null, false);
+    MAILBOXES.forEach(function(m,i){
+      if(q && (m.name+" "+m.email).toLowerCase().indexOf(q)===-1){ return; }
+      html+=itemHTML("mb", i, m.name, m.email, "", state.mailbox===i, false);
+    });
+    $("list-mb").innerHTML=html;
+    bindPick("mb");
+  }
+  function renderSites(q){
+    q=(q||"").toLowerCase();
+    var html=itemHTML("site", -1, "Skip SharePoint site", "Stage 5 will be recorded as skipped", "", state.site===null, false);
+    SITES.forEach(function(s,i){
+      if(q && (s.name+" "+s.url).toLowerCase().indexOf(q)===-1){ return; }
+      html+=itemHTML("site", i, s.name, s.url, "", state.site===i, false);
+    });
+    $("list-site").innerHTML=html;
+    bindPick("site");
+  }
+
+  function bindPick(kind){
+    document.querySelectorAll('input[data-kind="'+kind+'"]').forEach(function(inp){
+      inp.addEventListener("change", function(){
+        var idx=parseInt(this.getAttribute("data-idx"),10);
+        if(kind==="lic"){
+          if(this.checked){ state.licenses.push(idx); } else { state.licenses=state.licenses.filter(function(x){return x!==idx;}); }
+          var lbl=this.parentElement.querySelector(".box"); if(lbl){ lbl.textContent=this.checked?"✓":""; }
+        } else if(kind==="mb"){
+          state.mailbox = idx<0 ? null : idx;
+          renderMailboxes("");
+        } else if(kind==="site"){
+          state.site = idx<0 ? null : idx;
+          renderSites("");
+        } else {
+          state.groups[kind]=idx;
+          document.querySelectorAll('input[data-kind="'+kind+'"]').forEach(function(o){
+            var b=o.parentElement.querySelector(".box"); if(b){ b.textContent=o.checked?"✓":""; }
+          });
+        }
+        updateCounts();
+      });
+    });
+  }
+
+  function updateCounts(){
+    var c=$("cnt-lic"); if(c){ c.textContent = state.licenses.length ? state.licenses.length+" selected" : "None selected, stage still runs as a skip"; }
+    Object.keys(state.groups).forEach(function(k){
+      var el=$("cnt-"+k); if(el){ el.textContent = state.groups[k]!=null ? "1 selected" : "None selected yet"; }
+    });
+    var mb=$("cnt-mb"); if(mb){ mb.textContent = state.mailbox!=null ? "1 selected" : "Skipped"; }
+    var st=$("cnt-site"); if(st){ st.textContent = state.site!=null ? "1 selected" : "Skipped"; }
+  }
+
+  /* Preset the picks from the real completed run, so the first pass feels alive */
+  state.licenses=[5];
+  state.groups={grp0:6, grp1:9};
+  buildPickers();
+
+  $("toStep4").addEventListener("click", function(){ goStep(4); });
+  $("toStep5").addEventListener("click", function(){ goStep(5); });
+
+  /* ---------------- Review ---------------- */
+  function selectedGroupNames(){
+    return Object.keys(state.groups).map(function(k){
+      var i=state.groups[k]; return i!=null ? GROUPS[i].name : null;
+    }).filter(Boolean);
+  }
+  function renderReview(){
+    var name=(empFirst()+" "+empLast()).trim() || "New employee";
+    var lics=state.licenses.map(function(i){ return LICENSES[i].name+" ("+LICENSES[i].sku+")"; });
+    var grps=selectedGroupNames();
+    var rows=[
+      ["Employee", name],
+      ["UPN", empUPN()],
+      ["Blueprint", state.blueprint.name+" | Title: "+state.blueprint.title+" | Dept: "+state.blueprint.dept+" | Location: "+state.location.code],
+      ["Licenses", lics.length ? lics.join(", ") : "None, Stage 2 will be skipped"],
+      ["Groups", grps.length ? grps.join(", ") : "None, Stage 3 will be skipped"],
+      ["Mailbox", state.mailbox!=null ? MAILBOXES[state.mailbox].email : "None, Stage 4 will be skipped"],
+      ["Sites", state.site!=null ? SITES[state.site].url : "None, Stage 5 will be skipped"],
+      ["Manager", state.manager ? state.manager.name+" ("+state.manager.email+")" : "None set"],
+      ["Mode", state.mode+" | Tenant Harborline IT | Signed in as "+($("adminEmail").value.trim()||"admin@harborline.example.com")]
+    ];
+    $("reviewBox").innerHTML = rows.map(function(r){
+      return '<div><span class="r-k">'+esc(r[0])+'</span> <span class="'+(r[0]==="UPN"?"r-hl":"")+'">'+esc(r[1])+"</span></div>";
+    }).join("");
+  }
+
+  /* ---------------- Run ---------------- */
+  var auditRows=[];
+  function termLine(html){
+    var t=$("terminal");
+    if(t.dataset.empty!=="0"){ t.innerHTML=""; t.dataset.empty="0"; }
+    t.innerHTML += html+"\n";
+    t.scrollTop=t.scrollHeight;
+  }
+  function renderAudit(){
+    if(!auditRows.length){ return; }
+    var html='<div style="overflow-x:auto"><table class="audit"><thead><tr><th>Stage</th><th>Name</th><th>Method</th><th>Status</th><th>Code</th><th>Time</th><th>Detail</th></tr></thead><tbody>';
+    auditRows.forEach(function(r){
+      var badge = r.status==="Success" ? "good" : "skip";
+      html+="<tr><td data-l='Stage' class='num'>"+r.stage+"</td><td data-l='Name'>"+esc(r.name)+"</td><td data-l='Method' class='num'>"+esc(r.method)+"</td><td data-l='Status'><span class='badge "+badge+"'>"+esc(r.status)+"</span></td><td data-l='Code' class='num'>"+(r.code||"")+"</td><td data-l='Time' class='num'>"+(r.ms? r.ms+" ms":"0 ms")+"</td><td data-l='Detail'>"+esc(r.detail)+"</td></tr>";
+    });
+    html+="</tbody></table></div>";
+    $("auditWrap").innerHTML=html;
+  }
+  function randMs(a,b){ return Math.floor(Math.random()*(b-a)+a); }
+
+  $("runBtn").addEventListener("click", function(){
+    if(state.running){ return; }
+    state.running=true;
+    this.disabled=true; this.textContent="Running…";
+    auditRows=[]; $("resultCard").classList.remove("show");
+    state.runId=newRunId(); state.password=newPassword(); state.passVisible=false;
+    $("tempPass").textContent="••••••••••••••••"; $("togglePass").textContent="Show";
+    $("kvRun").textContent=state.runId.slice(0,8)+"…";
+    var t=$("terminal"); t.innerHTML=""; t.dataset.empty="0";
+    var statuses=["running","pending","pending","pending","pending"];
+    renderStageRail(statuses);
+    var name=(empFirst()+" "+empLast()).trim();
+    var upn=empUPN();
+    var userId=newRunId();
+    var started=Date.now();
+
+    termLine('<span class="t-head">EntraFlow Onboarding Run '+state.runId+"</span>");
+    termLine("Mode: "+state.mode+" | Tenant: Harborline IT | Signed in as "+($("adminEmail").value.trim()||"admin@harborline.example.com"));
+    termLine("Employee: "+name+" | "+upn);
+    termLine("");
+
+    var steps=[
+      function(done){
+        termLine('<span class="t-head">Stage 1 of 5. Microsoft 365 Account Creation</span>');
+        setTimeout(function(){
+          var ms1=randMs(540,980);
+          auditRows.push({stage:1,name:"Account Creation",method:"POST",code:201,ms:ms1,status:"Success",detail:"Created "+upn+" (id: "+userId+")"});
+          termLine('  <span class="t-ok">[Success]</span> POST /v1.0/users ('+ms1+' ms) Created '+upn);
+          if(state.manager){
+            var ms2=randMs(420,720);
+            auditRows.push({stage:1,name:"Manager Assignment",method:"PUT",code:204,ms:ms2,status:"Success",detail:"Manager set to "+state.manager.name+" (found by search)"});
+            termLine('  <span class="t-ok">[Success]</span> PUT manager/$ref ('+ms2+' ms) Manager set to '+state.manager.name);
+          }
+          statuses[0]="done"; statuses[1]="running"; renderStageRail(statuses); renderAudit(); done();
+        }, 800);
+      },
+      function(done){
+        termLine('<span class="t-head">Stage 2 of 5. Automatic License Assignment</span>');
+        setTimeout(function(){
+          if(!state.licenses.length){
+            auditRows.push({stage:2,name:"License Assignment",method:"POST",code:"",ms:0,status:"Skipped",detail:"No licenses were selected, so there was nothing to assign. No status code is recorded, because no call was made."});
+            termLine('  <span class="t-skip">[Skipped]</span> No licenses selected, nothing to assign.');
+            statuses[1]="skipped";
+          } else {
+            state.licenses.forEach(function(i){
+              var l=LICENSES[i]; var ms=randMs(430,760);
+              auditRows.push({stage:2,name:"License Assignment",method:"POST",code:200,ms:ms,status:"Success",detail:"Assigned "+l.name+" ("+l.sku+") ("+l.seats.toLocaleString("en-US")+" available at pick time)"});
+              termLine('  <span class="t-ok">[Success]</span> POST assignLicense ('+ms+' ms) Assigned '+l.sku);
+            });
+            statuses[1]="done";
+          }
+          statuses[2]="running"; renderStageRail(statuses); renderAudit(); done();
+        }, 800);
+      },
+      function(done){
+        termLine('<span class="t-head">Stage 3 of 5. Role Based Groups and Distribution Lists</span>');
+        setTimeout(function(){
+          var grps=selectedGroupNames();
+          if(!grps.length){
+            auditRows.push({stage:3,name:"Group Membership",method:"POST",code:"",ms:0,status:"Skipped",detail:"No groups were selected, so there was nothing to join. No status code is recorded, because no call was made."});
+            termLine('  <span class="t-skip">[Skipped]</span> No groups selected.');
+            statuses[2]="skipped";
+          } else {
+            grps.forEach(function(g){
+              var ms=randMs(480,990);
+              auditRows.push({stage:3,name:"Group Membership",method:"POST",code:204,ms:ms,status:"Success",detail:"Added to "+g+" (found by search)"});
+              termLine('  <span class="t-ok">[Success]</span> POST groups/members/$ref ('+ms+' ms) Added to '+esc(g));
+            });
+            statuses[2]="done";
+          }
+          statuses[3]="running"; renderStageRail(statuses); renderAudit(); done();
+        }, 800);
+      },
+      function(done){
+        termLine('<span class="t-head">Stage 4 of 5. Shared Mailbox Provisioning and Delegation</span>');
+        setTimeout(function(){
+          if(state.mailbox==null){
+            auditRows.push({stage:4,name:"Shared Mailbox Delegation",method:"POST",code:"",ms:0,status:"Skipped",detail:"No shared mailboxes were selected, so there was nothing to delegate. No status code is recorded, because no call was made."});
+            termLine('  <span class="t-skip">[Skipped]</span> No shared mailbox selected, nothing to delegate.');
+            statuses[3]="skipped";
+          } else {
+            var ms=randMs(500,900);
+            auditRows.push({stage:4,name:"Shared Mailbox Delegation",method:"POST",code:200,ms:ms,status:"Success",detail:"Full Access and Send As granted on "+MAILBOXES[state.mailbox].email});
+            termLine('  <span class="t-ok">[Success]</span> Exchange delegation ('+ms+' ms) Access granted on '+MAILBOXES[state.mailbox].email);
+            statuses[3]="done";
+          }
+          statuses[4]="running"; renderStageRail(statuses); renderAudit(); done();
+        }, 800);
+      },
+      function(done){
+        termLine('<span class="t-head">Stage 5 of 5. SharePoint Site Access</span>');
+        setTimeout(function(){
+          if(state.site==null){
+            auditRows.push({stage:5,name:"SharePoint Access",method:"POST",code:"",ms:0,status:"Skipped",detail:"No sites were selected, so there was nothing to grant. No status code is recorded, because no call was made."});
+            termLine('  <span class="t-skip">[Skipped]</span> No site selected, nothing to grant.');
+            statuses[4]="skipped";
+          } else {
+            var ms=randMs(480,880);
+            auditRows.push({stage:5,name:"SharePoint Access",method:"POST",code:200,ms:ms,status:"Success",detail:"Member access granted on "+SITES[state.site].url});
+            termLine('  <span class="t-ok">[Success]</span> POST sites/permissions ('+ms+' ms) Access granted on '+SITES[state.site].url);
+            statuses[4]="done";
+          }
+          renderStageRail(statuses); renderAudit(); done();
+        }, 800);
+      }
+    ];
+
+    var idx=0;
+    function next(){
+      if(idx>=steps.length){ finishRun(started, name, upn); return; }
+      steps[idx](function(){ idx++; next(); });
+    }
+    next();
+  });
+
+  function finishRun(started, name, upn){
+    var simMs=auditRows.reduce(function(a,r){ return a+(r.ms||0); },0)+STAGES.length*800;
+    var secs=(simMs/1000).toFixed(1);
+    termLine("");
+    termLine('<span class="t-ok">Result: PROVISIONED. '+esc(name)+' is ready on day one.</span>');
+    termLine("Run ID: "+state.runId+" | Duration: "+secs+" s | Mode: "+state.mode);
+    $("resultTitle").textContent="Provisioned. "+name+" is ready on day one.";
+    $("resultLine").textContent="Account created in tenant Harborline IT under the "+state.blueprint.name+" blueprint. Hand over the UPN and the temporary password, then clear or rotate the password after handover.";
+    $("resUpn").textContent=upn;
+    $("resRun").textContent=state.runId;
+    $("resDur").textContent=secs+" seconds";
+    $("resultCard").classList.add("show");
+    queue.unshift({name:name, upn:upn, bp:state.blueprint.name, status:"Provisioned", run:state.runId.slice(0,8), when:"Just now, "+state.mode+" simulation"});
+    renderQueue();
+    var btn=$("runBtn"); btn.disabled=false; btn.textContent="Run again";
+    state.running=false;
+    toast("Provisioned. "+name+" is ready on day one.");
+    $("resultCard").scrollIntoView({behavior:"smooth", block:"nearest"});
+  }
+
+  $("togglePass").addEventListener("click", function(){
+    state.passVisible=!state.passVisible;
+    $("tempPass").textContent = state.passVisible ? state.password : "••••••••••••••••";
+    this.textContent = state.passVisible ? "Hide" : "Show";
+  });
+  $("copyPass").addEventListener("click", function(){
+    var text=state.password;
+    function ok(){ toast("Temporary password copied. It expires 24 hours after the run."); }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(ok, function(){ toast("Copy was blocked by the browser. Use Show and copy it by hand."); });
+    } else { toast("Copy is not available here. Use Show and copy it by hand."); }
+  });
+
+  $("resetRun").addEventListener("click", function(){
+    state.licenses=[5]; state.groups={grp0:6, grp1:9}; state.mailbox=null; state.site=null;
+    $("firstName").value=""; $("lastName").value="";
+    $("managerInput").value=""; state.manager=null;
+    auditRows=[]; $("auditWrap").innerHTML='<p class="audit-empty">No run yet in this session.</p>';
+    $("terminal").innerHTML="Ready. Press Run pipeline when you are set."; $("terminal").dataset.empty="1";
+    $("resultCard").classList.remove("show");
+    renderStageRail(null); buildPickers(); updatePreview();
+    goStep(2);
+    toast("Fresh onboarding started. Sign in is still active, so you go straight to the employee.");
+  });
+
+  syncStepper();
+})();
 </script>
 </body>
 </html>
